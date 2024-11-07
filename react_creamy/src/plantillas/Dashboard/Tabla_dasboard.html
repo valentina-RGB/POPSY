@@ -1,0 +1,757 @@
+<div className="card card-table mb-4">
+    <div className="card-header">
+      <h5 className="card-heading"> Latest Contracts</h5>
+          <div className="card-header-more">
+            <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+            <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-window-minimize opacity-5 me-2"></i>Minimize</a><a className="dropdown-item" href="#!"><i className="fas fa-redo opacity-5 me-2"></i> Reload</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+          </div>
+    </div>
+    <div className="card-body">
+      <div className="preload-wrapper">
+        <div className="table-responsive">
+          <table className="table table-hover text-sm text-gray-700 mb-0" id="ordersDatatable">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Company</th>
+                <th>Status</th>
+                <th>Contract</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><span className="avatar p-1 me-2"><span className="avatar-text avatar-primary-light">N                                                </span></span>
+                    <div className="pt-1"><strong>Nielsen Cobb</strong><br/><span className="text-muted text-sm">nielsencobb@memora.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Memora</strong><br/><span className="text-muted">Graniteville</span></td>
+                <td><span className="badge badge-success-light"> <span className="indicator"></span>Open</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">77%</span>
+                    <div className="progress progress-table">
+                      <!-- <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow={77} aria-valuemin={0} aria-valuemax={100} style={{width:'77%'}}>  </div> -->
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/12/20</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><img className="avatar p-1 me-2" src="https://demo.bootstrapious.com/bubbly/1-3-2/img/avatar-1.jpg" alt="Margret Cote"/>
+                    <div className="pt-1"><strong>Margret Cote</strong><br/><span className="text-muted text-sm">margretcote@zilidium.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Zilidium</strong><br/><span className="text-muted">Foxworth</span></td>
+                <td>
+                  <span className="badge badge-danger-light"> 
+                  <span className="indicator">
+                    </span>Closed</span>
+                    </td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">22%</span>
+                    <div className="progress progress-table">
+                      <!-- <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow={22} aria-valuemin={0} aria-valuemax={100} style={{width:'22%'}}>  </div> -->
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/09/12</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><img className="avatar p-1 me-2" src="https://demo.bootstrapious.com/bubbly/1-3-2/img/avatar-2.jpg" alt="Rachel Vinson"/>
+                    <div className="pt-1"><strong>Rachel Vinson</strong><br/><span className="text-muted text-sm">rachelvinson@chorizon.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Chorizon</strong><br><span className="text-muted">Eastmont</span></td>
+                <td><span className="badge badge-warning-light"> <span className="indicator"></span>On Hold</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">28%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="28" aria-valuemin={0} aria-valuemax={100} style="width:28%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/10/01</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><span className="avatar p-1 me-2"><span className="avatar-text avatar-warning-light">G                                                </span></span>
+                    <div className="pt-1"><strong>Gabrielle Aguirre</strong><br><span className="text-muted text-sm">gabrielleaguirre@comverges.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Comverges</strong><br><span className="text-muted">Whitewater</span></td>
+                <td><span className="badge badge-info-light"> <span className="indicator"></span>In Progress</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">89%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="89" aria-valuemin={0} aria-valuemax={100} style="width:89%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/06/01</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><img className="avatar p-1 me-2" src="https://demo.bootstrapious.com/bubbly/1-3-2/img/avatar-4.jpg" alt="Spears Collier">
+                    <div className="pt-1"><strong>Spears Collier</strong><br><span className="text-muted text-sm">spearscollier@remold.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Remold</strong><br><span className="text-muted">Hebron</span></td>
+                <td><span className="badge badge-success-light"> <span className="indicator"></span>Open</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">49%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="49" aria-valuemin={0} aria-valuemax={100} style="width:49%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/03/12</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><img className="avatar p-1 me-2" src="https://demo.bootstrapious.com/bubbly/1-3-2/img/avatar-5.jpg" alt="Keisha Thomas">
+                    <div className="pt-1"><strong>Keisha Thomas</strong><br><span className="text-muted text-sm">keishathomas@euron.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Euron</strong><br><span className="text-muted">Levant</span></td>
+                <td><span className="badge badge-danger-light"> <span className="indicator"></span>Closed</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">44%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="44" aria-valuemin={0} aria-valuemax={100} style="width:44%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/06/30</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><span className="avatar p-1 me-2"><span className="avatar-text avatar-primary-light">E                                                </span></span>
+                    <div className="pt-1"><strong>Elisabeth Key</strong><br><span className="text-muted text-sm">elisabethkey@netagy.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Netagy</strong><br><span className="text-muted">Nile</span></td>
+                <td><span className="badge badge-warning-light"> <span className="indicator"></span>On Hold</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">91%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="91" aria-valuemin={0} aria-valuemax={100} style="width:91%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/08/01</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><img className="avatar p-1 me-2" src="https://demo.bootstrapious.com/bubbly/1-3-2/img/avatar-7.jpg" alt="Patel Mack">
+                    <div className="pt-1"><strong>Patel Mack</strong><br><span className="text-muted text-sm">patelmack@zedalis.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Zedalis</strong><br><span className="text-muted">Albrightsville</span></td>
+                <td><span className="badge badge-info-light"> <span className="indicator"></span>In Progress</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">100%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="100" aria-valuemin={0} aria-valuemax={100} style="width:100%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/03/08</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><img className="avatar p-1 me-2" src="https://demo.bootstrapious.com/bubbly/1-3-2/img/avatar-8.jpg" alt="Erika Whitaker">
+                    <div className="pt-1"><strong>Erika Whitaker</strong><br><span className="text-muted text-sm">erikawhitaker@uniworld.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Uniworld</strong><br><span className="text-muted">Leola</span></td>
+                <td><span className="badge badge-success-light"> <span className="indicator"></span>Open</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">76%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="76" aria-valuemin={0} aria-valuemax={100} style="width:76%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/01/17</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><span className="avatar p-1 me-2"><span className="avatar-text avatar-warning-light">M                                                </span></span>
+                    <div className="pt-1"><strong>Meyers Swanson</strong><br><span className="text-muted text-sm">meyersswanson@candecor.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Candecor</strong><br><span className="text-muted">Finderne</span></td>
+                <td><span className="badge badge-danger-light"> <span className="indicator"></span>Closed</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">14%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="14" aria-valuemin={0} aria-valuemax={100} style="width:14%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/02/19</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><img className="avatar p-1 me-2" src="https://demo.bootstrapious.com/bubbly/1-3-2/img/avatar-1.jpg" alt="Townsend Sloan">
+                    <div className="pt-1"><strong>Townsend Sloan</strong><br><span className="text-muted text-sm">townsendsloan@rameon.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Rameon</strong><br><span className="text-muted">Coultervillle</span></td>
+                <td><span className="badge badge-warning-light"> <span className="indicator"></span>On Hold</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">55%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="55" aria-valuemin={0} aria-valuemax={100} style="width:55%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/03/16</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><img className="avatar p-1 me-2" src="https://demo.bootstrapious.com/bubbly/1-3-2/img/avatar-2.jpg" alt="Millicent Henry">
+                    <div className="pt-1"><strong>Millicent Henry</strong><br><span className="text-muted text-sm">millicenthenry@balooba.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Balooba</strong><br><span className="text-muted">Caron</span></td>
+                <td><span className="badge badge-info-light"> <span className="indicator"></span>In Progress</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">77%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="77" aria-valuemin={0} aria-valuemax={100} style="width:77%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/04/09</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><span className="avatar p-1 me-2"><span className="avatar-text avatar-primary-light">M                                                </span></span>
+                    <div className="pt-1"><strong>Madelyn Brock</strong><br><span className="text-muted text-sm">madelynbrock@combogene.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Combogene</strong><br><span className="text-muted">Ballico</span></td>
+                <td><span className="badge badge-success-light"> <span className="indicator"></span>Open</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">89%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="89" aria-valuemin={0} aria-valuemax={100} style="width:89%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/03/09</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><img className="avatar p-1 me-2" src="https://demo.bootstrapious.com/bubbly/1-3-2/img/avatar-4.jpg" alt="Jenkins Carney">
+                    <div className="pt-1"><strong>Jenkins Carney</strong><br><span className="text-muted text-sm">jenkinscarney@dadabase.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Dadabase</strong><br><span className="text-muted">Chesterfield</span></td>
+                <td><span className="badge badge-danger-light"> <span className="indicator"></span>Closed</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">48%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="48" aria-valuemin={0} aria-valuemax={100} style="width:48%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/07/06</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><img className="avatar p-1 me-2" src="https://demo.bootstrapious.com/bubbly/1-3-2/img/avatar-5.jpg" alt="Grimes Delaney">
+                    <div className="pt-1"><strong>Grimes Delaney</strong><br><span className="text-muted text-sm">grimesdelaney@progenex.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Progenex</strong><br><span className="text-muted">Cazadero</span></td>
+                <td><span className="badge badge-warning-light"> <span className="indicator"></span>On Hold</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">1%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="1" aria-valuemin={0} aria-valuemax={100} style="width:1%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/12/31</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><span className="avatar p-1 me-2"><span className="avatar-text avatar-warning-light">V                                                </span></span>
+                    <div className="pt-1"><strong>Valencia Rivera</strong><br><span className="text-muted text-sm">valenciarivera@xleen.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Xleen</strong><br><span className="text-muted">Kirk</span></td>
+                <td><span className="badge badge-info-light"> <span className="indicator"></span>In Progress</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">3%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="3" aria-valuemin={0} aria-valuemax={100} style="width:3%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/09/24</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><img className="avatar p-1 me-2" src="https://demo.bootstrapious.com/bubbly/1-3-2/img/avatar-7.jpg" alt="Helene Solomon">
+                    <div className="pt-1"><strong>Helene Solomon</strong><br><span className="text-muted text-sm">helenesolomon@zomboid.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Zomboid</strong><br><span className="text-muted">Riverton</span></td>
+                <td><span className="badge badge-success-light"> <span className="indicator"></span>Open</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">63%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="63" aria-valuemin={0} aria-valuemax={100} style="width:63%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/07/30</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><img className="avatar p-1 me-2" src="https://demo.bootstrapious.com/bubbly/1-3-2/img/avatar-8.jpg" alt="Kathleen Holman">
+                    <div className="pt-1"><strong>Kathleen Holman</strong><br><span className="text-muted text-sm">kathleenholman@hotcakes.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Hotcakes</strong><br><span className="text-muted">Darlington</span></td>
+                <td><span className="badge badge-danger-light"> <span className="indicator"></span>Closed</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">17%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="17" aria-valuemin={0} aria-valuemax={100} style="width:17%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/03/06</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><img className="avatar p-1 me-2" src="https://demo.bootstrapious.com/bubbly/1-3-2/img/avatar-10.jpg" alt="Merrill Garrett">
+                    <div className="pt-1"><strong>Merrill Garrett</strong><br><span className="text-muted text-sm">merrillgarrett@affluex.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Affluex</strong><br><span className="text-muted">Utting</span></td>
+                <td><span className="badge badge-warning-light"> <span className="indicator"></span>On Hold</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">48%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="48" aria-valuemin={0} aria-valuemax={100} style="width:48%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/02/04</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><img className="avatar p-1 me-2" src="https://demo.bootstrapious.com/bubbly/1-3-2/img/avatar-11.jpg" alt="Sallie Booth">
+                    <div className="pt-1"><strong>Sallie Booth</strong><br><span className="text-muted text-sm">salliebooth@ziggles.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Ziggles</strong><br><span className="text-muted">Waiohinu</span></td>
+                <td><span className="badge badge-info-light"> <span className="indicator"></span>In Progress</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">61%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="61" aria-valuemin={0} aria-valuemax={100} style="width:61%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/10/09</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><img className="avatar p-1 me-2" src="https://demo.bootstrapious.com/bubbly/1-3-2/img/avatar-2.jpg" alt="Doris Ward">
+                    <div className="pt-1"><strong>Doris Ward</strong><br><span className="text-muted text-sm">dorisward@imaginart.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Imaginart</strong><br><span className="text-muted">Wyano</span></td>
+                <td><span className="badge badge-success-light"> <span className="indicator"></span>Open</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">62%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="62" aria-valuemin={0} aria-valuemax={100} style="width:62%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/11/02</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><span className="avatar p-1 me-2"><span className="avatar-text avatar-warning-light">L                                                </span></span>
+                    <div className="pt-1"><strong>Lester Roach</strong><br><span className="text-muted text-sm">lesterroach@applica.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Applica</strong><br><span className="text-muted">Coventry</span></td>
+                <td><span className="badge badge-danger-light"> <span className="indicator"></span>Closed</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">22%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="22" aria-valuemin={0} aria-valuemax={100} style="width:22%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/04/04</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><img className="avatar p-1 me-2" src="https://demo.bootstrapious.com/bubbly/1-3-2/img/avatar-4.jpg" alt="Garza Shaw">
+                    <div className="pt-1"><strong>Garza Shaw</strong><br><span className="text-muted text-sm">garzashaw@capscreen.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Capscreen</strong><br><span className="text-muted">Beyerville</span></td>
+                <td><span className="badge badge-warning-light"> <span className="indicator"></span>On Hold</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">93%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="93" aria-valuemin={0} aria-valuemax={100} style="width:93%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/12/22</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><img className="avatar p-1 me-2" src="https://demo.bootstrapious.com/bubbly/1-3-2/img/avatar-5.jpg" alt="Charmaine Castro">
+                    <div className="pt-1"><strong>Charmaine Castro</strong><br><span className="text-muted text-sm">charmainecastro@naxdis.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Naxdis</strong><br><span className="text-muted">Cotopaxi</span></td>
+                <td><span className="badge badge-info-light"> <span className="indicator"></span>In Progress</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">80%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="80" aria-valuemin={0} aria-valuemax={100} style="width:80%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/05/18</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><span className="avatar p-1 me-2"><span className="avatar-text avatar-primary-light">C                                                </span></span>
+                    <div className="pt-1"><strong>Carey Petersen</strong><br><span className="text-muted text-sm">careypetersen@telepark.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Telepark</strong><br><span className="text-muted">Lowell</span></td>
+                <td><span className="badge badge-success-light"> <span className="indicator"></span>Open</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">55%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="55" aria-valuemin={0} aria-valuemax={100} style="width:55%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/03/11</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><img className="avatar p-1 me-2" src="https://demo.bootstrapious.com/bubbly/1-3-2/img/avatar-7.jpg" alt="Sargent Gray">
+                    <div className="pt-1"><strong>Sargent Gray</strong><br><span className="text-muted text-sm">sargentgray@orbean.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Orbean</strong><br><span className="text-muted">Allison</span></td>
+                <td><span className="badge badge-danger-light"> <span className="indicator"></span>Closed</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">68%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="68" aria-valuemin={0} aria-valuemax={100} style="width:68%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/07/29</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><img className="avatar p-1 me-2" src="https://demo.bootstrapious.com/bubbly/1-3-2/img/avatar-8.jpg" alt="Dodson Goff">
+                    <div className="pt-1"><strong>Dodson Goff</strong><br><span className="text-muted text-sm">dodsongoff@elentrix.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Elentrix</strong><br><span className="text-muted">Wedgewood</span></td>
+                <td><span className="badge badge-warning-light"> <span className="indicator"></span>On Hold</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">29%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="29" aria-valuemin={0} aria-valuemax={100} style="width:29%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/08/07</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><img className="avatar p-1 me-2" src="https://demo.bootstrapious.com/bubbly/1-3-2/img/avatar-10.jpg" alt="Medina Ellison">
+                    <div className="pt-1"><strong>Medina Ellison</strong><br><span className="text-muted text-sm">medinaellison@glukgluk.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Glukgluk</strong><br><span className="text-muted">Rosburg</span></td>
+                <td><span className="badge badge-info-light"> <span className="indicator"></span>In Progress</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">83%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="83" aria-valuemin={0} aria-valuemax={100} style="width:83%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/10/23</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><img className="avatar p-1 me-2" src="https://demo.bootstrapious.com/bubbly/1-3-2/img/avatar-11.jpg" alt="Tisha Velazquez">
+                    <div className="pt-1"><strong>Tisha Velazquez</strong><br><span className="text-muted text-sm">tishavelazquez@ginkogene.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Ginkogene</strong><br><span className="text-muted">Kapowsin</span></td>
+                <td><span className="badge badge-success-light"> <span className="indicator"></span>Open</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">40%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="40" aria-valuemin={0} aria-valuemax={100} style="width:40%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/06/05</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+              <tr className="align-middle">
+                <td>
+                  <div className="d-flex align-items-center"><span className="avatar p-1 me-2"><span className="avatar-text avatar-warning-light">Y                                                </span></span>
+                    <div className="pt-1"><strong>Young Bowers</strong><br><span className="text-muted text-sm">youngbowers@shepard.com</span></div>
+                  </div>
+                </td>
+                <td> <strong>Shepard</strong><br><span className="text-muted">Eureka</span></td>
+                <td><span className="badge badge-danger-light"> <span className="indicator"></span>Closed</span></td>
+                <td className="min">
+                  <div className="d-flex align-items-center"><span className="me-2">96%</span>
+                    <div className="progress progress-table">
+                      <div className="progress-bar bg-undefined" role="progressbar" aria-valuenow="96" aria-valuemin={0} aria-valuemax={100} style="width:96%">  </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="max_width">
+                  <div className="d-flex align-items-center justify-content-between"><span className="me-3">2021/12/04</span>
+                        <div>
+                          <button className="btn-header-more" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                          <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-edit opacity-5 me-2"></i>Edit</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
+                        </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div><span className="me-2" id="categoryBulkActionOrders">
+          <select className="form-select form-select-sm d-inline w-auto" name="categoryBulkAction">
+            <option>Bulk Actions</option>
+            <option>Delete</option>
+          </select>
+          <button className="btn btn-sm btn-outline-primary align-top">Apply   </button></span>
+      </div>
+    </div>
+  </div>
