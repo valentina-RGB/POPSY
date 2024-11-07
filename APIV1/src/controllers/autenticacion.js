@@ -1,77 +1,86 @@
 const express = require('express');
-const {request , response} = require('express');
-const accessService = require('../services/accessService');
+const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const { body, validationResult } = require('express-validator');
+const helmet = require('helmet');
+const cors = require('cors');
 
-const 
-    /* obtenerAcceso = async (req, res) => {
-        try{
+const app = express();
+const port = 3000;
 
-        return await accessService.getaccess(res,req);  
-       
-        }catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-    },
+app.use(express.json());
+app.use(helmet()); 
+app.use(cors()); 
 
+// Simulación de base de datos
+let users = [];
 
-    obtenerAccesoPorId = async (req, res) => {
-        try {
-            const {id} = req.params;
-            const acceso = await accessService.getAccessID(id);
+const JWT_SECRET = crypto.randomBytes(64).toString('hex');
 
-            if(acceso){
-                res.status(200).json(acceso)      
-            }else{
-                res.status(404).json({message: 'acceso not found' })
-            }               
-            
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-    } */
+// Middleware de autenticación
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
 
-    /* CrearAcceso = async  (req = request, res= response) => {
-        try {        
-            const acceso = await accessService.CreateAccess(req.body);
-            res.status(201).json({ message: 'access created successfully', acceso });
-            
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-    
-    } , */
+  if (token == null) return res.sendStatus(401);
 
-    
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+};
 
-    /* eliminarAcceso= async (req = request, res= response) =>{
-        const { id } = req.params;
-            try{
-                const dato = await accessService.Deleteaccess(id);
-                res.status(204).json({message: 'El dato fue eliminado', dato});
-            }catch(error){
-                const statusCode = error.status || 500;
-                res.status(statusCode).json({ error: error.message || 'Internal Server Error' });
-            }      
-    } */
-function agregar (data){
-    const authData ={
-        id: data.id,
+// Registro de usuario
+app.post('/register', 
+  body('username').isLength({ min: 5 }),
+  body('password').isLength({ min: 8 }),
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
-    if (data.usuario) {
-        authData.usuario = data.usuario
+
+    const { username, password } = req.body;
+
+    // Verifica si el usuario ya existe
+    if (users.find(user => user.username === username)) {
+      return res.status(400).json({ error: 'Usuario ya existe' });
     }
-    if (data.password) {
-        authData.password = data.password
-    }
-    return db.agregar(autenticacion, authData)
-}
+
+    // Hash de la contraseña
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Guarda el usuario
+    users.push({ username, password: hashedPassword });
+
+    res.status(201).json({ message: 'Usuario registrado exitosamente' });
+});
+
+// inicio de sesión
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  const user = users.find(user => user.username === username);
+  if (!user) {
+    return res.status(400).json({ error: 'Usuario no encontrado' });
+  }
+
+  if (await bcrypt.compare(password, user.password)) {
+    // Genera token JWT xdxd
+    const token = jwt.sign({ username: user.username }, JWT_SECRET, { expiresIn: '1h' });
+    res.json({ token });
+  } else {
+    res.status(400).json({ error: 'Contraseña incorrecta' });
+  }
+});
 
 
-module.exports = {
-   agregar,
-    /* obtenerAcceso,  
-   obtenerAccesoPorId,
-   CrearAcceso,
-   ModificarAcceso,
-   eliminarAcceso */
-}
+app.get('/protected', authenticateToken, (req, res) => {
+  res.json({ message: 'Esta es una ruta protegida', user: req.user });
+});
+
+app.listen(port, () => {
+  console.log(`API corriendo en http://localhost:${port}`);
+});

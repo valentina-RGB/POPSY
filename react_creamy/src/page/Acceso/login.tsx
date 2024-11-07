@@ -1,89 +1,155 @@
 import React, { useState } from 'react';
-import api from '../../api/api';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-hot-toast';
+import Modal from 'react-modal';
+import axios from 'axios';
 
-const Login: React.FC = () => {
+Modal.setAppElement('#root');
+
+const API_URL = 'http://localhost:3000';
+
+const AuthPage: React.FC = () => {
+  const [isLogin, setIsLogin] = useState(true);
+  const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [token, setToken] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSwitchAuthMode = () => {
+    setIsLogin((prev) => !prev);
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
+  };
 
-    if (!email || !password) {
-      setError('Por favor, completa todos los campos.');
-      return;
-    }
+  const handleForgotPassword = () => {
+    setIsForgotPasswordOpen(true);
+  };
 
+  const handleCloseForgotPassword = () => {
+    setIsForgotPasswordOpen(false);
+  };
+
+  const handleAuthSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
     try {
-      const response = await api.post('/auth/login', { email, password });
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
-        toast.success('Inicio de sesión exitoso');
-        navigate('/dashboard'); 
+      if (isLogin) {
+        const response = await axios.post(`${API_URL}/login`, {
+          username: email,
+          password: password,
+        });
+        setToken(response.data.token);
+        alert('Inicio de sesión exitoso');
       } else {
-        setError('Credenciales inválidas.');
+        if (password !== confirmPassword) {
+          alert('Las contraseñas no coinciden');
+          return;
+        }
+        await axios.post(`${API_URL}/register`, {
+          username: email,
+          password: password,
+        });
+        alert('Usuario registrado exitosamente');
+        setIsLogin(true);
       }
-    } catch (error: any) {
-      console.error('Error al iniciar sesión:', error);
-      setError('Credenciales inválidas.');
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        alert(error.response?.data?.error || 'Error en la autenticación');
+      } else {
+        alert('Error desconocido');
+      }
     }
   };
 
+  const handleForgotPasswordSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    alert('Correo de recuperación enviado a: ' + email);
+    handleCloseForgotPassword();
+  };
+
   return (
-    <div className="tw-flex tw-items-center tw-justify-center tw-h-screen tw-bg-gray-100">
-      <div className="tw-bg-white tw-p-8 tw-rounded-lg tw-shadow-lg tw-w-full tw-max-w-md">
-        <h2 className="tw-text-3xl tw-font-semibold tw-text-center tw-mb-6 tw-text-gray-800">
-          Iniciar Sesión
+    <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-min-h-screen tw-bg-gray-100">
+      <div className="tw-bg-white tw-p-6 tw-rounded-lg tw-shadow-md tw-w-full tw-max-w-md">
+        <h2 className="tw-text-2xl tw-font-bold tw-text-center tw-mb-4">
+          {isLogin ? 'Iniciar Sesión' : 'Registrar Usuario'}
         </h2>
-        {error && <p className="tw-text-red-500 tw-mb-4">{error}</p>}
-        <form onSubmit={handleSubmit}>
-          <div className="tw-mb-4">
-            <label htmlFor="email" className="tw-block tw-text-gray-700 tw-font-semibold">
-              Correo Electrónico
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="tw-mt-1 tw-w-full tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500"
-              placeholder="Correo electrónico"
-              required
-            />
-          </div>
-          <div className="tw-mb-6">
-            <label htmlFor="password" className="tw-block tw-text-gray-700 tw-font-semibold">
-              Contraseña
-            </label>
+        <form onSubmit={handleAuthSubmit} className="tw-flex tw-flex-col tw-gap-4">
+          <input
+            type="email"
+            placeholder="Correo electrónico"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="tw-border tw-rounded tw-p-2 tw-w-full"
+          />
+          <input
+            type="password"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="tw-border tw-rounded tw-p-2 tw-w-full"
+          />
+          {!isLogin && (
             <input
               type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="tw-mt-1 tw-w-full tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500"
-              placeholder="Contraseña"
+              placeholder="Confirmar Contraseña"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               required
+              className="tw-border tw-rounded tw-p-2 tw-w-full"
             />
-          </div>
+          )}
+          <button type="submit" className="tw-bg-blue-500 tw-text-white tw-py-2 tw-rounded tw-w-full">
+            {isLogin ? 'Iniciar Sesión' : 'Registrar'}
+          </button>
+          {isLogin && (
+            <button
+              type="button"
+              onClick={handleForgotPassword}
+              className="tw-text-blue-500 tw-text-sm tw-underline tw-mt-2"
+            >
+              ¿Olvidaste tu contraseña?
+            </button>
+          )}
+        </form>
+        <button
+          onClick={handleSwitchAuthMode}
+          className="tw-text-gray-600 tw-text-sm tw-underline tw-mt-4"
+        >
+          {isLogin ? '¿No tienes una cuenta? Regístrate' : '¿Ya tienes una cuenta? Inicia sesión'}
+        </button>
+      </div>
+
+      <Modal
+        isOpen={isForgotPasswordOpen}
+        onRequestClose={handleCloseForgotPassword}
+        className="tw-bg-white tw-p-6 tw-rounded-lg tw-max-w-md tw-w-full tw-mx-auto"
+        overlayClassName="tw-fixed tw-inset-0 tw-bg-black tw-bg-opacity-50 tw-flex tw-items-center tw-justify-center"
+      >
+        <h2 className="tw-text-xl tw-font-bold tw-mb-4">Recuperar Contraseña</h2>
+        <form onSubmit={handleForgotPasswordSubmit} className="tw-flex tw-flex-col tw-gap-4">
+          <input
+            type="email"
+            placeholder="Ingresa tu correo electrónico"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="tw-border tw-rounded tw-p-2 tw-w-full"
+          />
+          <button type="submit" className="tw-bg-blue-500 tw-text-white tw-py-2 tw-rounded tw-w-full">
+            Enviar correo de recuperación
+          </button>
           <button
-            type="submit"
-            className="tw-w-full tw-bg-blue-500 tw-text-white tw-px-4 tw-py-2 tw-rounded-lg tw-font-semibold hover:tw-bg-blue-600 tw-transition"
+            type="button"
+            onClick={handleCloseForgotPassword}
+            className="tw-text-gray-600 tw-text-sm tw-underline tw-mt-2"
           >
-            Iniciar Sesión
+            Cancelar
           </button>
         </form>
-        <p className="tw-mt-4 tw-text-center tw-text-gray-600">
-          ¿No tienes una cuenta?{' '}
-          <a href="/signup" className="tw-text-blue-500 hover:tw-underline">
-            Regístrate
-          </a>
-        </p>
-      </div>
+      </Modal>
     </div>
   );
 };
 
-export default Login;
+export default AuthPage;

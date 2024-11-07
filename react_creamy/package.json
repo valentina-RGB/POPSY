@@ -10,8 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@babel/core": "^7.26.0",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+    "@eslint/config-array": "^0.19.0",
+    "@eslint/object-schema": "^2.1.4",
     "@fortawesome/fontawesome-free": "^6.6.0",
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
@@ -31,7 +34,9 @@
     "datatables.net-dt": "^2.1.4",
     "dropzone": "^6.0.0-beta.2",
     "express": "^4.19.2",
+    "glob": "^11.0.0",
     "jquery": "^3.7.1",
+    "lru-cache": "^11.0.2",
     "lucide-react": "^0.438.0",
     "material-react-table": "^2.13.1",
     "postcss": "^8.4.41",
@@ -46,6 +51,7 @@
     "react-router-dom": "^6.26.1",
     "react-select": "^5.8.0",
     "reactstrap": "^9.2.2",
+    "rimraf": "^6.0.1",
     "styled-components": "^6.1.12"
   },
   "devDependencies": {
@@ -55,12 +61,12 @@
     "@types/react-modal": "^3.16.3",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
-    "@vitejs/plugin-react": "^4.2.1",
+    "@vitejs/plugin-react": "^4.3.3",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
     "tailwindcss": "^3.4.10",
     "typescript": "^5.2.2",
-    "vite": "^5.4.2"
+    "vite": "^5.4.10"
   }
 }

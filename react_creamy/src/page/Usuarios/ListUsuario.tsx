@@ -10,7 +10,7 @@ import AddUsuario from './CreateUsuario';
 import EditUsuario from './EditUsuario';
 /* import usuarioDetails from './UsuarioDetails'; */
 import Modal from 'react-modal';
-import Skeleton from '@mui/material/Skeleton';
+import { useNavigate } from 'react-router-dom';
 
 
 Modal.setAppElement('#root');
@@ -20,11 +20,11 @@ const UsuarioList: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<'add' | 'edit' | 'entry' | 'detail' | null>(null);
   const [selectedUsuarioId, setSelectedUsuarioId] = useState<number | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchUsuarios();
   }, []);
-  const [loading, setLoading] = useState(true);
 
   const fetchUsuarios = async () => {
     try {
@@ -32,8 +32,6 @@ const UsuarioList: React.FC = () => {
       setUsuarios(response.data);
     } catch (error) {
       console.error('Error al obtener los usuarios:', error);
-    } finally {
-      setLoading(false); // Finaliza el estado de carga
     }
   };
 
@@ -52,7 +50,7 @@ const UsuarioList: React.FC = () => {
         error: 'Hubo un problema al eliminar el usuario.',
       }
     ).then(() => {
-      fetchUsuarios(); // Actualiza la lista después de eliminar
+      fetchUsuarios(); 
     });
   };
 
@@ -90,7 +88,7 @@ const UsuarioList: React.FC = () => {
 
   const handleModalCloseAndFetch = async () => {
     handleCloseModal();
-    await fetchUsuarios(); // Actualiza la lista después de agregar/editar entrada
+    await fetchUsuarios(); 
   };
 
   const [isClientesModalOpen, setIsClientesModalOpen] = useState(false);
@@ -153,7 +151,7 @@ const UsuarioList: React.FC = () => {
             <button onClick={() => handleDelete(row.original.ID_usuario)} className="tw-bg-red-500 tw-text-white tw-rounded-full tw-p-2 tw-shadow-md tw-hover:bg-red-600 tw-transition-all tw-duration-300">
               <FontAwesomeIcon icon={faTrash} />
             </button>
-
+            
           </div>
         ),
       },
@@ -162,77 +160,34 @@ const UsuarioList: React.FC = () => {
   );
 
   return (
-    <section className="mb-3 mb-lg-5 pt-5">
-      <div className="tw-p-6 tw-bg-gray-100 tw-min-h-screen">
-        <h1 className="page-heading">usuarios</h1>
-        <button onClick={handleAddusuario} className="tw-bg-blue-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-mb-4 tw-shadow-md tw-hover:bg-blue-600 tw-transition-all tw-duration-300">
-          <FontAwesomeIcon icon={faPlus} /> Agregar usuario
-        </button>
+    <div className="tw-p-6 tw-bg-gray-100 tw-min-h-screen">
+      <h1 className="page-heading">usuarios</h1>
+      <button onClick={handleAddusuario} className="tw-bg-blue-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-mb-4 tw-shadow-md tw-hover:bg-blue-600 tw-transition-all tw-duration-300">
+        <FontAwesomeIcon icon={faPlus} /> Agregar usuario
+      </button>
 
-        <button
-          onClick={() => setIsClientesModalOpen(true)}
-          className="tw-bg-green-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-mb-4 tw-ml-4 tw-shadow-md tw-hover:bg-green-600 tw-transition-all tw-duration-300"
-        >
-          Ver clientes
-        </button>
+      <button
+        onClick={() => navigate('/clientes')} 
+        className="tw-bg-green-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-mb-4 tw-ml-4 tw-shadow-md tw-hover:bg-green-600 tw-transition-all tw-duration-300"
+      >
+        Ver clientes
+      </button>
 
-        {/* Skeleton Loader cuando loading es true */}
-        {loading ? (
-          <div className="w-full max-w-md mx-auto p-9">
-            {/* Aquí usas el Skeleton para el título */}
-            <Skeleton className="h-6 w-52" />
 
-            {/* Usas Skeleton para los diferentes campos que imitarán las filas de la tabla */}
-            <Skeleton className="h-4 w-48 mt-6" />
-            <Skeleton className="h-4 w-full mt-4" />
-            <Skeleton className="h-4 w-64 mt-4" />
-            <Skeleton className="h-4 w-4/5 mt-4" />
-          </div>
-        ) : (
-          <MaterialReactTable columns={columns} data={usuarios} />
-        )}
-        <Modal
-          isOpen={isModalOpen}
-          onRequestClose={handleCloseModal}
-          className="tw-bg-white tw-p-0 tw-mb-12 tw-rounded-lg tw-border tw-border-gray-300 tw-max-w-lg tw-w-full tw-mx-auto"
-          overlayClassName="tw-fixed tw-inset-0 tw-bg-black tw-bg-opacity-40 tw-z-50 tw-flex tw-justify-center tw-items-center"
-        >
-          {modalType === 'add' && <AddUsuario onClose={handleModalCloseAndFetch} />}
-          {modalType === 'edit' && selectedUsuarioId !== null && <EditUsuario id={selectedUsuarioId} onClose={handleModalCloseAndFetch} />}
-          {/* {modalType === 'detail' && selectedusuarioId !== null && <usuarioDetails id={selectedusuarioId} onClose={handleModalCloseAndFetch} />} */}
-        </Modal>
-        <Modal
-          isOpen={isClientesModalOpen}
-          onRequestClose={() => setIsClientesModalOpen(false)}
-          className="tw-bg-white tw-p-0 tw-mb-12 tw-rounded-lg tw-border tw-border-gray-300 tw-max-w-lg tw-w-full tw-mx-auto"
-          overlayClassName="tw-fixed tw-inset-0 tw-bg-black tw-bg-opacity-40 tw-z-50 tw-flex tw-justify-center tw-items-center"
-        >
-          <div className="tw-p-4">
-            <h2 className="tw-text-xl tw-font-bold tw-mb-4">Clientes</h2>
-            {clientes.length > 0 ? (
-              <ul>
-                {clientes.map(cliente => (
-                  <li key={cliente.ID_usuario} className="tw-mb-2">
-                    {cliente.nombre} - {cliente.email}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>Cargando clientes...</p>
-            )}
-            <button
-              onClick={() => setIsClientesModalOpen(false)}
-              className="tw-bg-blue-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-mt-4 tw-shadow-md tw-hover:bg-blue-600 tw-transition-all tw-duration-300"
-            >
-              Cerrar
-            </button>
-          </div>
-        </Modal>
+      <MaterialReactTable columns={columns} data={usuarios} />
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={handleCloseModal}
+        className="tw-bg-white tw-p-0 tw-mb-12 tw-rounded-lg tw-border tw-border-gray-300 tw-max-w-lg tw-w-full tw-mx-auto"
+        overlayClassName="tw-fixed tw-inset-0 tw-bg-black tw-bg-opacity-40 tw-z-50 tw-flex tw-justify-center tw-items-center"
+      >
+        {modalType === 'add' && <AddUsuario onClose={handleModalCloseAndFetch} />}
+        {modalType === 'edit' && selectedUsuarioId !== null && <EditUsuario id={selectedUsuarioId} onClose ={handleModalCloseAndFetch} />}
+        {/* {modalType === 'detail' && selectedusuarioId !== null && <usuarioDetails id={selectedusuarioId} onClose={handleModalCloseAndFetch} />} */}
+      </Modal>
 
-      </div>
-    </section>
+    </div>
   );
-
 };
 
 export default UsuarioList;
