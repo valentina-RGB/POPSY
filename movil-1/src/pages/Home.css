@@ -1,4 +1,7 @@
 /* Encabezado */
+.main-content {
+  margin-top: 64px; /* Ajusta este valor según la altura de tu navbar */
+}
 .header-toolbar {
     background-color: #ffffff;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
