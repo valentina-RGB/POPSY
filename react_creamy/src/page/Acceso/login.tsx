@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
+import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
+import App from '../../App';
+import toast, { Toaster } from 'react-hot-toast';
+// import { Link } from "react-router-dom";
+// import { Layout } from 'lucide-react';
 
 Modal.setAppElement('#root');
-
-const API_URL = 'http://localhost:3000';
+const API_URL = 'http://localhost:3300';
 
 const AuthPage: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -13,6 +17,7 @@ const AuthPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [token, setToken] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const handleSwitchAuthMode = () => {
     setIsLogin((prev) => !prev);
@@ -34,35 +39,46 @@ const AuthPage: React.FC = () => {
     try {
       if (isLogin) {
         const response = await axios.post(`${API_URL}/login`, {
-          username: email,
+          email: email,
           password: password,
         });
         setToken(response.data.token);
-        alert('Inicio de sesión exitoso');
+
+//Alejo es un crack fgfgdgf
+
+        if (response.data.resUser[0].ID_rol === 2) {
+          toast.success('Inicio de sesión exitoso', { duration: 2000 });
+          navigate("/principal");
+          
+          // navega manualmente
+          
+        } else {
+          toast.error('No tienes permisos para esta acción', { duration: 2000 });
+        }
       } else {
         if (password !== confirmPassword) {
-          alert('Las contraseñas no coinciden');
+          toast.error('Las contraseñas no coinciden');
           return;
         }
-        await axios.post(`${API_URL}/register`, {
-          username: email,
+        await axios.post(`${API_URL}/signup`, {
+          email: email,
           password: password,
         });
-        alert('Usuario registrado exitosamente');
+        toast.success('Usuario registrado exitosamente');
         setIsLogin(true);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        alert(error.response?.data?.error || 'Error en la autenticación');
+        toast.error(error.response?.data?.error || 'Error en la autenticación', { duration: 2000 });
       } else {
-        alert('Error desconocido');
+        toast.error('Error desconocido', { duration: 1500 });
       }
     }
   };
 
   const handleForgotPasswordSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    alert('Correo de recuperación enviado a: ' + email);
+    toast.success('Correo de recuperación enviado a: ' + email);
     handleCloseForgotPassword();
   };
 
@@ -99,9 +115,15 @@ const AuthPage: React.FC = () => {
               className="tw-border tw-rounded tw-p-2 tw-w-full"
             />
           )}
+          
           <button type="submit" className="tw-bg-blue-500 tw-text-white tw-py-2 tw-rounded tw-w-full">
             {isLogin ? 'Iniciar Sesión' : 'Registrar'}
+
           </button>
+          {/* <Link to= '/Principal'>
+            <p>hola</p>
+          </Link> */}
+          
           {isLogin && (
             <button
               type="button"
@@ -153,3 +175,12 @@ const AuthPage: React.FC = () => {
 };
 
 export default AuthPage;
+
+
+
+const Mostrar: React.FC = () =>{
+  <Router>
+ <Layout></Layout> 
+ <Toaster position="top-right" reverseOrder={false} />
+</Router>
+}

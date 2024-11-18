@@ -7,7 +7,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     descripcion: {
       type: DataTypes.STRING(100),
-      unique: true,
       allowNull: true,
     },
   },
@@ -22,7 +21,8 @@ module.exports = (sequelize, DataTypes) => {
   //   Permiso.belongsTo(models.Usuarios, { foreignKey: 'ID_usuario' });
   // };
   Permisos.asociate = function(models) {
-    Permisos.hasMany(models.Permiso_roles, {foreignKey: 'ID_permiso'})
+    // Permisos.hasMany(models.Permiso_roles, {foreignKey: 'ID_permiso'})
+    Permisos.belongsToMany(models.Roles, { through:'Permiso_roles', foreignKey: 'ID_permisos', otherKey: 'ID_roles', as: 'Roles' });
   };
   
 

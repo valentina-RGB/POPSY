@@ -1,24 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../api/api';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 
 interface CreateRolProps {
   onClose: () => void;
+  id: number|null;
 }
 
-const AddRol: React.FC<CreateRolProps> = ({ onClose }) => {
+
+
+type Permiso ={
+  ID_permiso : number | null;
+  descripcion: string;
+}
+
+
+
+const AddRol: React.FC<CreateRolProps> = ({ onClose , id }) => {
   const [descripcionRol, setDescripcionRol] = useState('');
-  const [permisos, setPermisos] = useState([]); // Para almacenar los permisos del API
+  const [permisos, setPermisos] = useState<Permiso[]>([]); // Para almacenar los permisos del API
   const [selectedPermisos, setSelectedPermisos] = useState<number[]>([]); // Permisos seleccionados
   const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // Llamada a la API para obtener los permisos
   useEffect(() => {
     const fetchPermisos = async () => {
       try {
         const response = await api.get('/permiso');
+        console.log(response.data);
         setPermisos(response.data); 
       } catch (error) {
         console.error('Error al obtener los permisos:', error);
@@ -27,6 +38,15 @@ const AddRol: React.FC<CreateRolProps> = ({ onClose }) => {
     };
 
     fetchPermisos();
+    if(id){
+      console.log('Holiiii')
+
+      const editar = async () =>{
+        const response = await api.get(`/roles/${id}`);	
+      }
+      
+      editar()
+    }
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -39,15 +59,16 @@ const AddRol: React.FC<CreateRolProps> = ({ onClose }) => {
       const rolToCreate = {
         descripcion: descripcionRol,
         estado_rol: 'D',
-        ID_permisos: selectedPermisos, 
+        ID_permiso: selectedPermisos
+        
       }
-      console.log(rolToCreate);
+      console.log('PERMISOs',selectedPermisos, rolToCreate);
       await api.post('/roles', rolToCreate);
       toast.success('Rol agregado correctamente.');
-      onClose(); // Cierra el modal y actualiza la lista
-    } catch (error: any) {
+      onClose(); 
+    } catch (error: unknown) {
       console.error('Error al agregar el rol:', error);
-      setError('Error al agregar el rol: ' + (error.response?.data?.message || 'Error desconocido'));
+      setError('Error al agregar el rol: ' + ((error as any).response?.data?.message || 'Error desconocido'));
       toast.error('Hubo un problema al agregar el rol.');
     }
   };
@@ -84,11 +105,13 @@ const AddRol: React.FC<CreateRolProps> = ({ onClose }) => {
                     <input
                       type="checkbox"
                       id={`permiso-${permiso.ID_permiso}`}
-                      value={permiso.ID_permiso}
-                      checked={selectedPermisos.includes(permiso.ID_permiso)}
+                      value={String(permiso.ID_permiso)}
+                      checked={selectedPermisos.includes(Number(permiso.ID_permiso))}
                       onChange={(e) => {
                         if (e.target.checked) {
-                          setSelectedPermisos([...selectedPermisos, permiso.ID_permiso]);
+                          if (permiso.ID_permiso !== null) {
+                            setSelectedPermisos([...selectedPermisos, permiso.ID_permiso]);
+                          }
                         } else {
                           setSelectedPermisos(
                             selectedPermisos.filter(id => id !== permiso.ID_permiso)

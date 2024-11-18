@@ -13,27 +13,15 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 'D',
       allowNull: false,
     },
-    // ID_permiso: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: false,
-    //   references: {
-    //     model: "Permiso",
-    //     key: "ID_permiso"
-    //   }
-    // }
   }, {
     tableName: 'Roles',
     timestamps: false,
   });
 
   Roles.asociate = function(models) {
-    Roles.hasMany(models.Permiso_roles, {foreignKey: 'ID_rol'})
+    // Roles.hasMany(models.Permiso_roles, {foreignKey: 'ID_rol'})
+    Roles.belongsToMany(models.Permisos, { through:'Permiso_roles', foreignKey: 'ID_roles', otherKey: 'ID_permisos', as: 'Permisoo' });
   };
 
-  // Roles.associate = function(models) {
-  //   Roles.hasMany(models.Permiso, { foreignKey: 'ID_permiso' }
-
-  //   );
-  // }
   return Roles;
 };

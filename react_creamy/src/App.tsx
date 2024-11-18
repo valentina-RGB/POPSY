@@ -17,6 +17,7 @@ import Pedidos from './page/Order/Order_list';
 import Login from './page/Acceso/login';
 import SignUp from './page/Acceso/signUp';
 import OrderAdd from './page/Order/Order_add';
+import AddRol from './page/Roles/CreateRol';
 
 const App: React.FC = () => {
   return (
@@ -32,6 +33,7 @@ const App: React.FC = () => {
           <div className="tw-container-fluid tw-px-lg-4 tw-px-xl-5">
             {/* Definición de rutas */}
             <Routes>
+              
               <Route path="/" element={<Navigate to="/Dashboard" />} />
               <Route path="/Dashboard" element={<Dashboard />} />
               <Route path="/Categorias" element={<Categorias />} />
