@@ -1,78 +1,46 @@
-const { Ventas, Clientes, Productos, Producto_Ventas, Estado_ventas } = require('../../models');
-
-// Crear una nueva venta
-const createVenta = async (req, res) => {
-    try {
-        const { ID_cliente, productos, precio_total, ID_estado_venta } = req.body;
-
-        // Verificar si el estado de venta existe
-        if (ID_estado_venta) {
-            const estadoVenta = await Estado_ventas.findByPk(ID_estado_venta);
-            if (!estadoVenta) {
-                return res.status(400).json({ error: 'Estado de venta no encontrado' });
-            }
-        }
-
-        // Crear la venta
-        const nuevaVenta = await Ventas.create({
-            ID_cliente,
-            precio_total,
-            ID_estado_venta
-        });
-
-        // Asociar productos a la venta
-        for (const producto of productos) {
-            await Producto_Ventas.create({
-                ID_producto: producto.ID_producto,
-                ID_venta: nuevaVenta.ID_venta,
-                cantidad: producto.cantidad,
-                precio: producto.precio
-            });
-        }
-
-        res.status(201).json(nuevaVenta);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
+const express = require('express');
+const { request, response } = require('express');
+const ventasService = require('../services/VentasServices');
 
 // Obtener todas las ventas
 const getAllVentas = async (req, res) => {
     try {
-        const ventas = await Ventas.findAll({
-            include: [
-                { model: Clientes, as: 'Cliente', attributes: ['nombre'] }, // Incluye el campo nombre
-                { model: Productos, as: 'Productos', through: { attributes: ['cantidad', 'precio'] } },
-                { model: Estado_ventas, as: 'Estado_venta' }
-            ]
-        });
-
-        res.status(200).json(ventas);
+        return await ventasService.getVentas(res, req);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
 
 const getVentaById = async (req, res) => {
     try {
-        const { id } = req.params;
-        const venta = await Ventas.findByPk(id, {
-            include: [
-                { model: Clientes, as: 'Cliente', attributes: ['nombre'] }, // Incluye el campo nombre
-                { model: Productos, as: 'Productos', through: { attributes: ['cantidad', 'precio'] } },
-                { model: Estado_ventas }
-            ]
-        });
+        const {id} = req.params;
+        const ventas = await ventasService.getVentasID(id);
 
-        if (!venta) {
-            return res.status(404).json({ error: 'Venta no encontrada' });
-        }
-
-        res.status(200).json(venta);
+        if(ventas){
+            res.status(200).json(ventas)      
+        }else{
+            res.status(404).json({message: 'Venta no encontrada' })
+        }               
+        
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
+
+CrearVentas = async  (req = request, res= response) => {
+    try {        
+        const ventas = await ventasService.CrearVentas(req,res);
+
+        if(ventas){
+            // res.json(pedidos);
+        }
+        
+    } catch (error) {
+        res.status(error.status || 500).json({ message: error.message });
+    }
+
+};
+
 const updateEstadoVenta = async (req, res) => {
     try {
         console.log('Update Estado Venta called');
@@ -103,29 +71,22 @@ const updateEstadoVenta = async (req, res) => {
 };
 
 // Eliminar una venta
-const deleteVenta = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const venta = await Ventas.findByPk(id);
-        if (!venta) {
-            return res.status(404).json({ error: 'Venta no encontrada' });
-        }
-
-        // Eliminar la venta y sus asociaciones
-        await Producto_Ventas.destroy({ where: { ID_venta: id } });
-        await venta.destroy();
-
-        res.status(204).json();
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
+deleteVenta= async (req = request, res= response) =>{
+    const { id } = req.params;
+        try{
+            const dato = await ventasService.DeleteVentas(id);
+            res.status(204).json({message: 'El dato fue eliminado', dato});
+        }catch(error){
+            const statusCode = error.status || 500;
+            res.status(statusCode).json({ error: error.message || 'Internal Server Error' });
+        }      
+}
 
 module.exports = {
-    createVenta,
+    CrearVentas,
     getAllVentas,
     getVentaById,
     updateEstadoVenta,
     deleteVenta
-    
+
 };

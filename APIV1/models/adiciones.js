@@ -18,6 +18,17 @@ module.exports = (sequelize) =>{
                 onDelete: 'CASCADE'       
                 
         },
+        ID_producto_venta:{
+            type: DataTypes.INTEGER,
+            allowNull: true,
+            references: {
+                model: 'Producto_Ventas',
+                key: 'ID_producto_venta',
+                },
+                onUpdate: 'CASCADE',
+                onDelete: 'CASCADE'       
+                
+        },
         cantidad: {
             type: DataTypes.INTEGER,
             allowNull:true
@@ -34,6 +45,7 @@ module.exports = (sequelize) =>{
     Adiciones.associate = (models)=>{
         Adiciones.belongsToMany(models.Insumos, { through:'Adiciones_Insumos', foreignKey:'ID_adicion_p', otherKey: 'ID_insumo_p', as: 'Insumos'});
         Adiciones.belongsTo(models.Producto_Pedidos, {foreignKey: 'ID_producto_pedido' });
+        Adiciones.belongsTo(models.Producto_Ventas, {foreignKey: 'ID_producto_venta' });
         //Producto_Pedidos.hasMany(models.Adiciones, { foreignKey: 'ID_producto_pedidos', as:'Adiciones'});
     }
     return Adiciones;

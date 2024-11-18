@@ -5,7 +5,7 @@ import api from '../../api/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faPlus, faBoxOpen, faToggleOn, faToggleOff, faEye } from '@fortawesome/free-solid-svg-icons';
 import { faSignInAlt } from '@fortawesome/free-solid-svg-icons';
-import { toast } from 'react-hot-toast';  
+import { toast } from 'react-hot-toast';
 import AddInsumo from './CreateInsumo';
 import EditInsumo from './EditInsumo';
 import AddEntry from './AddEntry';
@@ -28,20 +28,20 @@ const InsumosList: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-  fetchInsumos();
-}, []);
+    fetchInsumos();
+  }, []);
 
-const fetchInsumos = async () => {
-  setLoading(true); // Inicia el estado de carga
-  try {
-    const response = await api.get('/insumos');
-    setInsumos(response.data);
-  } catch (error) {
-    console.error('Error al obtener los insumos:', error);
-  } finally {
-    setLoading(false); // Finaliza el estado de carga
-  }
-};
+  const fetchInsumos = async () => {
+    setLoading(true); // Inicia el estado de carga
+    try {
+      const response = await api.get('/insumos');
+      setInsumos(response.data);
+    } catch (error) {
+      console.error('Error al obtener los insumos:', error);
+    } finally {
+      setLoading(false); // Finaliza el estado de carga
+    }
+  };
 
   const handleEdit = (id: number) => {
     setSelectedInsumoId(id);
@@ -60,9 +60,9 @@ const fetchInsumos = async () => {
               toast.promise(
                 api.delete(`/insumos/${id}`), // Promesa para eliminar el insumo
                 {
-                  loading: 'Eliminando insumo...', 
-                  success: '¡El insumo ha sido eliminado!', 
-                  error: 'Hubo un problema al eliminar el insumo.', 
+                  loading: 'Eliminando insumo...',
+                  success: '¡El insumo ha sido eliminado!',
+                  error: 'Hubo un problema al eliminar el insumo.',
                 }
               ).then(() => {
                 fetchInsumos(); // Actualiza la lista después de eliminar
@@ -82,7 +82,7 @@ const fetchInsumos = async () => {
       </span>
     ));
   };
-  
+
 
   const handleToggleEstado = async (id: number, estadoActual: string) => {
     const nuevoEstado = estadoActual === 'A' ? 'D' : 'A';
@@ -117,7 +117,7 @@ const fetchInsumos = async () => {
   };
 
   const handleGoToHistorial = (id: number) => {
-    navigate(`/historial-entradas/${id}`);  
+    navigate(`/historial-entradas/${id}`);
   };
 
   const handleCloseModal = () => {
@@ -140,7 +140,16 @@ const fetchInsumos = async () => {
       {
         accessorKey: 'precio',
         header: 'Precio',
-        Cell: ({ cell }) => `$${cell.getValue<number>().toFixed(2)}`,
+        Cell: ({ cell }) => {
+          const valor = cell.getValue<number>();
+          return valor !== undefined
+            ? new Intl.NumberFormat("es-ES", {
+                style: "currency",
+                currency: "COP",
+                maximumFractionDigits: 0
+              }).format(valor)
+            : "No definido";
+        },
       },
       {
         accessorKey: 'estado_insumo',
@@ -182,7 +191,7 @@ const fetchInsumos = async () => {
             >
               <FontAwesomeIcon icon={faEdit} title="Editar" />
             </button>
-      
+
             {/* Botón para eliminar */}
             <button
               onClick={() => handleDelete(row.original.ID_insumo)}
@@ -190,7 +199,7 @@ const fetchInsumos = async () => {
             >
               <FontAwesomeIcon icon={faTrash} title="Eliminar" />
             </button>
-      
+
             {/* Botón para agregar entrada */}
             <button
               onClick={() => handleAddEntry(row.original.ID_insumo)}
@@ -198,7 +207,7 @@ const fetchInsumos = async () => {
             >
               <FontAwesomeIcon icon={faBoxOpen} title="Agregar entrada" />
             </button>
-      
+
             {/* Botón para ver detalles */}
             <button
               onClick={() => handleViewDetails(row.original.ID_insumo)}
@@ -209,58 +218,58 @@ const fetchInsumos = async () => {
           </div>
         ),
       }
-      
+
     ],
     [insumos],
   );
 
   return (
-    <section className="mb-3 mb-lg-5">
-    <div className="tw-p-6 tw-bg-gray-100 tw-min-h-screen">
-      <h1 className="page-heading">Insumos</h1>
-  
-      {/* Botones de acciones */}
-      <div className="tw-mb-4 tw-flex tw-gap-4">
-        <button onClick={handleAddInsumo} className="tw-bg-blue-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-shadow-md tw-hover:bg-blue-600 tw-transition-all tw-duration-300">
-          <FontAwesomeIcon icon={faPlus} /> Agregar Insumo
-        </button>
-        <button onClick={() => navigate('/historial-entradas')} className="tw-bg-gray-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-shadow-md tw-hover:bg-gray-600 tw-transition-all tw-duration-300">
-          <FontAwesomeIcon icon={faBoxOpen} /> Ver Historial de Entradas
-        </button>
-      </div>
-  
-      {/* Skeleton Loader cuando loading es true */}
-      {loading ? (
-        <div className="w-full max-w-md mx-auto p-9">
-          {/* Aquí usas el Skeleton para el título */}
-          <Skeleton className="h-6 w-52" />
-          
-          {/* Usas Skeleton para los diferentes campos que imitarán las filas de la tabla */}
-          <Skeleton className="h-4 w-48 mt-6" />
-          <Skeleton className="h-4 w-full mt-4" />
-          <Skeleton className="h-4 w-64 mt-4" />
-          <Skeleton className="h-4 w-4/5 mt-4" />
+    <section className="tw-rounded-lg mb-3 mb-lg-5 p-6 bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out">
+      <div className="tw-p-6 tw-bg-gray-50 tw-min-h-screen">
+        <h1 className="page-heading">Insumos</h1>
+
+        {/* Botones de acciones */}
+        <div className="tw-mb-4 tw-flex tw-gap-4">
+          <button onClick={handleAddInsumo} className="tw-bg-blue-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-shadow-md tw-hover:bg-blue-600 tw-transition-all tw-duration-300">
+            <FontAwesomeIcon icon={faPlus} /> Agregar Insumo
+          </button>
+          <button onClick={() => navigate('/historial-entradas')} className="tw-bg-gray-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-shadow-md tw-hover:bg-gray-600 tw-transition-all tw-duration-300">
+            <FontAwesomeIcon icon={faBoxOpen} /> Ver Historial de Entradas
+          </button>
         </div>
-      ) : (
-        <MaterialReactTable columns={columns} data={insumos} />
-      )}
-  
-      {/* Modal */}
-      <Modal
-        isOpen={isModalOpen}
-        onRequestClose={handleCloseModal}
-        className="tw-bg-white tw-p-0 tw-mb-12 tw-rounded-lg tw-border tw-border-gray-300 tw-max-w-lg tw-w-full tw-mx-auto"
-        overlayClassName="tw-fixed tw-inset-0 tw-bg-black tw-bg-opacity-40 tw-z-50 tw-flex tw-justify-center tw-items-center"
-      >
-        {modalType === 'add' && <AddInsumo onClose={handleModalCloseAndFetch} />}
-        {modalType === 'edit' && selectedInsumoId !== null && <EditInsumo id={selectedInsumoId} onClose={handleModalCloseAndFetch} />}
-        {modalType === 'entry' && selectedInsumoId !== null && <AddEntry id={selectedInsumoId} onClose={handleModalCloseAndFetch} />}
-        {modalType === 'detail' && selectedInsumoId !== null && <InsumoDetails id={selectedInsumoId} onClose={handleModalCloseAndFetch} />}
-      </Modal>
-    </div>
+
+        {/* Skeleton Loader cuando loading es true */}
+        {loading ? (
+          <div className="w-full max-w-md mx-auto p-9">
+            {/* Aquí usas el Skeleton para el título */}
+            <Skeleton className="h-6 w-52" />
+
+            {/* Usas Skeleton para los diferentes campos que imitarán las filas de la tabla */}
+            <Skeleton className="h-4 w-48 mt-6" />
+            <Skeleton className="h-4 w-full mt-4" />
+            <Skeleton className="h-4 w-64 mt-4" />
+            <Skeleton className="h-4 w-4/5 mt-4" />
+          </div>
+        ) : (
+          <MaterialReactTable columns={columns} data={insumos} />
+        )}
+
+        {/* Modal */}
+        <Modal
+          isOpen={isModalOpen}
+          onRequestClose={handleCloseModal}
+          className="tw-bg-white tw-p-0 tw-mb-12 tw-rounded-lg tw-border tw-border-gray-300 tw-max-w-lg tw-w-full tw-mx-auto"
+          overlayClassName="tw-fixed tw-inset-0 tw-bg-black tw-bg-opacity-40 tw-z-50 tw-flex tw-justify-center tw-items-center"
+        >
+          {modalType === 'add' && <AddInsumo onClose={handleModalCloseAndFetch} />}
+          {modalType === 'edit' && selectedInsumoId !== null && <EditInsumo id={selectedInsumoId} onClose={handleModalCloseAndFetch} />}
+          {modalType === 'entry' && selectedInsumoId !== null && <AddEntry id={selectedInsumoId} onClose={handleModalCloseAndFetch} />}
+          {modalType === 'detail' && selectedInsumoId !== null && <InsumoDetails id={selectedInsumoId} onClose={handleModalCloseAndFetch} />}
+        </Modal>
+      </div>
     </section>
   );
-  
+
 };
 
 export default InsumosList;

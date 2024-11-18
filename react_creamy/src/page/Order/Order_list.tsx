@@ -2,23 +2,16 @@ import React, { useMemo, useState, useEffect, useCallback } from "react";
 import { MaterialReactTable, type MRT_ColumnDef } from "material-react-table";
 import api from "../../api/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faEdit, faTrash, faPlus, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons';
-// import { faSignInAlt } from '@fortawesome/free-solid-svg-icons';
+
 import {
   faEdit,
   faTrash,
   faPlus,
   faBoxOpen,
-  // faToggleOn,
-  // faToggleOff,
-  //faRightToBracket,
-  //faSyncAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-hot-toast";
 import Modal from "react-modal";
 import { Pedido } from "../../types/Pedido";
-// import AddCategories from './categories-add';
-// import EditCategoria from './categories-edit';
 import { Link } from "react-router-dom";
 import Skeleton from "@mui/material/Skeleton";
 
@@ -36,9 +29,8 @@ const Pedidos: React.FC = () => {
     type: "add" | "edit" | "entry" | "detail" | null;
     id: number | null;
   }>({ type: null, id: null });
-  const [estadosPedido, setEstadosPedido] = useState<Estado[]>([]);
-  // const [Categoria, setCategoria] = useState<Categoria | null>(null);
 
+  const [estadosPedido, setEstadosPedido] = useState<Estado[]>([]);
   const [loading, setLoading] = useState(true);
   const fetchPedido = async () => {
     try {
@@ -47,7 +39,7 @@ const Pedidos: React.FC = () => {
     } catch (error) {
       console.error("Error al obtener el pedido:", error);
     } finally {
-      setLoading(false); // Finaliza el estado de carga
+      setLoading(false); 
     }
   };
 
@@ -67,7 +59,7 @@ const Pedidos: React.FC = () => {
         error: "Hubo un problema al eliminar el pedido.",
       })
       .then(() => {
-        fetchPedido(); // Actualiza la lista después de eliminar
+        fetchPedido(); 
       });
   }, []);
 

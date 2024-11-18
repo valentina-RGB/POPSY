@@ -22,27 +22,6 @@ type Insumo = {
   };
 };
 
-
-// type Producto = {
-//   ID_producto: number;
-//   nombre: string;
-//   descripcion: string;
-//   precio_neto: number;
-//   ID_estado_productos: number | null;
-//   ID_tipo_productos: number;
-//   ID_categorias: number;
-//   imagen: string;
-//   Insumos: Insumo[];
-// };
-
-// type Input ={
-//   ID_insumo: number;
-//   descripcion_insumo: string;
-//   precio: number | string;
-//   cantidad: number;
-//   configuracion: number | string;
-// }
-
 interface AddCategories {
   onClose: () => void;
 }
@@ -347,16 +326,7 @@ useEffect(() => {
 
 
   const resetFormInsumos = () => {
-    // inputs.map(e =>{
-    //   e.ID_insumo = 0,
-    //   e.ID_tipo_insumo = 0,
-    //   e.Producto_insumos.cantidad = 0,
-    //   e.Producto_insumos.configuracion =""
-    //   e.Producto_insumos.precio=0,
-    //   e.descripcion_insumo =""
-    //   e.estado_insumo= ""
-    //   e.precio = 0
-    // })
+    
     inputs.pop()
     handleCloseModal()
   }

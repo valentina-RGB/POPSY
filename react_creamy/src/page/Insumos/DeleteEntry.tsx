@@ -10,14 +10,38 @@ interface DeleteEntryProps {
 
 const DeleteEntry: React.FC<DeleteEntryProps> = ({ id, onClose, onDelete }) => {
   const handleDelete = async () => {
-    try {
-      await onDelete(id);
-      toast.success('Entrada eliminada con éxito');
-      onClose();
-    } catch (error) {
-      toast.error('Error al eliminar la entrada');
-      console.error('Error al eliminar la entrada:', error);
-    }
+    toast((t) => (
+      <span>
+        ¿Estás seguro de que deseas eliminar esta entrada?
+        <div className="tw-mt-2">
+          <button
+            onClick={() => {
+              toast.dismiss(t.id);
+              toast.promise(
+                api.delete(`/insumos/${id}`), // Promesa para eliminar el insumo
+                {
+                  loading: 'Eliminando insumo...',
+                  success: '¡El insumo ha sido eliminado!',
+                  error: 'Hubo un problema al eliminar el insumo.',
+                }
+              ).then(() => {
+                onDelete(id); // Llama a la función de eliminación externa
+                onClose(); // Cierra el modal o componente
+              });
+            }}
+            className="tw-bg-red-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-mr-2"
+          >
+            Confirmar
+          </button>
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="tw-bg-gray-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2"
+          >
+            Cancelar
+          </button>
+        </div>
+      </span>
+    ));
   };
 
   return (
