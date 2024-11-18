@@ -2,24 +2,17 @@ import React, { useMemo, useState, useEffect, useCallback } from "react";
 import { MaterialReactTable, type MRT_ColumnDef } from "material-react-table";
 import api from "../../api/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faEdit, faTrash, faPlus, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons';
-// import { faSignInAlt } from '@fortawesome/free-solid-svg-icons';
+
 import {
   faEdit,
   faTrash,
   faPlus,
   faBoxOpen,
-  // faToggleOn,
-  // faToggleOff,
-  //faRightToBracket,
-  //faSyncAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-hot-toast";
 import Modal from "react-modal";
 import { Pedido } from "../../types/Pedido";
-// import AddCategories from './categories-add';
-// import EditCategoria from './categories-edit';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Skeleton from "@mui/material/Skeleton";
 
 export interface Estado {
@@ -30,15 +23,15 @@ export interface Estado {
 Modal.setAppElement("#root");
 
 const Pedidos: React.FC = () => {
+  const navigate = useNavigate();
   const [pedidos, setPedidos] = useState<Pedido[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalConfig, setModalConfig] = useState<{
     type: "add" | "edit" | "entry" | "detail" | null;
     id: number | null;
   }>({ type: null, id: null });
-  const [estadosPedido, setEstadosPedido] = useState<Estado[]>([]);
-  // const [Categoria, setCategoria] = useState<Categoria | null>(null);
 
+  const [estadosPedido, setEstadosPedido] = useState<Estado[]>([]);
   const [loading, setLoading] = useState(true);
   const fetchPedido = async () => {
     try {
@@ -47,7 +40,7 @@ const Pedidos: React.FC = () => {
     } catch (error) {
       console.error("Error al obtener el pedido:", error);
     } finally {
-      setLoading(false); // Finaliza el estado de carga
+      setLoading(false); 
     }
   };
 
@@ -59,6 +52,10 @@ const Pedidos: React.FC = () => {
     setIsModalOpen(true);
   };
 
+  const handleViewDetails = (id: number) => {
+    navigate(`/pedido/${id}`); // Redirige a la página de detalle del pedido con el ID correspondiente
+  };
+
   const handleDelete = useCallback(async (id: number) => {
     toast
       .promise(api.delete(`pedidos/${id}`), {
@@ -67,7 +64,7 @@ const Pedidos: React.FC = () => {
         error: "Hubo un problema al eliminar el pedido.",
       })
       .then(() => {
-        fetchPedido(); // Actualiza la lista después de eliminar
+        fetchPedido(); 
       });
   }, []);
 
@@ -285,19 +282,17 @@ const Pedidos: React.FC = () => {
                 <FontAwesomeIcon icon={faEdit} />
               </button>
             </Link>
-            {/* <button
-              onClick={() => handleModal("edit", row.original.ID_pedido)}
-              className="tw-bg-blue-500 tw-text-white tw-rounded-full tw-p-2 tw-shadow-md tw-hover:bg-blue-600 tw-transition-all tw-duration-300"
-            >
-              <FontAwesomeIcon icon={faEdit} />
-            </button> */}
             <button
-             onClick={() => handleDelete(row.original.ID_pedido)}
+              onClick={() => handleDelete(row.original.ID_pedido)}
               className="tw-bg-red-500 tw-text-white tw-rounded-full tw-p-2 tw-shadow-md tw-hover:bg-red-600 tw-transition-all tw-duration-300"
             >
               <FontAwesomeIcon icon={faTrash} />
             </button>
-            <button className="tw-bg-green-500 tw-text-white tw-rounded-full tw-p-2 tw-shadow-md tw-hover:bg-green-600 tw-transition-all tw-duration-300">
+            {/* Botón para ver el detalle del pedido */}
+            <button
+              onClick={() => handleViewDetails(row.original.ID_pedido)} // Redirige al detalle del pedido
+              className="tw-bg-green-500 tw-text-white tw-rounded-full tw-p-2 tw-shadow-md tw-hover:bg-green-600 tw-transition-all tw-duration-300"
+            >
               <FontAwesomeIcon icon={faBoxOpen} />
             </button>
           </div>
@@ -337,10 +332,6 @@ const Pedidos: React.FC = () => {
           className="tw-bg-white tw-p-0 tw-mb-12 tw-rounded-lg tw-border tw-border-gray-300 tw-max-w-lg tw-w-full tw-mx-auto"
           overlayClassName="tw-fixed tw-inset-0 tw-bg-black tw-bg-opacity-40 tw-z-50 tw-flex tw-justify-center tw-items-center"
         >
-          {/* {modalConfig.type === 'add' && <AddCategories onClose={handleCloseModal} />}
-           {modalConfig.type === 'edit' && modalConfig.id !== null && <EditCategoria id={modalConfig.id} onClose={handleCloseModal} />} */}
-          {/* {modalType === 'entry' && selectedCategoriaId !== null && <AddEntry id={selectedCategoriaId} onClose={handleModalCloseAndFetch} />}
-           {modalType === 'detail' && selectedCategoriaId !== null && <InsumoDetails id={selectedCategoriaId} onClose={handleModalCloseAndFetch} />} */}
         </Modal>
       </div>
     </>

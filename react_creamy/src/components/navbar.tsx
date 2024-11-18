@@ -16,6 +16,7 @@ const Navbar = () => {
                 alt="logo"
               />
             </a>
+            
 
             {/* Botón menú móvil */}
             <div className="tw-flex tw-lg:hidden">
@@ -128,26 +129,7 @@ const Navbar = () => {
                   </svg>
                   Salir
                 </a>
-                <a
-                  href="#"
-                  className="tw-px-3 tw-py-2 tw-mx-3 tw-mt-2 tw-text-gray-700 tw-transition-colors tw-duration-300 tw-transform tw-rounded-md tw-lg:mt-0 dark:tw-text-gray-200 hover:tw-bg-gray-100 dark:hover:tw-bg-gray-700"
-                >
-                  <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="tw-inline-block tw-w-5 tw-h-5 tw-mr-2"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 4.5V12m0 0v7.5m0-7.5H4.5m7.5 0h7.5"
-                  />
-                  </svg>
-                  Configuración
-                </a>
+               
 
             </div>
 

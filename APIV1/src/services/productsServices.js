@@ -61,18 +61,8 @@ const getProductos = async (res,req ) => {
   ) => {
     let bandera = false;
     let respuesta = "";
-
-    // if (ID_estado_productos) {
-    //   const estado = await Estado_producto.findByPk(ID_estado_productos); // Asegúrate de usar await aquí
-    //   if (estado==0) {
-    //     bandera = true;
-    //     respuesta =  "Estado no encontrado"
-
-    //   }
-    // }
-
     if (ID_tipo_productos) {
-      const tipo = await Tipo_productos.findByPk(ID_tipo_productos); // Asegúrate de usar await aquí
+      const tipo = await Tipo_productos.findByPk(ID_tipo_productos); // pedido de usar await aquí
       if (!tipo) {
         respuesta = "Tipo de producto no encontrado";
         bandera = true;
