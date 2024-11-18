@@ -1,11 +1,7 @@
 const express = require('express');
 const { request, response } = require('express');
-
-const db = require('../../models');
-const Roles = db.Roles;
-const Permisos = db.Permisos;
-const Permiso_roles = db.Permiso_roles;
-
+// const {Permisos}= require('../../models');
+const {Permisos, Roles ,Permiso_roles} = require('../../models');
 const
 
 
@@ -15,14 +11,20 @@ const
   },
 
   getRolesID = async (id) => {
-    const roles = await Roles.findByPk(id);
-    return roles;
+    return await Roles.findByPk(id, {
+      include:[
+        {
+          model:Permisos,
+          as: 'Permiso0',
+        }
+      ]
+    });
+    
   },
-
   CreateRoles = async (datos) => {
 
     const {
-      ID_permisos,
+      ID_permiso,
       descripcion,
       estado_rol
     } = datos;
@@ -32,13 +34,17 @@ const
       estado_rol
     });
 
-    const rolPermiso = ID_permisos.map(permiso => ({
-      ...permiso,
-      ID_permiso: permiso,
-      ID_rol: rol.id
-    }))
+    for(const permisos of ID_permiso){
+      await Permiso_roles.create({
+        ID_permiso: permisos,
+        ID_rol: rol.ID_rol
+       })
 
-    await Permiso_roles.bulkCreate(rolPermiso);
+       console.log(permisos)
+    }
+
+
+    // await Permiso_roles.bulkCreate(rolPermiso);
 
     return rol;
   },

@@ -29,7 +29,7 @@ const EditRol: React.FC<EditRolProps> = ({ id, onClose }) => {
         setSelectedPermisos(rolData.permisos.map((permiso: any) => permiso.ID_permiso)); // Permisos actuales
       } catch (error) {
         console.error('Error al obtener el rol:', error);
-        setError('No se pudo cargar la información del rol');
+        //setError('No se pudo cargar la información del rol');
       }
     };
 

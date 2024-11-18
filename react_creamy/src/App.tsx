@@ -17,7 +17,7 @@ import Pedidos from './page/Order/Order_list';
 import Login from './page/Acceso/login';
 import SignUp from './page/Acceso/signUp';
 import OrderAdd from './page/Order/Order_add';
-import { useState } from 'react';
+import AddRol from './page/Roles/CreateRol';
 
 const Layout: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -39,7 +39,7 @@ const Layout: React.FC = () => {
           <div className="tw-container-fluid tw-px-lg-4 tw-px-xl-5 tw-border-spacing-4 tw-border-gray-300 tw-rounded-lg tw-shadow-md">
             {/* Definición de rutas */}
             <Routes>
-              <Route path="/" element={<Navigate to="/login" />} />
+              <Route path="/" element={<Navigate to="/Dashboard" />} />
               <Route path="/Dashboard" element={<Dashboard />} />
               <Route path="/Categorias" element={<Categorias />} />
               <Route path="/Insumos" element={<Insumos />} />

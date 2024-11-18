@@ -311,7 +311,7 @@ return(
                   <div className="dropdown-menu dropdown-menu-end text-sm"><a className="dropdown-item" href="#!"><i className="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a className="dropdown-item" href="#!"><i className="far fa-window-minimize opacity-5 me-2"></i>Minimize</a><a className="dropdown-item" href="#!"><i className="fas fa-redo opacity-5 me-2"></i> Reload</a><a className="dropdown-item" href="#!"><i className="far fa-trash-alt opacity-5 me-2"></i> Remove        </a></div>
                 </div>
           </div>
-          <div className="card-body">
+          {/* <div className="card-body">
             <div className="card-text">
               <p className="mb-2">
                 <strong>Publish New Theme </strong>
@@ -341,7 +341,7 @@ return(
               <img className="avatar avatar-sm avatar-stacked p-1" src="https://demo.bootstrapious.com/bubbly/1-3-2/img/avatar-7.jpg" alt="User" data-bs-toggle="tooltip" data-placement="top" title="Spears Collier"/>
               </p>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       {/* </Projects Widget> */}

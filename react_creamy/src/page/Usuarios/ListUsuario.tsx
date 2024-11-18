@@ -1,29 +1,29 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { MaterialReactTable, type MRT_ColumnDef } from 'material-react-table';
 import { Usuario } from '../../types/usuarios';
+import { Rol } from '../../types/roles';
 import api from '../../api/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash, faPlus, faBoxOpen, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons';
-import { faSignInAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash, faPlus, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-hot-toast';
 import AddUsuario from './CreateUsuario';
 import EditUsuario from './EditUsuario';
-/* import usuarioDetails from './UsuarioDetails'; */
 import Modal from 'react-modal';
-import { useNavigate } from 'react-router-dom';
-
+import Skeleton from '@mui/material/Skeleton';
 
 Modal.setAppElement('#root');
 
 const UsuarioList: React.FC = () => {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
+  const [roles, setRoles] = useState<Rol[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalType, setModalType] = useState<'add' | 'edit' | 'entry' | 'detail' | null>(null);
+  const [modalType, setModalType] = useState<'add' | 'edit' | null>(null);
   const [selectedUsuarioId, setSelectedUsuarioId] = useState<number | null>(null);
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchUsuarios();
+    fetchRoles();
   }, []);
 
   const fetchUsuarios = async () => {
@@ -32,6 +32,17 @@ const UsuarioList: React.FC = () => {
       setUsuarios(response.data);
     } catch (error) {
       console.error('Error al obtener los usuarios:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchRoles = async () => {
+    try {
+      const response = await api.get('/roles');
+      setRoles(response.data);
+    } catch (error) {
+      console.error('Error al obtener los roles:', error);
     }
   };
 
@@ -50,7 +61,7 @@ const UsuarioList: React.FC = () => {
         error: 'Hubo un problema al eliminar el usuario.',
       }
     ).then(() => {
-      fetchUsuarios(); 
+      fetchUsuarios();
     });
   };
 
@@ -69,14 +80,8 @@ const UsuarioList: React.FC = () => {
     }
   };
 
-  const handleAddusuario = () => {
+  const handleAddUsuario = () => {
     setModalType('add');
-    setIsModalOpen(true);
-  };
-
-  const handleViewDetails = (id: number) => {
-    setSelectedUsuarioId(id);
-    setModalType('detail');
     setIsModalOpen(true);
   };
 
@@ -88,13 +93,14 @@ const UsuarioList: React.FC = () => {
 
   const handleModalCloseAndFetch = async () => {
     handleCloseModal();
-    await fetchUsuarios(); 
+    await fetchUsuarios();
   };
 
-  const [isClientesModalOpen, setIsClientesModalOpen] = useState(false);
-
-  const clientes = useMemo(() => usuarios.filter(usuario => usuario.ID_rol === 3), [usuarios]);
-
+  // Mapeo de ID_rol a descripción
+  const getRolDescripcion = (idRol: number) => {
+    const rol = roles.find(rol => rol.ID_rol === idRol);
+    return rol ? rol.descripcion : 'Desconocido';
+  };
 
   const columns = useMemo<MRT_ColumnDef<Usuario>[]>(
     () => [
@@ -108,17 +114,16 @@ const UsuarioList: React.FC = () => {
       },
       {
         accessorKey: 'email',
-        header: 'Email'
+        header: 'Email',
       },
       {
         accessorKey: 'telefono',
-        header: 'Telefono',
-        Cell: ({ cell }) => `${cell.getValue<number>()}`,
+        header: 'Teléfono',
       },
       {
         accessorKey: 'ID_rol',
         header: 'Rol',
-        Cell: ({ cell }) => `${cell.getValue<number>()}`,
+        Cell: ({ cell }) => getRolDescripcion(cell.getValue<number>()), // Muestra la descripción del rol
       },
       {
         accessorKey: 'estado_usuario',
@@ -151,42 +156,42 @@ const UsuarioList: React.FC = () => {
             <button onClick={() => handleDelete(row.original.ID_usuario)} className="tw-bg-red-500 tw-text-white tw-rounded-full tw-p-2 tw-shadow-md tw-hover:bg-red-600 tw-transition-all tw-duration-300">
               <FontAwesomeIcon icon={faTrash} />
             </button>
-            
           </div>
         ),
       },
     ],
-    [usuarios],
+    [usuarios, roles]
   );
 
   return (
-    <div className="tw-p-6 tw-bg-gray-100 tw-min-h-screen">
-      <h1 className="page-heading">usuarios</h1>
-      <button onClick={handleAddusuario} className="tw-bg-blue-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-mb-4 tw-shadow-md tw-hover:bg-blue-600 tw-transition-all tw-duration-300">
-        <FontAwesomeIcon icon={faPlus} /> Agregar usuario
-      </button>
-
-      <button
-        onClick={() => navigate('/clientes')} 
-        className="tw-bg-green-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-mb-4 tw-ml-4 tw-shadow-md tw-hover:bg-green-600 tw-transition-all tw-duration-300"
-      >
-        Ver clientes
-      </button>
-
-
-      <MaterialReactTable columns={columns} data={usuarios} />
-      <Modal
-        isOpen={isModalOpen}
-        onRequestClose={handleCloseModal}
-        className="tw-bg-white tw-p-0 tw-mb-12 tw-rounded-lg tw-border tw-border-gray-300 tw-max-w-lg tw-w-full tw-mx-auto"
-        overlayClassName="tw-fixed tw-inset-0 tw-bg-black tw-bg-opacity-40 tw-z-50 tw-flex tw-justify-center tw-items-center"
-      >
-        {modalType === 'add' && <AddUsuario onClose={handleModalCloseAndFetch} />}
-        {modalType === 'edit' && selectedUsuarioId !== null && <EditUsuario id={selectedUsuarioId} onClose ={handleModalCloseAndFetch} />}
-        {/* {modalType === 'detail' && selectedusuarioId !== null && <usuarioDetails id={selectedusuarioId} onClose={handleModalCloseAndFetch} />} */}
-      </Modal>
-
-    </div>
+    <section className="tw-rounded-lg mb-3 mb-lg-5 p-6 bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out">
+      <div className="tw-p-6 tw-bg-gray-50 tw-min-h-screen">
+        <h1 className="page-heading">Usuarios</h1>
+        <button onClick={handleAddUsuario} className="tw-bg-blue-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-mb-4 tw-shadow-md tw-hover:bg-blue-600 tw-transition-all tw-duration-300">
+          <FontAwesomeIcon icon={faPlus} /> Agregar usuario
+        </button>
+        {loading ? (
+          <div className="w-full max-w-md mx-auto p-9">
+            <Skeleton className="h-6 w-52" />
+            <Skeleton className="h-4 w-48 mt-6" />
+            <Skeleton className="h-4 w-full mt-4" />
+            <Skeleton className="h-4 w-64 mt-4" />
+            <Skeleton className="h-4 w-4/5 mt-4" />
+          </div>
+        ) : (
+          <MaterialReactTable columns={columns} data={usuarios} />
+        )}
+        <Modal
+          isOpen={isModalOpen}
+          onRequestClose={handleCloseModal}
+          className="tw-bg-white tw-p-0 tw-mb-12 tw-rounded-lg tw-border tw-border-gray-300 tw-max-w-lg tw-w-full tw-mx-auto"
+          overlayClassName="tw-fixed tw-inset-0 tw-bg-black tw-bg-opacity-40 tw-z-50 tw-flex tw-justify-center tw-items-center"
+        >
+          {modalType === 'add' && <AddUsuario onClose={handleModalCloseAndFetch} />}
+          {modalType === 'edit' && selectedUsuarioId !== null && <EditUsuario id={selectedUsuarioId} onClose={handleModalCloseAndFetch} />}
+        </Modal>
+      </div>
+    </section>
   );
 };
 
