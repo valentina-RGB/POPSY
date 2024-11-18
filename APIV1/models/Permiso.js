@@ -3,16 +3,16 @@ module.exports = (sequelize, DataTypes) => {
     ID_permiso: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
-      primaryKey: true,
+      primaryKey: true
     },
     descripcion: {
       type: DataTypes.STRING(100),
-      allowNull: true,
+      allowNull: true
     },
   },
     {
       tableName: 'Permisos',
-      timestamps: false,
+      timestamps: false
     });
 
   // Permiso.associate = function(models) {
@@ -20,9 +20,9 @@ module.exports = (sequelize, DataTypes) => {
 
   //   Permiso.belongsTo(models.Usuarios, { foreignKey: 'ID_usuario' });
   // };
-  Permisos.asociate = function(models) {
+  Permisos.associate = function(models) {
     // Permisos.hasMany(models.Permiso_roles, {foreignKey: 'ID_permiso'})
-    Permisos.belongsToMany(models.Roles, { through:'Permiso_roles', foreignKey: 'ID_permisos', otherKey: 'ID_roles', as: 'Roles' });
+    Permisos.belongsToMany(models.Roles, { through:'Permiso_roles', foreignKey:'ID_permisos', otherKey:'ID_roles', as:'roles' });
   };
   
 

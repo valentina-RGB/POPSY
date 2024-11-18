@@ -2,6 +2,7 @@ const express = require('express');
 const { request, response } = require('express');
 // const {Permisos}= require('../../models');
 const {Permisos, Roles ,Permiso_roles} = require('../../models');
+const { sequelize } = require('../../models'); 
 const
 
 
@@ -12,15 +13,14 @@ const
 
   getRolesID = async (id) => {
     return await Roles.findByPk(id, {
-      include:[
-        {
-          model:Permisos,
-          as: 'Permiso0',
-        }
-      ]
+      include: [{
+        model: Permisos,
+        as: 'Permiso', // Coincide con el alias en la asociación
+        through: { attributes: [] }, // No se necesita información de la tabla intermedia
+      }],
     });
-    
   },
+  
   CreateRoles = async (datos) => {
 
     const {
@@ -36,8 +36,8 @@ const
 
     for(const permisos of ID_permiso){
       await Permiso_roles.create({
-        ID_permiso: permisos,
-        ID_rol: rol.ID_rol
+        ID_permisos: permisos,
+        ID_roles: rol.ID_rol
        })
 
        console.log(permisos)
@@ -49,18 +49,51 @@ const
     return rol;
   },
 
+  
   PatchRoles = async (id, datos) => {
-    const [updated] = await Roles.update(datos, {
-      where: { ID_rol: id },
-    });
+    const { ID_permiso, descripcion, estado_rol } = datos;
+  
+    // Primero, actualiza el rol en la tabla Roles
+    const [updated] = await Roles.update(
+      { descripcion, estado_rol },
+      { where: { ID_rol: id } }
+    );
+  
+    // if (!updated) {
+    //   // Si no se encontró el rol, devuelve un mensaje de error
+    //   return { status: 404, message: 'Role not found' };
+    // }
+  
+    // Si se proporcionaron permisos, actualiza la tabla intermedia Permiso_roles
+      // Elimina los permisos anteriores asociados a este rol
+      await Permiso_roles.destroy({
+        where: { ID_roles: id }
+      });
 
-    if (updated) {
-      const updatedroles = await Roles.findByPk(id);
-      return updatedroles;
-    } else {
-      return { status: 404, message: 'roles not found' };
-    }
+      console.log(ID_permiso)
+  
+      // Agrega los nuevos permisos asociados al rol
+      for (const permisoId of ID_permiso) {
+        await Permiso_roles.create({
+          ID_permisos: permisoId,
+          ID_roles: id
+        });
+      }
+
+
+      return { status: 200, message: 'Hecho' }
+    
+  
+    // Retorna el rol actualizado, incluyendo sus permisos
+    // return await Roles.findByPk(id, {
+    //   include: [{
+    //     model: Permisos,
+    //     as: 'Permiso' // Usa el alias correcto de la asociación
+    //   }],
+    // });
   },
+  
+
 
   DeleteRoles = async (id) => {
     const deleted = await Roles.destroy({ where: { ID_rol: id }, });

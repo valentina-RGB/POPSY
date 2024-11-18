@@ -38,11 +38,15 @@ const AddRol: React.FC<CreateRolProps> = ({ onClose , id }) => {
     };
 
     fetchPermisos();
-    if(id){
+    if(id!=0){
       console.log('Holiiii')
 
       const editar = async () =>{
         const response = await api.get(`/roles/${id}`);	
+        const {Permiso,descripcion} = response.data;  
+        setSelectedPermisos(Permiso.map((permiso: any) => permiso.ID_permiso));
+        setDescripcionRol(descripcion);
+        console.log(selectedPermisos)
       }
       
       editar()
@@ -63,7 +67,13 @@ const AddRol: React.FC<CreateRolProps> = ({ onClose , id }) => {
         
       }
       console.log('PERMISOs',selectedPermisos, rolToCreate);
-      await api.post('/roles', rolToCreate);
+
+      if(id!=0){
+        await api.put(`/roles/${id}`, rolToCreate);
+      }else{
+        await api.post('/roles', rolToCreate);
+      }
+     
       toast.success('Rol agregado correctamente.');
       onClose(); 
     } catch (error: unknown) {
@@ -72,6 +82,8 @@ const AddRol: React.FC<CreateRolProps> = ({ onClose , id }) => {
       toast.error('Hubo un problema al agregar el rol.');
     }
   };
+
+  console.log(selectedPermisos)
 
   return (
     <div className="fixed inset-0 flex items-center justify-center">

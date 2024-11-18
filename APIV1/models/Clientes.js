@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         correo_electronico: {
           type: DataTypes.STRING(100),
-          unique: true,
           allowNull: true,
         },
         // telefono: {
@@ -21,22 +20,19 @@ module.exports = (sequelize, DataTypes) => {
         // },
         documento: {
           type: DataTypes.BIGINT,
-          unique: true,
           defaultValue: 123456789456,  
       },
         nombre: {
           type: DataTypes.STRING(100),
-          unique: true,
-          allowNull: true,
+          allowNull: true
         },
         direccion: {
           type: DataTypes.STRING(100),
-          unique: true,
-          allowNull: true,
+          allowNull: true
         },
       }, {
         tableName: 'Clientes',
-        timestamps: false,
+        timestamps: false
       });
     
       return Clientes;
