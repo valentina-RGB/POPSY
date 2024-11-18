@@ -1,5 +1,6 @@
 import { Toaster } from 'react-hot-toast';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { useState } from 'react';
 import Navbar from "./components/navbar_prueba"; // Asegúrate de que el path sea correcto
 import Menu from "./components/sidebar";
 import Dashboard from "./page/Dashboard";
@@ -14,10 +15,10 @@ import ListarClientes from './page/Clientes/ListCliente';
 import ListarUsuarios from './page/Usuarios/ListUsuario';
 import Productos from './page/Products/products-list';
 import Pedidos from './page/Order/Order_list';
+import PedidoDetalles from './page/Order/Order_details';
 import Login from './page/Acceso/login';
 import SignUp from './page/Acceso/signUp';
 import OrderAdd from './page/Order/Order_add';
-import AddRol from './page/Roles/CreateRol';
 
 const Layout: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -47,6 +48,7 @@ const Layout: React.FC = () => {
               <Route path="/Ventas" element={<Ventas />} />
               <Route path="/Productos" element={<Productos />} />
               <Route path="/Pedidos" element={<Pedidos />} />
+              <Route path="/pedido/:id" element={<PedidoDetalles orderId={':id'} />} />
               <Route path="/Editar-pedido/:id" element={<OrderAdd/>} />
               <Route path="/roles" element={<ListarRoles />} />
               <Route path="/Clientes" element={<ListarClientes />} />

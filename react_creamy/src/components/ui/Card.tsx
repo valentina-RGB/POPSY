@@ -38,4 +38,16 @@ const CardFooter = ({ children, className = "", ...props }: CardProps) => {
   );
 };
 
-export { Card, CardHeader, CardContent, CardFooter };
+const CardTitle: React.FC<{ className?: string; children: React.ReactNode }> = ({ className = "", children, ...props }) => {
+  return (
+    <h3 
+      className={`tw-text-2xl tw-font-semibold tw-leading-none tw-tracking-tight ${className}`} 
+      {...props}
+    >
+      {children}
+    </h3>
+  );
+};
+
+export { Card, CardHeader, CardContent, CardFooter, CardTitle };
+;
