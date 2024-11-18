@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
     },
-    ID_pedidos: {
+    ID_pedido: {
         type: DataTypes.INTEGER,
         allowNull: true,
         references: {
@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
     },
-    ID_productos: {
+    ID_producto: {
         type: DataTypes.INTEGER,
         allowNull: true,
         references: {
@@ -42,5 +42,24 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'Producto_Pedidos',
     timestamps: false
     });
+
+    Producto_Pedidos.associate = function(models) {
+
+ 
+            Producto_Pedidos.belongsTo(models.Pedidos, {
+              foreignKey: 'ID_pedido',
+              as: 'Pedido'
+            });
+            Producto_Pedidos.belongsTo(models.Productos, {
+              foreignKey: 'ID_producto',
+              as: 'Producto'
+            });
+
+    // Relación con Adiciones
+    Producto_Pedidos.hasMany(models.Adiciones, { foreignKey: 'ID_producto_pedido', as:'Adiciones'});
+   
+}
+
+
     return Producto_Pedidos;
 };

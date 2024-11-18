@@ -33,6 +33,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     ID_categorias: {
       type: DataTypes.INTEGER,
+      allowNull: true,
       references: {
         model: 'Categorias',
         key: 'ID_categoria',
@@ -42,6 +43,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     imagen: {
       type: DataTypes.STRING(100),
+    },
+    stock_bola: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
     },
   }, {
     tableName: 'Productos',
@@ -88,12 +93,20 @@ module.exports = (sequelize, DataTypes) => {
     });
     // Asociación con adiciones
 
-    Productos.belongsToMany(models.Adiciones,{ through:'Productos_adiciones', foreignKey: 'ID_Producto_adicion', otherKey: 'ID_adiciones', as:'adicion' });
     
+  
 
     // Asociación con Pedidos
-    Productos.belongsToMany(models.Pedidos, { through: 'Producto_Pedidos', foreignKey: 'ID_productos', otherKey: 'ID_pedidos', as:'PedidosLista'
+    Productos.hasMany(models.Producto_Pedidos, {
+      foreignKey: 'ID_producto',
+      as: 'Producto_Pedido' // Alias adicional para incluir la tabla intermedia
     });
+  
+
+
+
+    Productos.belongsToMany(models.Pedidos, { through: models.Producto_Pedidos, foreignKey: 'ID_producto', otherKey: 'ID_pedido', as: 'Pedidos'});
+    // Productos.hasMany(models.Producto_Pedidos, { foreignKey: 'ID_productos', as: 'ProductoPedidos' });
   };
 
   return Productos;

@@ -34,7 +34,7 @@ const
             const pedidos = await pedidosService.CrearPedidos(req,res);
 
             if(pedidos){
-                res.json(pedidos);
+                // res.json(pedidos);
             }
             
         } catch (error) {
@@ -46,10 +46,10 @@ const
     ModificarPedidos = async (req = request, res= response) =>{
         try {
             const { id } = req.params;
-            const updatePedidos = await pedidosService.PatchPedidos(id, req.body);
+            const updatePedidos = await pedidosService.PatchPedidos(req, res);
 
             if(updatePedidos){
-                res.status(200).json({ message: 'Order updated successfully', updatePedidos });
+                // res.status(200).json({ message: 'Order updated successfully', updatePedidos });
             }
         }catch(error){
             res.status(400).json({ message: error.message });

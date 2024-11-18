@@ -47,6 +47,7 @@ const App: React.FC = () => {
               <Route path="/Login" element={<Login />} />
               <Route path="/SignUp" element={<SignUp />} />
               <Route path="/Agregar-pedidos" element={<OrderAdd />} />
+              <Route path="/Editar-pedido/:id" element={<OrderAdd/>} />
               <Route path="/Agregar-ventas" element={<Ventasadd />} />
             </Routes>
             <footer className="footer tw-bg-white tw-shadow tw-align-self-end tw-py-3 tw-px-xl-5 tw-w-full">

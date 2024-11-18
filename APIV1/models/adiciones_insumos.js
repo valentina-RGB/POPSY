@@ -25,13 +25,12 @@ module.exports = (sequelize, DataTypes) => {
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
-    },
-   
+    },  
     cantidad: {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
-    total: {
+    sub_total: {
         type: DataTypes.FLOAT,
         allowNull: false
     },

@@ -1,6 +1,3 @@
-
-const producto_pedidos = require("./producto_pedidos");
-
 module.exports = (sequelize, DataTypes) => {
     const Pedidos = sequelize.define('Pedidos', {
     ID_pedido: {
@@ -13,15 +10,9 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: DataTypes.NOW,
         allowNull: false
     },
-    ID_clientes: {
-        type: DataTypes.INTEGER,
+    cliente: {
+        type: DataTypes.STRING(30),
         allowNull: true,
-        references: {
-            model: 'Clientes',
-            key: 'ID_cliente',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
         comment: 'Por favor ingrese el cliente',
     },
     precio_total: {
@@ -35,25 +26,16 @@ module.exports = (sequelize, DataTypes) => {
         key: 'ID_estado_pedido'
         },
     },
-    // ID_adicion: {
-    //     type: DataTypes.INTEGER,
-    //     references: {
-    //     model: 'Adiciones',
-    //     key: 'ID_adicion'
-    //     },
-    //     onUpdate: 'CASCADE',
-    //     onDelete: 'CASCADE',
-    // },
     },{
     tableName: 'Pedidos',
     timestamps: false,
     });
 
     Pedidos.associate = function(models) {
-      
          //RELACION  MUCHO A MUCHOS
-         Pedidos.belongsToMany(models.Productos, { through:models.Producto_Pedidos, foreignKey: 'ID_pedidos', otherKey: 'ID_productos', as: 'ProductosLista' });
-    
+        Pedidos.belongsToMany(models.Productos, { through:models.Producto_Pedidos, foreignKey: 'ID_pedido', otherKey: 'ID_producto', as: 'ProductosLista' });
+        //  Relación con Producto_Pedidos
+        //  Pedidos.hasMany(models.Producto_Pedidos, { foreignKey: 'ID_pedidos', as: 'ProductoPedidos' });
     }
     return Pedidos;
 }; 

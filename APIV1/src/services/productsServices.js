@@ -11,23 +11,8 @@ const {
 
 const getProductos = async (res,req ) => {
     try {
-      // let whereClause = {};
-
-      // // Si se pasa el parámetro nombre, agregarlo a la cláusula where
-      // if (nombre) {
-      //   whereClause.nombre = nombre;
-      // }
-
-      // // Si se pasa el parámetro ID_tipo_productos, agregarlo a la cláusula where
-      // if (ID_tipo_productos) {
-      //   whereClause.ID_tipo_productos = ID_tipo_productos;
-      // }
-
-      // Realizar la consulta con base en la cláusula where
+    
       const productos = await Productos.findAll(
-        // {
-        //   where: whereClause,
-        // },
         {
           include: [
             {
@@ -35,19 +20,7 @@ const getProductos = async (res,req ) => {
               as: "Insumos",
               through: { attributes: ["cantidad", "configuracion", "precio"] },
             }
-            ,{
-              model: Adiciones,
-              as: 'adicion',
-              through: { attributes: ["cantidad"] },
-              include:[
-                {
-                  model: Insumos,
-                  as: 'insumos',
-                  through: { attributes: ["cantidad", "total"] },
-                }
-              ]
-            }
-          ],
+          ]
         }
       );
 
@@ -62,24 +35,6 @@ const getProductos = async (res,req ) => {
       res.status(500).send("Error en el servidor");
     }
 
-    // const productos = await Productos.findAll(
-    //  {
-    //   where: {
-    //     nombre: nombre,
-    //     ID_tipo_productos: ID_tipo_productos
-    //   },
-    //  },
-    // {
-    //   include:[
-    //    {
-    //     model: Insumos,
-    //     as: 'Insumos',
-    //     through:{attributes:['cantidad','configuracion', 'precio']}
-    //    }
-    //   ]
-    // }
-    // );
-    //   res.status(200).json(productos);
   },
   getProductosID = async (id) => {
     const productos = await Productos.findByPk(id, {
