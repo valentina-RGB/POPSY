@@ -1,30 +1,33 @@
-const express = require("express");
-const { Sequelize } = require("sequelize");
-const cors = require("cors");
+const express = require('express');
+const { Sequelize } = require('sequelize');
+const cors = require('cors');
 const path = require("path");
 
-const db = require("./../models");
-const detalleRoutes = require("./v1/routers/detallePedido");
-const routerProduct = require("./v1/routers/products");
-const routerCategories = require("./v1/routers/categories");
-const insumosRoutes = require("./v1/routers/insumos");
-const stockInsumosRoutes = require("./v1/routers/stockInsumos");
-const historyEntradasRouter = require("./v1/routers/History_entradas");
-const tipoInsumoRoutes = require("./v1/routers/tipo_insumo");
-const Estado_pedidoRoutes = require("./v1/routers/estado_pedido");
-const permisoRoutes = require("./v1/routers/permise");
-const clientsRoutes = require("./v1/routers/clients");
-const usuariosRoutes = require("./v1/routers/users");
-const permiso_rolesRoutes = require("./v1/routers/permise_roles");
-const rolRoutes = require("./v1/routers/roles");
-const configuracionRouters = require("./v1/routers/configuracion");
-const pedidosRouters = require("./v1/routers/pedidos");
-const VentasRouters = require("./v1/routers/ventasRoutes");
-const EstadoVentasRouters = require("./v1/routers/estado_ventas");
-const Tipo_productoRouters = require("./v1/routers/tipo_productos");
-const PI = require("./v1/routers/productos_insumos");
-const bodyParser = require("body-parser"); // Corregir nombre
-const Joi = require("joi");
+const db = require('./../models')
+const detalleRoutes = require('./v1/routers/detallePedido');
+const routerProduct = require('./v1/routers/products');
+const routerCategories = require('./v1/routers/categories');
+const insumosRoutes = require('./v1/routers/insumos');
+const stockInsumosRoutes = require('./v1/routers/stockInsumos');
+const historyEntradasRouter = require('./v1/routers/History_entradas');
+const tipoInsumoRoutes = require('./v1/routers/tipo_insumo');
+const Estado_pedidoRoutes = require('./v1/routers/estado_pedido');
+const permisoRoutes = require('./v1/routers/permise');
+const clientsRoutes = require('./v1/routers/clients');
+const usuariosRoutes = require('./v1/routers/users');
+const permiso_rolesRoutes = require('./v1/routers/permise_roles');
+const rolRoutes = require('./v1/routers/roles');
+const configuracionRouters = require('./v1/routers/configuracion');
+const pedidosRouters = require('./v1/routers/pedidos');
+const VentasRouters = require('./v1/routers/ventasRoutes');
+const EstadoVentasRouters = require('./v1/routers/estado_ventas')
+const Tipo_productoRouters = require('./v1/routers/tipo_productos')
+const Access = require('./v1/routers/access')
+const PI = require('./v1/routers/productos_insumos')
+const bodyParser = require('body-parser'); // Corregir nombre
+const Joi = require('joi');
+const controllerAccess = require('../src/controllers/autenticacion');
+
 
 class Server {
   constructor() {
@@ -58,6 +61,9 @@ class Server {
 
   Routers() {
     this.app
+
+      .post('/login',controllerAccess.Iniciar_sesion, controllerAccess.authenticateToken)
+      .post('/signup', controllerAccess.registrar)
 
       .use("/producto_insumos", PI)
       // Rutas de productos
