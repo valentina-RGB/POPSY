@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 
+
 function Menu() {
   return (
     <div className="sidebar py-3" id="sidebar">
@@ -133,18 +134,11 @@ function Menu() {
         </li>
           <ul
             className="sidebar-menu list-unstyled collapse "
-            id="widgetsDropdow"
-          >
-       
+            id="widgetsDropdow">
           </ul>
- 
       </ul>
     </div>
   );
 }
-
-//<use xlink:href="https://demo.bootstrapious.com/bubbly/1-3-2/icons/orion-svg-sprite.71e9f5f2.svg#file-storage-1"> </use> */}
-
-// href="https://demo.bootstrapious.com/bubbly/1-3-2/charts-gauge-sparkline.html"
 
 export default Menu;
