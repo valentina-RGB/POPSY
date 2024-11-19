@@ -97,7 +97,7 @@ const Iniciar_sesion = async (req, res) => {
           where: { ID_usuario: user.ID_usuario }
         });
 
-      res.json({ token, resUser }); ///////
+      res.json({ token, resUser });
     } else {
       res.status(400).json({ error: 'Contraseña incorrecta' });
     }
@@ -106,6 +106,10 @@ const Iniciar_sesion = async (req, res) => {
     res.status(500).json({ error: 'Error en el servidor' });
   }
 };
+
+
+
+
 
 
 module.exports = {
