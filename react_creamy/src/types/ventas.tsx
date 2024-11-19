@@ -1,7 +1,5 @@
-
-
 export interface Venta {
-  Cliente: any;
+  Cliente: string;
   ID_venta: number;
   fecha: string;
   ID_cliente: number | null;

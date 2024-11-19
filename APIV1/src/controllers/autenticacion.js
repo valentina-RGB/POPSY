@@ -7,10 +7,7 @@ const helmet = require('helmet');
 // const cors = require('cors');
 
 const app = express();
-
-// app.use(express.json());
-app.use(helmet());
-// app.use(cors()); 
+app.use(helmet()); 
 
 // Simulación de base de datos
 const { Usuarios } = require("../../models");
@@ -65,10 +62,6 @@ const registrar = async (req, res) => {
     });
 
 
-
-
-
-
     res.status(201).json({ message: 'Usuario registrado exitosamente' });
   } catch (error) {
     console.error(error);
@@ -113,14 +106,6 @@ const Iniciar_sesion = async (req, res) => {
     res.status(500).json({ error: 'Error en el servidor' });
   }
 };
-
-
-// app.get('/protected', authenticateToken, (req, res) => {
-//   res.json({ message: 'Esta es una ruta protegida', user: req.user });
-// });
-
-
-
 
 
 module.exports = {

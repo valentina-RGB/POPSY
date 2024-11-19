@@ -2,7 +2,7 @@ const express = require('express');
 const { request, response } = require('express');
 const db = require('../data/db');
 const { Op } = require('sequelize');
-const { Productos_adiciones, Ventas, Producto_Ventas, Producto_insumos, Adiciones, Insumos, Adiciones_Insumos, Productos } = require('../../models');
+const { Ventas, Producto_Ventas, Producto_insumos, Insumos, Adiciones_Insumos, Productos } = require('../../models');
 
 
 
