@@ -4,6 +4,7 @@ import axios from 'axios';
 import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
 import App from '../../App';
 import toast, { Toaster } from 'react-hot-toast';
+import { data } from 'jquery';
 // import { Link } from "react-router-dom";
 // import { Layout } from 'lucide-react';
 
@@ -45,6 +46,16 @@ const AuthPage: React.FC = () => {
         setToken(response.data.token);
 
 //Alejo es un crack fgfgdgf
+          //EXISTE EL ROL
+
+         const {resUser, ID_rol} = response.data;
+
+        //  const {ID_rol} = resUser
+
+          // console.log(resUser, ID_rol);
+
+    
+
 
         if (response.data.resUser[0].ID_rol === 2) {
           toast.success('Inicio de sesión exitoso', { duration: 2000 });
@@ -175,12 +186,3 @@ const AuthPage: React.FC = () => {
 };
 
 export default AuthPage;
-
-
-
-const Mostrar: React.FC = () =>{
-  <Router>
- <Layout></Layout> 
- <Toaster position="top-right" reverseOrder={false} />
-</Router>
-}
