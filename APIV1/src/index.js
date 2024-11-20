@@ -17,13 +17,10 @@ const clientsRoutes = require('./v1/routers/clients');
 const usuariosRoutes = require('./v1/routers/users');
 const permiso_rolesRoutes = require('./v1/routers/permise_roles');
 const rolRoutes = require('./v1/routers/roles');
-const configuracionRouters = require('./v1/routers/configuracion');
 const pedidosRouters = require('./v1/routers/pedidos');
 const VentasRouters = require('./v1/routers/ventasRoutes');
 const EstadoVentasRouters = require('./v1/routers/estado_ventas')
 const Tipo_productoRouters = require('./v1/routers/tipo_productos')
-const Access = require('./v1/routers/access')
-const PI = require('./v1/routers/productos_insumos')
 const bodyParser = require('body-parser'); // Corregir nombre
 const Joi = require('joi');
 const controllerAccess = require('../src/controllers/autenticacion');
@@ -36,7 +33,7 @@ class Server {
 
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
-    //this.app.use(body.urlencoded({ extended: false}));
+
     this.app.use(
       cors({
         origin: "*",
@@ -63,9 +60,9 @@ class Server {
     this.app
 
       .post('/login',controllerAccess.Iniciar_sesion, controllerAccess.authenticateToken)
+
       .post('/signup', controllerAccess.registrar)
 
-      .use("/producto_insumos", PI)
       // Rutas de productos
       .use("/productos", routerProduct)
       // Rutas de categorías
@@ -90,8 +87,6 @@ class Server {
       .use("/Clientes", clientsRoutes)
 
       .use("/roles", rolRoutes)
-
-      .use("/configuracin", configuracionRouters)
 
       .use("/pedidos", pedidosRouters)
 
