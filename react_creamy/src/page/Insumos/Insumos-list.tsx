@@ -13,7 +13,7 @@ import InsumoDetails from './InsumoDetails';
 import Modal from 'react-modal';
 import { useNavigate } from 'react-router-dom';
 import Skeleton from '@mui/material/Skeleton';
-
+import { motion, AnimatePresence } from 'framer-motion';
 
 Modal.setAppElement('#root');
 
@@ -224,8 +224,8 @@ const InsumosList: React.FC = () => {
   );
 
   return (
-    <section className="tw-rounded-lg mb-3 mb-lg-5 p-6 bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out">
-      <div className="tw-p-6 tw-bg-gray-50 tw-min-h-screen">
+    <section className="tw-rounded-lg mb-3 mb-lg-5 p-6 bg-white border  rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out">
+      <div className="tw-p-3  tw-min-h-screen">
         <h1 className="page-heading">Insumos</h1>
 
         {/* Botones de acciones */}
