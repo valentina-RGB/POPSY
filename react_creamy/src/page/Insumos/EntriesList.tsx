@@ -125,7 +125,7 @@ const EntriesList: React.FC = () => {
 
   return (
     <section className="tw-rounded-lg mb-3 mb-lg-5 p-6 bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out">
-      <div className="tw-p-6 tw-bg-gray-50 tw-min-h-screen">
+      <div className="tw-p-6 tw-bg-white tw-min-h-screen">
       <h1 className="page-heading">Historial de Entradas</h1>
 
       {/* Botón para volver a la página de insumos */}

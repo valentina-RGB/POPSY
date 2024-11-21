@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import { MaterialReactTable, type MRT_ColumnDef } from 'material-react-table';
-import { Venta } from '../../types/Ventas';
+import { Venta } from '../../types/ventas';
 import api from '../../api/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faInfoCircle, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
