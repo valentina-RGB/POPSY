@@ -13,6 +13,7 @@ import { toast } from "react-hot-toast";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
+
 type Insumo_adicion = {
   ID_insumo: number;
   descripcion_insumo: string;
@@ -53,24 +54,10 @@ type Venta = {
   precio_total: number;
   ID_estado_venta: number | string;
   ProductosLista: Producto[]
-  //  {
-  //   ID_producto: number;
-  //   stock_bola: number;
-  //   Adiciones: {
-  //     Insumos: {
-  //       ID_insumo: number;
-  //       Adiciones_Insumos: {
-  //         cantidad: number;
-  //       };
-  //     }[];
-  //   }[];
-  //   Producto_Pedidos: {
-  //     cantidad: number;
-  //   };
-  // }
 
 };
- 
+
+
 const cache = {
   Helados: [],
   Insumos : [],
@@ -78,13 +65,9 @@ const cache = {
   Productos : []
 }
 
-
-// type identification = {
-//   id: number
-// }
 export default function OrderAdd() {
-  // const [Pedidos, setPedidos] = useState<Pedido[]>([]);
- const {id} = useParams();
+
+  const {id} = useParams();
   const [productoActual, setProductoActual] = useState<string | null>(null);
   const [IDActual, SetIDActual] = useState<number | null>(null);
   const [precioNeto, SetIPrecioNeto] = useState<number>(0);
@@ -110,14 +93,14 @@ export default function OrderAdd() {
   const [debouncedSearchTerm3, setDebouncedSearchTerm3] = useState(TerminosHelado);
   const [menuVisible, setMenuVisible] = useState(false);
   const [loading, setLoading] = useState(true);
-  // Definir el estado para el total
-  const [totalAdiciones, setTotalAdiciones] = useState<number>(0);
 
-  // const [arrayGeneralizado 
-  // const [totalAdiciones, setTotaladiciones] = useState(Number);
-   
-  
-  
+
+
+
+ useEffect(() => {
+    //REDUCIR ENTRADA DE INSUMOS
+    // console.log('reducir entrada',reducir_entrada(5, -3));
+ }),[]
 
   useEffect(() => {
     const combinedArray = [
@@ -129,7 +112,7 @@ export default function OrderAdd() {
 
 
     const generalizarItems = (array: Insumo_adicion[]) => {
-    const acc = array.reduce((acc: Insumo_adicion[], item) => {
+    array.reduce((acc: Insumo_adicion[], item) => {
       if (
         !item.Adiciones_Insumos ||
         typeof item.Adiciones_Insumos.cantidad !== "number"
@@ -220,7 +203,7 @@ export default function OrderAdd() {
 
   useEffect(() => {
     if (!debouncedSearchTerm3) {
-      // fetchPedidos();
+     
     } else {
       const InsumosFiltrados = buscarInsumos.filter((insumos) =>
         insumos.descripcion_insumo
@@ -267,6 +250,7 @@ useEffect(() => {
           const response =  await api.get(`http://localhost:3300/productos`)	
           const data = response.data
           setProducts(data);
+      
           cache.Productos = data
         } catch (error) {
           console.error("Error al obtener el producto:", error);
@@ -283,6 +267,7 @@ useEffect(() => {
           const response =  await api.get(`http://localhost:3300/ventas/${id}`)	
           const data = response.data
           const {ProductosLista} = data
+        
           setProductosAgregados(ProductosLista);
           console.log(data)
         } catch (error) {
@@ -319,7 +304,7 @@ useEffect(() => {
           estado_insumo:insumo.estado_insumo,
           ID_tipo_insumo: insumo.ID_tipo_insumo,
           Adiciones_Insumos: {
-            cantidad: 1,
+            cantidad:1,
             total: 1 * insumo.precio
           },
         },
@@ -349,7 +334,8 @@ useEffect(() => {
           ID_insumo: insumo.ID_insumo,
           descripcion_insumo: insumo.descripcion_insumo,
           precio: insumo.precio,
-          ID_tipo_Insumo: insumo.ID_tipo_Insumo,
+          ID_tipo_insumo: insumo.ID_tipo_insumo,
+          estado_insumo:insumo.estado_insumo,
           Adiciones_Insumos: {
             cantidad: 1,
             total: insumo.precio,
@@ -380,7 +366,8 @@ useEffect(() => {
           ID_insumo: salsa.ID_insumo,
           descripcion_insumo: salsa.descripcion_insumo,
           precio: salsa.precio,
-          ID_tipo_Insumo: salsa.ID_tipo_Insumo,
+          ID_tipo_insumo: salsa.ID_tipo_insumo,
+          estado_insumo:salsa.estado_insumo,
           Adiciones_Insumos: {
             cantidad: 1,
             total: salsa.precio,
@@ -394,6 +381,8 @@ useEffect(() => {
 
 
   const [Lista, setLista] = useState<Insumo_adicion[]>([]);
+
+  
   const calcularTotalAdiciones = () => {
   // Sumar todos los totales de cada item en Lista
   const total = Lista.reduce((acc, item) => {
@@ -404,8 +393,6 @@ useEffect(() => {
     return acc;
   }, 0); // Inicializamos el acumulador en 0
 
-  console.log("Total de todas las adiciones:", total);
-  setTotalAdiciones(total);
   return total;
 };
 
@@ -448,19 +435,7 @@ useEffect(() => {
             header: "Acciones",
             Cell: ({ row }) => (
               <div className="tw-flex tw-justify-center tw-gap-2">
-                {/* <button
-                  onClick={() => handleModal("edit", row.original.ID_pedido)}
-                  className="tw-bg-blue-500 tw-text-white tw-rounded-full tw-p-2 tw-shadow-md tw-hover:bg-blue-600 tw-transition-all tw-duration-300"
-                >
-                  <FontAwesomeIcon icon={faEdit} />
-                </button>
-                <button onClick={() => handleDelete(row.original.ID_pedido)} className="tw-bg-red-500 tw-text-white tw-rounded-full tw-p-2 tw-shadow-md tw-hover:bg-red-600 tw-transition-all tw-duration-300">
-                  <FontAwesomeIcon icon={faTrash} />
-                </button>
-                <button className="tw-bg-green-500 tw-text-white tw-rounded-full tw-p-2 tw-shadow-md tw-hover:bg-green-600 tw-transition-all tw-duration-300">
-                  <FontAwesomeIcon icon={faBoxOpen} />
-                </button> */}
-                 <button 
+            <button 
             type="button"
             className = "tw-ml-2 tw-bg-blue-500 tw-text-white tw-p-1 tw-rounded"
             onClick={()=>{
@@ -486,10 +461,10 @@ const agregarProducto = () => {
   if (productoActual) {
 
        // Crear una nueva adición con los insumos seleccionados, calculando el total basado en la cantidad y precio de cada insumo
-       const nuevaAdicion = {
+      const nuevaAdicion = {
          // Usamos el timestamp como un ID único
         id_adicion: Date.now(),
-        cantidad: Lista.length, // La cantidad depende de cuántos insumos se han agregado (ajustar según tu lógica)
+        cantidad: 1, // La cantidad depende de cuántos insumos se han agregado (ajustar según tu lógica)
         total: Lista.reduce((acc, item) => {
           if (item.Adiciones_Insumos && item.Adiciones_Insumos.total) {
             return acc + (item.Adiciones_Insumos.cantidad * item.Adiciones_Insumos.total);
@@ -517,7 +492,7 @@ const agregarProducto = () => {
               cantidad: producto.cantidad + 1, // Incrementar cantidad
               Producto_Venta: producto.Producto_Venta.map((productoVenta) => ({
                 ...productoVenta,
-                cantidad: productoVenta.cantidad + 1, // Incrementar cantidad en Producto_Pedido
+                cantidad: productoVenta.cantidad + 1, // Incrementar cantidad en Producto_Venta
                 sub_total: (productoVenta.cantidad + 1) * producto.precio_neto, // Actualizar sub_total
                 Adiciones: [
                   ...productoVenta.Adiciones, // Conservar las adiciones anteriores
@@ -567,11 +542,9 @@ useEffect(() => {
 }, [productosAgregados]);
 
 
-
 const navegate = useNavigate()
   const order = async () => {
  
-
     const venta: Venta = {
       fecha: new Date().toISOString(),
       ID_clientes: 1,
@@ -580,35 +553,46 @@ const navegate = useNavigate()
       ProductosLista:productosAgregados
     };
     console.log(venta);
-    const url_order = `/ventas`;
+    const url_venta = `/Ventas`;
 
     try {
 
-      if(id){
-        await api.put(`${url_order}/${id}`, venta, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        toast.success("La venta ha sido actualizado exitosamente.");
-        navegate('/ventas');
-      }else{
-        await api.post(url_order, venta, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        toast.success("La venta ha sido agregado exitosamente.");
-        navegate('/ventas');
-      }
-      
+    if(id){
+      await api.put(`${url_venta}/${id}`, venta, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      toast.success("La venta ha sido actualizado exitosamente.");
+      navegate('/Ventas');
+    }else{
+      await api.post(url_venta, venta, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+     
+
+   
+
+    toast.success("La venta ha sido agregado exitosamente.");
+
+
+        navegate('/Ventas');
+    
+    }
      
     } catch {
       toast.error(
-        "No se pudo agregar el pedido. Por favor, intente nuevamente."
+        "No se pudo agregar la venta. Por favor, intente nuevamente."
       );
     }
   };
+
+
+
+
+
 
  const eliminarHelado = (index: number) => {
     setInsumoAgregados((prev) => prev.filter((_, i) => i !== index));
@@ -727,12 +711,9 @@ const handleChangeInsumo = (ID_insumo: number, cantidad: number, tipo: string) =
               ...producto,
               Producto_Ventas: {
                 ...producto.Producto_Venta,
-                cantidad: Math.max(
-                  1,
-                  producto.Producto_Venta.cantidad + incremento
-                )
+                cantidad: Math.max(1, producto.Producto_Venta.reduce((acc, p) => acc + p.cantidad, 0) + incremento)
                 
-              },
+              }
             }
           : producto
       )
@@ -745,23 +726,29 @@ const handleChangeInsumo = (ID_insumo: number, cantidad: number, tipo: string) =
     setProductosAgregados((prev) => prev.filter((_, i) => i !== index));
   };
   
-  
 
   const totalVenta = productosAgregados.reduce((sum, producto) => {
-    // Subtotal de las adiciones por producto
-    const totalAdiciones = producto.Producto_Venta.reduce((acc, venta) => {
-      const subtotalAdiciones = venta.Adiciones.reduce((subAcc, adicion) => subAcc + adicion.total, 0);
-      return acc + subtotalAdiciones * venta.cantidad; // Total por las cantidades de pedidos
+    // Calcular el total de todas las adiciones de este producto
+    const totalAdiciones = producto.Producto_Venta.reduce((accVenta, venta) => {
+      const subtotalAdiciones = venta.Adiciones.reduce(
+        (accAdicion, adicion) => accAdicion + adicion.total,
+        0
+      );
+      return accVenta + subtotalAdiciones;
     }, 0);
   
-    // Subtotal del producto (precio * cantidad)
-    const totalProducto = producto.precio_neto * producto.Producto_Venta.reduce((acc, p) => acc + p.cantidad, 0);
+    // Calcular el total del producto (precio * cantidad total del producto)
+    const cantidadTotalProducto = producto.Producto_Venta.reduce(
+      (accCantidad, venta) => accCantidad + venta.cantidad,
+      0
+    );
+    const totalProducto = producto.precio_neto * cantidadTotalProducto;
   
-    // Sumar el subtotal de producto + adiciones al total general
+    // Sumar total del producto y total de las adiciones
     return sum + totalProducto + totalAdiciones;
   }, 0);
   
-  console.log("Total del pedido:", totalVenta);
+  console.log("Total de la venta:", totalVenta);
 
 
 
@@ -770,8 +757,7 @@ const handleChangeInsumo = (ID_insumo: number, cantidad: number, tipo: string) =
   const toggleAccordion = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
   }
-
-
+  
 
   const handleCantidadAdicionChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -811,16 +797,30 @@ const handleChangeInsumo = (ID_insumo: number, cantidad: number, tipo: string) =
                 0
               );
   
+              // Recalculamos la cantidad total basada en las adiciones
+              const nuevaCantidadProducto = nuevasAdiciones.reduce(
+                (acc, adicion) => acc + adicion.cantidad,
+                0
+              );
+  
               return {
                 ...productoVenta,
                 Adiciones: nuevasAdiciones,
                 sub_total: nuevoSubTotal, // Actualizamos el subtotal
+                cantidad: nuevaCantidadProducto, // Actualizamos la cantidad total del producto
               };
             });
+  
+            // Aseguramos que la cantidad total del producto esté sincronizada con las adiciones
+            const nuevaCantidadTotal = nuevoProductoVenta.reduce(
+              (acc, venta) => acc + venta.cantidad,
+              0
+            );
   
             return {
               ...producto,
               Producto_Venta: nuevoProductoVenta,
+              cantidad: nuevaCantidadTotal, // Actualizamos la cantidad del producto
             };
           }
           return producto;
@@ -828,9 +828,7 @@ const handleChangeInsumo = (ID_insumo: number, cantidad: number, tipo: string) =
       );
     }
   };
-  
 
-  
   const handleCantidadInsumoChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     id_producto: number,
@@ -924,7 +922,7 @@ const handleChangeInsumo = (ID_insumo: number, cantidad: number, tipo: string) =
   
 
 
-  // console.log(`VALOR TOTAL DE LAS ADICIONES ${ Adiciones_total}`);	
+
 
   return (
     <div className="tw-container tw-mx-auto tw-p-4 ">
@@ -998,7 +996,7 @@ const handleChangeInsumo = (ID_insumo: number, cantidad: number, tipo: string) =
         <tr>
           <th className="tw-px-4 tw-py-2 tw-text-left tw-font-semibold tw-text-gray-700">#</th>
           <th className="tw-px-4 tw-py-2 tw-text-left tw-font-semibold tw-text-gray-700">Descripción de Adición</th>
-          <th className="tw-px-4 tw-py-2 tw-text-left tw-font-semibold tw-text-gray-700">Cantidad de adiciones</th>
+          <th className="tw-px-4 tw-py-2 tw-text-left tw-font-semibold tw-text-gray-700">Cantidad de productos</th>
           <th className="tw-px-4 tw-py-2 tw-text-left tw-font-semibold tw-text-gray-700">Total</th>
           <th className="tw-px-4 tw-py-2 tw-text-left tw-font-semibold tw-text-gray-700">Acciones</th>
         </tr>
@@ -1056,8 +1054,8 @@ const handleChangeInsumo = (ID_insumo: number, cantidad: number, tipo: string) =
       
             {/* Calculo del subtotal para cada producto */}
             <p className="tw-text-sm">
-              Subtotal: $
-             
+              {/* Subtotal: 
+              {producto.subtotal.toFixed(2)} */}
             </p>
       
             <div className="tw-flex tw-items-center tw-space-x-2">
@@ -1364,4 +1362,3 @@ const handleChangeInsumo = (ID_insumo: number, cantidad: number, tipo: string) =
     </div>
   );
 }
-

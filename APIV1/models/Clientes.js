@@ -11,21 +11,21 @@ module.exports = (sequelize, DataTypes) => {
     },
     correo_electronico: {
       type: DataTypes.STRING(100),
-      unique: true, // Mantén solo si necesitas que sea único
+      unique: true, 
       allowNull: true,
     },
     documento: {
       type: DataTypes.BIGINT,
-      unique: true, // Mantén solo si es necesario que sea único
+      unique: true,
       defaultValue: 123456789456,  
     },
     nombre: {
       type: DataTypes.STRING(100),
-      allowNull: true, // Eliminé el 'unique' aquí
+      allowNull: true, 
     },
     direccion: {
       type: DataTypes.STRING(100),
-      allowNull: true, // Eliminé el 'unique' aquí
+      allowNull: true, 
     },
   }, {
     tableName: 'Clientes',
