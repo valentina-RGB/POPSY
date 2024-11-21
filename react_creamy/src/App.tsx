@@ -16,7 +16,7 @@ import ListarClientes from './page/Clientes/ListCliente';
 import ListarUsuarios from './page/Usuarios/ListUsuario';
 import Productos from './page/Products/products-list';
 import Pedidos from './page/Order/Order_list';
-import PedidoDetalles from './page/Order/Order_details';
+// import PedidoDetalles from './page/Order/Order_details';
 import Login from './page/Acceso/login';
 import SignUp from './page/Acceso/signUp';
 import OrderAdd from './page/Order/Order_add';
@@ -70,8 +70,8 @@ const Layout: React.FC = () => {
               <Route path="/Ventas" element={<Ventas />} />
               <Route path="/Productos" element={<Productos />} />
               <Route path="/Pedidos" element={<Pedidos />} />
-              <Route path="/pedido/:id" element={<PedidoDetalles orderId={':id'} />} />
-              <Route path="/Editar-pedido/:id" element={<OrderAdd />} />
+              {/* <Route path="/pedido/:id" element={<PedidoDetalles orderId={0} />} /> */}
+              <Route path="/Editar-pedido/:id" element={<OrderAdd/>} />
               <Route path="/roles" element={<ListarRoles />} />
               <Route path="/Clientes" element={<ListarClientes />} />
               <Route path="/agregar-cliente" element={<AddCliente />} />
@@ -90,7 +90,7 @@ const Layout: React.FC = () => {
                     </p>
                   </div>
                   <div className="tw-col-md-6 tw-text-center tw-text-md-end tw-text-gray-400">
-                    <p className="tw-text-gray-500 tw-text-sm">Version 1.3.2</p>
+                    <p className="tw-mb-0">Version 1</p>
                   </div>
                 </div>
               </div>

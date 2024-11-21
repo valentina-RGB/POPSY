@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
   
 
 
-  const StockInsumos = require('./StockInsumo'); // Importa el modelo de StockInsumos
+  const StockInsumos = require('./Stock_Insumo'); // Importa el modelo de StockInsumos
 
 
 

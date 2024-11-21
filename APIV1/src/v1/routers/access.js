@@ -1,16 +1,15 @@
-const express = require('express');
-const router = express.Router();
-const controllerAccess = require('../../controllers/autenticacion');
 
-router
-    
-    .post('/login', controllerAccess.authenticateToken, controllerAccess.Iniciar_sesion)
-    .post('/signup', controllerAccess.authenticateToken,
-   
-        controllerAccess.registrar
-      
-    )
-   
+// const express = require('express');
+// const router = express.Router();
+// const controllerAccess = require('../../controllers/access');
+
+// router
+//     .get('/', controllerAccess.obtenerAcceso)
+//     .get('/:id', controllerAccess.obtenerAccesoPorId)
+//     .post('/', controllerAccess.CrearAcceso)
+//     .post('/', controllerAccess.CrearAcceso)
+//     .patch('/:id', controllerAccess.ModificarAcceso)
+//     .delete('/:id', controllerAccess.eliminarAcceso)
 
 
-module.exports = router;
+// module.exports = router;

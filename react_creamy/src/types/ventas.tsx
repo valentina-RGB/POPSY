@@ -1,5 +1,3 @@
-
-
 export interface Venta {
   ID_venta: number;
   fecha:Date;

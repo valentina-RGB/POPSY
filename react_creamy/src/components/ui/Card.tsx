@@ -50,4 +50,3 @@ const CardTitle: React.FC<{ className?: string; children: React.ReactNode }> = (
 };
 
 export { Card, CardHeader, CardContent, CardFooter, CardTitle };
-;
