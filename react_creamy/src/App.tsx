@@ -1,8 +1,6 @@
 import { Toaster } from 'react-hot-toast';
 
-
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import { useState, useEffect } from 'react';
 import Navbar from "./components/navbar_prueba"; // Asegúrate de que el path sea correcto
 import Menu from "./components/sidebar";
@@ -18,7 +16,7 @@ import ListarClientes from './page/Clientes/ListCliente';
 import ListarUsuarios from './page/Usuarios/ListUsuario';
 import Productos from './page/Products/products-list';
 import Pedidos from './page/Order/Order_list';
-// import PedidoDetalles from './page/Order/Order_details';
+import PedidoDetalles from './page/Order/Order_details';
 import Login from './page/Acceso/login';
 import SignUp from './page/Acceso/signUp';
 import OrderAdd from './page/Order/Order_add';
@@ -29,33 +27,11 @@ const Loader: React.FC = () => (
   </div>
 );
 
-const Loader: React.FC = () => (
-  <div className="tw-flex tw-justify-center tw-items-center tw-h-screen">
-    <div className="tw-animate-spin tw-rounded-full tw-h-12 tw-w-12 tw-border-t-4 tw-border-blue-500 tw-border-opacity-75"></div>
-  </div>
-);
-
 const Layout: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-
-    useEffect(() => {
-      // Activa el loader al cambiar de ruta
-      setIsLoading(true);
-  
-      const timer = setTimeout(() => {
-        setIsLoading(false); // Simula una carga, puedes ajustarlo según necesites
-      }, 500); // Tiempo opcional para simular la carga
-  
-      return () => clearTimeout(timer); // Limpia el temporizador
-    }, [location.pathname]); // Se ejecuta cuando cambia la ruta
-  
-    if (isLoading) {
-      return <Loader />;
-    }
 
     useEffect(() => {
       // Activa el loader al cambiar de ruta
@@ -78,13 +54,10 @@ const Layout: React.FC = () => {
       {/* Navbar fijo */}
       <Navbar toggleMenu={toggleMenu} />
       <div className="tw-flex tw-flex-col md:tw-flex-row tw-pt-6">
-      <div className="tw-flex tw-flex-col md:tw-flex-row tw-pt-6">
         {/* Sidebar o menú */}
         <Menu isMenuOpen={isMenuOpen} />
 
         {/* Contenido principal con suficiente padding-top */}
-        <div className="tw-flex-1 tw-p-4 md:tw-p-6 tw-overflow-auto "> {/* Ajuste de padding-top */}
-          <div className="tw-bg-white tw-rounded-2xl tw-shadow-lg tw-p-4 md:tw-p-6 tw-min-h-[calc(100vh-150px)]">
         <div className="tw-flex-1 tw-p-4 md:tw-p-6 tw-overflow-auto "> {/* Ajuste de padding-top */}
           <div className="tw-bg-white tw-rounded-2xl tw-shadow-lg tw-p-4 md:tw-p-6 tw-min-h-[calc(100vh-150px)]">
             {/* Definición de rutas */}
@@ -98,7 +71,7 @@ const Layout: React.FC = () => {
               <Route path="/Productos" element={<Productos />} />
               <Route path="/Pedidos" element={<Pedidos />} />
               <Route path="/pedido/:id" element={<PedidoDetalles orderId={':id'} />} />
-              <Route path="/Editar-pedido/:id" element={<OrderAdd />} />
+              <Route path="/Editar-pedido/:id" element={<OrderAdd/>} />
               <Route path="/roles" element={<ListarRoles />} />
               <Route path="/Clientes" element={<ListarClientes />} />
               <Route path="/agregar-cliente" element={<AddCliente />} />
@@ -109,18 +82,15 @@ const Layout: React.FC = () => {
               <Route path="/Agregar-ventas" element={<Ventasadd />} />
             </Routes>
             <footer className="tw-mt-6 tw-bg-white tw-rounded-lg tw-shadow-md tw-p-4">
-            <footer className="tw-mt-6 tw-bg-white tw-rounded-lg tw-shadow-md tw-p-4">
               <div className="tw-container-fluid">
-                <div className="tw-text-center md:tw-text-left tw-mb-2 md:tw-mb-0">
                 <div className="tw-text-center md:tw-text-left tw-mb-2 md:tw-mb-0">
                   <div className="tw-col-md-6 tw-text-center tw-text-md-start tw-fw-bold">
                     <p className="tw-mb-2 tw-mb-md-0 tw-fw-bold">
                       Creamy Soft &copy; {new Date().getFullYear()}
-                      Creamy Soft &copy; {new Date().getFullYear()}
                     </p>
                   </div>
                   <div className="tw-col-md-6 tw-text-center tw-text-md-end tw-text-gray-400">
-                    <p className="tw-text-gray-500 tw-text-sm">Version 1.3.2</p>
+                    <p className="tw-mb-0">Version 1.3.2</p>
                   </div>
                 </div>
               </div>

@@ -43,7 +43,13 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   StockInsumos.associate = (models) => {
-    StockInsumos.belongsTo(models.Insumos, { foreignKey:'ID_insumo', as:'insumo' });
+    StockInsumos.belongsTo(models.Insumos, { foreignKey: 'ID_insumo', as: 'insumo' });
+
+    // Si tienes la tabla Porciones en tu modelo
+    StockInsumos.belongsTo(models.Porciones, {
+      foreignKey: 'ID_porcion',
+      as: 'porcion',
+    });
   };
 
   return StockInsumos;

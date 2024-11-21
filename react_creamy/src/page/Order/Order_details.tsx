@@ -16,9 +16,8 @@ type Insumo = {
     sub_total: number;
   };
 };
-};
 
-type Adicion = {
+
 type Adicion = {
   cantidad: number;
   total: number;

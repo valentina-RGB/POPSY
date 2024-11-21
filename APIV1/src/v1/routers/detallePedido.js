@@ -1,3 +1,4 @@
+// routes/insumos.js
 const express = require('express');
 const router = express.Router();
 const DetalleController = require('../../controllers/detalle_pedido');
