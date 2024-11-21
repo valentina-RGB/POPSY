@@ -1,20 +1,13 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Card } from '../../components/ui/Card';
-import { Badge } from '../../components/ui/badge';
-import { 
-  ChevronDown, 
-  ChevronUp, 
-  Calendar, 
-  Package, 
-  DollarSign, 
-  ShoppingCart, 
-  Clock 
-} from 'lucide-react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import { Badge } from "../../components/ui/badge";
+import {ChevronDown, ChevronUp, Calendar,Package, DollarSign, ShoppingCart, Clock, Plus, } from "lucide-react";
 
-type Addition = {
+
+
+type Insumo = {
   ID_insumo: number;
   descripcion_insumo: string;
   precio: number;
@@ -27,256 +20,246 @@ type Addition = {
 type Adicion = {
   cantidad: number;
   total: number;
-  Insumos: Addition[];
+  Insumos: Insumo[];
 };
 
-type ProductPedido = {
+type ProductoPedido = {
   ID_producto_pedido: number;
   ID_pedido: number;
   ID_producto: number;
   cantidad: number;
   precio_neto: number;
   sub_total: number;
-  Adiciones?: Adicion[];
+  Adiciones: Adicion[];
 };
 
-type Product = {
+type Producto = {
   ID_producto: number;
   nombre: string;
   precio_neto: number;
-  Producto_Pedido: ProductPedido[];
+  Producto_Pedido: ProductoPedido[];
 };
 
-type Order = {
+type Pedido = {
   ID_pedido: number;
   fecha: string;
-  ID_estado_pedido: number;
   precio_total: number;
-  ProductosLista: Product[];
+  ID_estado_pedido: number;
+  ProductosLista: Producto[];
 };
 
 const OrderDetail = () => {
   const { id } = useParams();
-  const [order, setOrder] = useState<Order | null>(null);
+  const [pedido, setPedido] = useState<Pedido | null>(null);
+  const [expandedProducts, setExpandedProducts] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [expandedProducts, setExpandedProducts] = useState({});
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchOrder = async () => {
+    const fetchPedido = async () => {
       try {
         setIsLoading(true);
         const response = await axios.get(`http://localhost:3300/pedidos/${id}`);
-        setOrder(response.data);
+        setPedido(response.data);
         setIsLoading(false);
-      } catch (error) {
-        console.error('Error fetching order details:', error);
-        setError(error as Error);
+      } catch (err) {
+        setError("Error al cargar los detalles del pedido");
         setIsLoading(false);
       }
     };
 
-    fetchOrder();
+    fetchPedido();
   }, [id]);
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('es-ES', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
-
-  const formatPrice = (price = 0) => {
-    return new Intl.NumberFormat('es-CO', {
-      style: 'currency',
-      currency: 'COP',
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat("es-CO", {
+      style: "currency",
+      currency: "COP",
     }).format(price);
   };
 
-  const getOrderStatus = (statusId: number) => {
-    const statuses = {
-      1: { label: 'Pendiente', color: 'bg-amber-500', icon: Clock },
-      2: { label: 'En Proceso', color: 'bg-blue-500', icon: ShoppingCart },
-      3: { label: 'Completado', color: 'bg-green-500', icon: ShoppingCart },
-      4: { label: 'Cancelado', color: 'bg-red-500', icon: ShoppingCart },
-    };
-    return statuses[statusId as keyof typeof statuses] || { label: 'Desconocido', color: 'bg-gray-500', icon: ShoppingCart };
-  };
-
-  const toggleProductExpand = (productId: number) => {
-    setExpandedProducts((prev) => ({
-      ...prev,
-      [productId]: !prev[productId as keyof typeof prev],
-    }));
+  const toggleExpand = (productId: number) => {
+    setExpandedProducts((prev) =>
+      prev.includes(productId)
+        ? prev.filter((id) => id !== productId)
+        : [...prev, productId]
+    );
   };
 
   if (isLoading) {
-    return (
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="flex justify-center items-center h-screen"
-      >
-        <motion.div
-          animate={{
-            scale: [1, 1.1, 1],
-            rotate: [0, 5, -5, 0],
-          }}
-          transition={{
-            duration: 0.6,
-            repeat: Infinity,
-          }}
-          className="text-2xl font-bold text-blue-500"
-        >
-          Cargando detalles del pedido...
-        </motion.div>
-      </motion.div>
-    );
+    return <div className="text-center mt-6">Cargando...</div>;
   }
 
   if (error) {
-    return (
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="text-center mt-6 text-red-500"
-      >
-        Error al cargar los detalles del pedido
-      </motion.div>
-    );
+    return <div className="text-center mt-6 text-red-500">{error}</div>;
   }
 
-  const status = getOrderStatus(order!.ID_estado_pedido);
+  const orderStatus: { [key: number]: { label: string; color: string; icon: React.ComponentType<{ className?: string }> } } = {
+    1: { label: "Pendiente", color: "bg-amber-500", icon: Clock },
+    2: { label: "En Proceso", color: "bg-blue-500", icon: ShoppingCart },
+    3: { label: "Completado", color: "bg-green-500", icon: ShoppingCart },
+    4: { label: "Cancelado", color: "bg-red-500", icon: ShoppingCart },
+  };
+
+  const status = orderStatus[pedido!.ID_estado_pedido];
   const StatusIcon = status.icon;
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="max-w-4xl mx-auto p-4"
-    >
-      <Card className="shadow-lg">
-        <motion.div 
-          initial={{ x: -20, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="p-6 border-b flex justify-between items-center"
-        >
-          <div className="flex items-center space-x-4">
-            <h2 className="text-2xl font-bold">Pedido #{order!.ID_pedido}</h2>
-            <Badge 
-              className={`${status.color} text-white flex items-center space-x-2`}
+    <div className="max-w-4xl mx-auto p-6">
+      <div className="bg-white p-6 shadow-md rounded-md">
+        {/* Encabezado del pedido */}
+        <div className="mb-6">
+          <div className="flex justify-between items-center mb-4">
+            <h1 className="text-3xl font-bold text-gray-800">
+              Detalles del Pedido #{pedido?.ID_pedido}
+            </h1>
+            <Badge
+              className={`${status.color} text-white py-1 px-4 rounded-lg flex items-center`}
             >
-              <StatusIcon className="h-4 w-4" />
-              <span>{status.label}</span>
+              <StatusIcon className="h-5 w-5 mr-2" />
+              {status.label}
             </Badge>
           </div>
-        </motion.div>
-
-        <div className="p-6">
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6"
-          >
-            {[
-              { icon: Calendar, label: 'Fecha del pedido', value: formatDate(order!.fecha) },
-              { icon: Package, label: 'Total productos', value: order!.ProductosLista.length },
-              { icon: DollarSign, label: 'Total pedido', value: formatPrice(order!.precio_total) }
-            ].map((item, index) => (
-              <motion.div 
-                key={index}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.4 + index * 0.2 }}
-                className="flex items-center gap-3 bg-gray-50 p-4 rounded-lg"
-              >
-                <item.icon className="h-6 w-6 text-blue-500" />
-                <div>
-                  <p className="text-sm text-gray-500">{item.label}</p>
-                  <p className="font-semibold">{item.value}</p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          <AnimatePresence>
-            {order?.ProductosLista && order.ProductosLista.length > 0 ? (
-              order!.ProductosLista.map((producto: Product, index: number) => {
-                const productoPedido = producto.Producto_Pedido;
-                const isExpanded = expandedProducts[producto.ID_producto as keyof typeof expandedProducts];
-
-                return (
-                  <motion.div
-                    key={producto.ID_producto}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.6 + index * 0.2 }}
-                    className="mb-4 border rounded-lg overflow-hidden"
-                  >
-                    <motion.div
-                      whileHover={{ backgroundColor: '#f9fafb' }}
-                      className="flex justify-between items-center p-4 cursor-pointer"
-                      onClick={() => toggleProductExpand(producto.ID_producto)}
-                    >
-                      <div>
-                        <h3 className="font-bold text-lg">{producto.nombre}</h3>
-                        <p className="text-sm text-gray-500">
-                          {productoPedido[0].cantidad} x {formatPrice(producto.precio_neto)}
-                        </p>
-                      </div>
-                      <div className="flex items-center">
-                        <p className="mr-4 font-bold text-blue-600">
-                          {formatPrice(productoPedido[0].sub_total)}
-                        </p>
-                        {isExpanded ? <ChevronUp /> : <ChevronDown />}
-                      </div>
-                    </motion.div>
-
-                    <AnimatePresence>
-                      {isExpanded && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          className="p-4 bg-gray-50 border-t"
-                        >
-                          <div className="grid grid-cols-2 gap-4">
-                            <div>
-                              <h4 className="font-semibold mb-2">Detalles del Producto</h4>
-                              <p>Cantidad: {productoPedido[0].cantidad}</p>
-                              <p>Subtotal: {formatPrice(productoPedido[0].sub_total)}</p>
-                            </div>
-                            <div>
-                              <h4 className="font-semibold mb-2">Adiciones</h4>
-                              {/* Add similar logic for displaying additions */}
-                            </div>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </motion.div>
-                );
-              })
-            ) : (
-              <motion.p 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-center text-gray-500 py-4"
-              >
-                No hay productos en este pedido.
-              </motion.p>
-            )}
-          </AnimatePresence>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex items-center space-x-2">
+              <Calendar className="text-gray-500 h-5 w-5" />
+              <p className="text-gray-500">
+                Fecha: {new Date(pedido!.fecha).toLocaleString("es-ES")}
+              </p>
+            </div>
+            <div className="flex items-center space-x-2">
+              <DollarSign className="text-gray-500 h-5 w-5" />
+              <p className="text-gray-500">
+                Total: {formatPrice(pedido!.precio_total)}
+              </p>
+            </div>
+          </div>
         </div>
-      </Card>
-    </motion.div>
+  
+        {/* Sección de productos */}
+        <div className="mb-6">
+          <h2 className="text-lg font-bold mb-4 text-gray-800">Productos</h2>
+          {pedido?.ProductosLista.map((producto) => (
+            <div
+              key={producto.ID_producto}
+              className="mb-4 border rounded-lg p-4 shadow-sm bg-gray-50"
+            >
+              {/* Información del producto */}
+              <div
+                className="flex justify-between items-center cursor-pointer"
+                onClick={() => toggleExpand(producto.ID_producto)}
+              >
+                <div>
+                  <h3 className="font-semibold text-gray-700">
+                    {producto.nombre}
+                  </h3>
+                  <p className="text-gray-500">
+                    Precio unitario: {formatPrice(producto.precio_neto)}
+                  </p>
+                </div>
+                {expandedProducts.includes(producto.ID_producto) ? (
+                  <ChevronUp />
+                ) : (
+                  <ChevronDown />
+                )}
+              </div>
+  
+              {/* Detalles del producto */}
+              {expandedProducts.includes(producto.ID_producto) && (
+                <div className="mt-4">
+                  {producto.Producto_Pedido.map((pedido) => (
+                    <div
+                      key={pedido.ID_producto_pedido}
+                      className="bg-white p-4 rounded-lg shadow-inner mb-4"
+                    >
+                      <p>
+                        <strong>Cantidad:</strong> {pedido.cantidad}
+                      </p>
+                      <p>
+                        <strong>Subtotal:</strong>{" "}
+                        {formatPrice(pedido.sub_total)}
+                      </p>
+  
+                      {/* Adiciones */}
+                      {pedido.Adiciones.length > 0 && (
+                        <div className="mt-4">
+                          <h4 className="font-semibold text-gray-700 mb-2">
+                            Adiciones
+                          </h4>
+                          {pedido.Adiciones.map((adicion, idx) => (
+                            <div
+                              key={idx}
+                              className="mb-4 border-t pt-4 border-gray-200"
+                            >
+                              <p>
+                                <strong>Cantidad:</strong> {adicion.cantidad}
+                              </p>
+                              <p>
+                                <strong>Total:</strong>{" "}
+                                {formatPrice(adicion.total)}
+                              </p>
+  
+                              {/* Insumos */}
+                              {adicion.Insumos.length > 0 && (
+                                <div className="mt-2">
+                                  <h5 className="font-semibold text-gray-600">
+                                    Insumos:
+                                  </h5>
+                                  <table className="w-full text-left mt-2 border-collapse border border-gray-200">
+                                    <thead>
+                                      <tr className="bg-gray-100 text-gray-700">
+                                        <th className="p-2 border border-gray-200">
+                                          Insumo
+                                        </th>
+                                        <th className="p-2 border border-gray-200">
+                                          Cantidad
+                                        </th>
+                                        <th className="p-2 border border-gray-200">
+                                          Precio
+                                        </th>
+                                        <th className="p-2 border border-gray-200">
+                                          Subtotal
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {adicion.Insumos.map((insumo) => (
+                                        <tr key={insumo.ID_insumo}>
+                                          <td className="p-2 border border-gray-200">
+                                            {insumo.descripcion_insumo}
+                                          </td>
+                                          <td className="p-2 border border-gray-200">
+                                            {insumo.Adiciones_Insumos.cantidad}
+                                          </td>
+                                          <td className="p-2 border border-gray-200">
+                                            {formatPrice(insumo.precio)}
+                                          </td>
+                                          <td className="p-2 border border-gray-200">
+                                            {formatPrice(
+                                              insumo.Adiciones_Insumos.sub_total
+                                            )}
+                                          </td>
+                                        </tr>
+                                      ))}
+                                    </tbody>
+                                  </table>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
+  
 };
 
 export default OrderDetail;

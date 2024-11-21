@@ -151,6 +151,15 @@ const InsumosList: React.FC = () => {
             : "No definido";
         },
       },
+     
+      {
+        accessorKey: 'stock.stock_actual',
+        header: 'Cantidad',
+        Cell: ({ cell }) => {
+          const stockActual = cell.getValue<number>(); // Accede al valor de stock_actual
+          return stockActual !== undefined ? stockActual : 'N/A'; // Verifica si el valor es válido
+        },
+      },
       {
         accessorKey: 'estado_insumo',
         header: 'Estado',
@@ -170,14 +179,6 @@ const InsumosList: React.FC = () => {
             </button>
           </div>
         ),
-      },
-      {
-        accessorKey: 'stock.stock_actual',
-        header: 'Cantidad',
-        Cell: ({ cell }) => {
-          const stockActual = cell.getValue<number>(); // Accede al valor de stock_actual
-          return stockActual !== undefined ? stockActual : 'N/A'; // Verifica si el valor es válido
-        },
       },
       {
         id: 'acciones',
