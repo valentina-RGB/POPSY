@@ -7,10 +7,7 @@ const helmet = require('helmet');
 // const cors = require('cors');
 
 const app = express();
-
-// app.use(express.json());
-app.use(helmet());
-// app.use(cors()); 
+app.use(helmet()); 
 
 // Simulación de base de datos
 const { Usuarios } = require("../../models");
@@ -63,10 +60,6 @@ const registrar = async (req, res) => {
       ID_rol: ID_rol || 7,
       estado: estado || 'A'
     });
-
-
-
-
 
 
     res.status(201).json({ message: 'Usuario registrado exitosamente' });

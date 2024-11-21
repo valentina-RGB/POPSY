@@ -136,6 +136,16 @@ const InsumosList: React.FC = () => {
       {
         accessorKey: 'descripcion_insumo',
         header: 'Nombre',
+        Cell: ({ cell }) => (
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3 }}
+            className="tw-font-semibold tw-text-gray-800"
+          >
+            {cell.getValue<string>()}
+          </motion.div>
+        ),
       },
       {
         accessorKey: 'precio',
@@ -186,36 +196,70 @@ const InsumosList: React.FC = () => {
         Cell: ({ row }) => (
           <div className="tw-flex tw-justify-center tw-gap-2">
             {/* Botón para editar */}
-            <button
+            <motion.button
+              whileHover={{ 
+                scale: 1.1, 
+                rotate: 5,
+                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
+              }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => handleEdit(row.original.ID_insumo)}
-              className="tw-bg-blue-500 tw-text-white tw-rounded-full tw-p-2 tw-shadow-md tw-hover:bg-blue-600 tw-transition-all tw-duration-300"
+              className="tw-group tw-bg-blue-500 tw-text-white tw-rounded-full tw-w-10 tw-h-10 tw-flex tw-items-center tw-justify-center tw-shadow-md tw-transition-all tw-duration-300 hover:tw-bg-blue-600 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-400 focus:tw-ring-opacity-75"
             >
-              <FontAwesomeIcon icon={faEdit} title="Editar" />
-            </button>
-
+              <FontAwesomeIcon 
+                icon={faEdit} 
+                className="tw-transition-transform tw-group-hover:tw-rotate-12"
+                title="Editar" 
+              />
+            </motion.button>
+      
             {/* Botón para eliminar */}
-            <button
+            <motion.button
+              whileHover={{ 
+                scale: 1.1, 
+                rotate: -5,
+                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
+              }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => handleDelete(row.original.ID_insumo)}
-              className="tw-bg-red-500 tw-text-white tw-rounded-full tw-p-2 tw-shadow-md tw-hover:bg-red-600 tw-transition-all tw-duration-300"
+              className="tw-group tw-bg-red-500 tw-text-white tw-rounded-full tw-w-10 tw-h-10 tw-flex tw-items-center tw-justify-center tw-shadow-md tw-transition-all tw-duration-300 hover:tw-bg-red-600 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-red-400 focus:tw-ring-opacity-75"
             >
-              <FontAwesomeIcon icon={faTrash} title="Eliminar" />
-            </button>
-
+              <FontAwesomeIcon 
+                icon={faTrash} 
+                className="tw-transition-transform tw-group-hover:tw-rotate-6"
+                title="Eliminar" 
+              />
+            </motion.button>
+      
             {/* Botón para agregar entrada */}
             <button
               onClick={() => handleAddEntry(row.original.ID_insumo)}
-              className="tw-bg-green-500 tw-text-white tw-rounded-full tw-p-2 tw-shadow-md tw-hover:bg-green-600 tw-transition-all tw-duration-300"
+              className="tw-group tw-bg-green-500 tw-text-white tw-rounded-full tw-w-10 tw-h-10 tw-flex tw-items-center tw-justify-center tw-shadow-md tw-transition-all tw-duration-300 hover:tw-bg-green-600 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-green-400 focus:tw-ring-opacity-75"
             >
-              <FontAwesomeIcon icon={faBoxOpen} title="Agregar entrada" />
+              <FontAwesomeIcon 
+                icon={faBoxOpen} 
+                className="tw-transition-transform tw-group-hover:tw-scale-110"
+                title="Agregar entrada" 
+              />
             </button>
-
+      
             {/* Botón para ver detalles */}
-            <button
+            <motion.button
+              whileHover={{ 
+                scale: 1.1, 
+                rotate: -5,
+                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
+              }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => handleViewDetails(row.original.ID_insumo)}
-              className="tw-bg-gray-500 tw-text-white tw-rounded-full tw-p-2 tw-shadow-md tw-hover:bg-gray-600 tw-transition-all tw-duration-300"
+              className="tw-group tw-bg-gray-500 tw-text-white tw-rounded-full tw-w-10 tw-h-10 tw-flex tw-items-center tw-justify-center tw-shadow-md tw-transition-all tw-duration-300 hover:tw-bg-gray-600 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-gray-400 focus:tw-ring-opacity-75"
             >
-              <FontAwesomeIcon icon={faEye} title="Ver detalles" />
-            </button>
+              <FontAwesomeIcon 
+                icon={faEye} 
+                className="tw-transition-transform tw-group-hover:tw-scale-110"
+                title="Ver detalles" 
+              />
+            </motion.button>
           </div>
         ),
       }
@@ -229,44 +273,68 @@ const InsumosList: React.FC = () => {
       <div className="tw-p-3  tw-min-h-screen">
         <h1 className="page-heading">Insumos</h1>
 
-        {/* Botones de acciones */}
-        <div className="tw-mb-4 tw-flex tw-gap-4">
-          <button onClick={handleAddInsumo} className="tw-bg-blue-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-shadow-md tw-hover:bg-blue-600 tw-transition-all tw-duration-300">
+        {/* Action Buttons with Hover Effects */}
+        <div 
+          className="tw-mb-6 tw-flex tw-space-x-4"
+        >
+          {/* Buttons with motion hover effects */}
+          <button 
+            onClick={handleAddInsumo} 
+            className="tw-bg-blue-500 tw-text-white tw-rounded-full tw-px-6 tw-py-3 tw-flex tw-items-center tw-gap-2 tw-shadow-md tw-transition-all"
+          >
             <FontAwesomeIcon icon={faPlus} /> Agregar Insumo
           </button>
-          <button onClick={() => navigate('/historial-entradas')} className="tw-bg-gray-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-shadow-md tw-hover:bg-gray-600 tw-transition-all tw-duration-300">
-            <FontAwesomeIcon icon={faBoxOpen} /> Ver Historial de Entradas
+          
+          <button 
+            onClick={() => navigate('/historial-entradas')} 
+            className="tw-bg-gray-500 tw-text-white tw-rounded-full tw-px-6 tw-py-3 tw-flex tw-items-center tw-gap-2 tw-shadow-md tw-transition-all"
+          >
+            <FontAwesomeIcon icon={faBoxOpen} /> Ver Historial
           </button>
         </div>
 
-        {/* Skeleton Loader cuando loading es true */}
         {loading ? (
-          <div className="w-full max-w-md mx-auto p-9">
-            {/* Aquí usas el Skeleton para el título */}
-            <Skeleton className="h-6 w-52" />
-
-            {/* Usas Skeleton para los diferentes campos que imitarán las filas de la tabla */}
-            <Skeleton className="h-4 w-48 mt-6" />
-            <Skeleton className="h-4 w-full mt-4" />
-            <Skeleton className="h-4 w-64 mt-4" />
-            <Skeleton className="h-4 w-4/5 mt-4" />
-          </div>
+          <AnimatePresence>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="tw-space-y-4"
+            >
+              {[...Array(5)].map((_, index) => (
+                <Skeleton 
+                  key={index} 
+                  variant="rectangular" 
+                  width="100%" 
+                  height={60} 
+                  sx={{ borderRadius: '12px' }} 
+                />
+              ))}
+            </motion.div>
+          </AnimatePresence>
         ) : (
-          <MaterialReactTable columns={columns} data={insumos} />
+          <MaterialReactTable 
+            columns={columns} 
+            data={insumos}
+            muiTablePaperProps={{
+              sx: tableStyles
+            }}
+            enableRowSelection
+            enableColumnOrdering
+            enableGlobalFilter
+            positionToolbarAlertBanner="bottom"
+            // Optional: Add row hover and click animations
+            muiTableBodyRowProps={({ row }) => ({
+              sx: {
+                cursor: 'pointer',
+                transition: 'background-color 0.3s ease',
+                '&:hover': {
+                  backgroundColor: 'rgba(0,0,0,0.05)'
+                }
+              }
+            })}
+          />
         )}
-
-        {/* Modal */}
-        <Modal
-          isOpen={isModalOpen}
-          onRequestClose={handleCloseModal}
-          className="tw-bg-white tw-p-0 tw-mb-12 tw-rounded-lg tw-border tw-border-gray-300 tw-max-w-lg tw-w-full tw-mx-auto"
-          overlayClassName="tw-fixed tw-inset-0 tw-bg-black tw-bg-opacity-40 tw-z-50 tw-flex tw-justify-center tw-items-center"
-        >
-          {modalType === 'add' && <AddInsumo onClose={handleModalCloseAndFetch} />}
-          {modalType === 'edit' && selectedInsumoId !== null && <EditInsumo id={selectedInsumoId} onClose={handleModalCloseAndFetch} />}
-          {modalType === 'entry' && selectedInsumoId !== null && <AddEntry id={selectedInsumoId} onClose={handleModalCloseAndFetch} />}
-          {modalType === 'detail' && selectedInsumoId !== null && <InsumoDetails id={selectedInsumoId} onClose={handleModalCloseAndFetch} />}
-        </Modal>
       </div>
     </section>
   );
