@@ -79,7 +79,7 @@ module.exports = (sequelize, DataTypes) => {
     Productos.hasMany(models.Tipo_productos, {foreignKey: 'ID_tipo_producto'});
 
 
-     // Asociación con Pedidos
+     // Asociación con Ventas
     Productos.hasMany(models.Producto_Ventas, {
       foreignKey: 'ID_producto',
       as: 'Producto_Venta' // Alias adicional para incluir la tabla intermedia
