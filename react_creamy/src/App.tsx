@@ -70,7 +70,7 @@ const Layout: React.FC = () => {
               <Route path="/Ventas" element={<Ventas />} />
               <Route path="/Productos" element={<Productos />} />
               <Route path="/Pedidos" element={<Pedidos />} />
-              <Route path="/pedido/:id" element={<PedidoDetalles orderId={':id'} />} />
+              <Route path="/pedido/:id" element={<PedidoDetalles />} />
               <Route path="/Editar-pedido/:id" element={<OrderAdd/>} />
               <Route path="/roles" element={<ListarRoles />} />
               <Route path="/Clientes" element={<ListarClientes />} />

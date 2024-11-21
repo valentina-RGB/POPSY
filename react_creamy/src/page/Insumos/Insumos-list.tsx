@@ -4,7 +4,6 @@ import { Insumo } from '../../types/insumos';
 import api from '../../api/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faPlus, faBoxOpen, faToggleOn, faToggleOff, faEye } from '@fortawesome/free-solid-svg-icons';
-import { faSignInAlt } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-hot-toast';
 import AddInsumo from './CreateInsumo';
 import EditInsumo from './EditInsumo';
@@ -116,9 +115,7 @@ const InsumosList: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const handleGoToHistorial = (id: number) => {
-    navigate(`/historial-entradas/${id}`);
-  };
+
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
