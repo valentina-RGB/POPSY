@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
 import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
-import App from '../../App';
 import toast, { Toaster } from 'react-hot-toast';
-import { data } from 'jquery';
 // import { Link } from "react-router-dom";
 // import { Layout } from 'lucide-react';
 
@@ -45,24 +43,16 @@ const AuthPage: React.FC = () => {
         });
         setToken(response.data.token);
 
-//Alejo es un crack fgfgdgf
-          //EXISTE EL ROL
-
-         const {resUser, ID_rol} = response.data;
-
-        //  const {ID_rol} = resUser
-
-          // console.log(resUser, ID_rol);
-
-    
-
+        //Alejo es un crack fgfgdgf 
 
         if (response.data.resUser[0].ID_rol === 2) {
+
+
           toast.success('Inicio de sesión exitoso', { duration: 2000 });
           navigate("/principal");
-          
+
           // navega manualmente
-          
+
         } else {
           toast.error('No tienes permisos para esta acción', { duration: 2000 });
         }
@@ -93,7 +83,58 @@ const AuthPage: React.FC = () => {
     handleCloseForgotPassword();
   };
 
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:3300/login', {
+        email,
+        password
+      });
+
+      const { resUser, token } = response.data;
+
+      if (token && resUser[0]) {
+        localStorage.setItem('jwtToken', token);
+        localStorage.setItem('ID_rol', resUser[0].ID_rol);
+        localStorage.setItem('ID_usuario', resUser[0].ID_usuario);
+        localStorage.setItem('userName', resUser[0].nombre); 
+        console.log('Token, ID_rol y ID_usuario almacenados:', { token, ID_rol: resUser[0].ID_rol, ID_usuario: resUser.ID_usuario });
+        toast.success('Bienvenido, ' + resUser[0].nombre, {
+          position: "top-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined         
+          // Navega a /index al cerrar la alerta
+        })
+      setTimeout(() => {
+        window.location.reload();
+        navigate('/Roles');
+      }, 1000 )
+      ;
+      } else {
+        throw new Error('Token o roleId no recibidos');
+      }
+    } catch (error) {
+      console.error('Error durante el login:', error);
+      toast.error('Correo o contraseña incorrectos.', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
+
   return (
+
+
+
     <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-min-h-screen tw-bg-gray-100">
       <div className="tw-bg-white tw-p-6 tw-rounded-lg tw-shadow-md tw-w-full tw-max-w-md">
         <h2 className="tw-text-2xl tw-font-bold tw-text-center tw-mb-4">
@@ -126,15 +167,26 @@ const AuthPage: React.FC = () => {
               className="tw-border tw-rounded tw-p-2 tw-w-full"
             />
           )}
-          
-          <button type="submit" className="tw-bg-blue-500 tw-text-white tw-py-2 tw-rounded tw-w-full">
-            {isLogin ? 'Iniciar Sesión' : 'Registrar'}
 
-          </button>
+
+          {isLogin ? (
+            <button
+              type="submit"
+              className="tw-bg-blue-500 tw-text-white tw-py-2 tw-rounded tw-w-full"
+              onClick={handleLogin} >
+              Iniciar sesión
+            </button>) : (
+            <button
+              type="submit"
+              className="tw-bg-blue-500 tw-text-white tw-py-2 tw-rounded tw-w-full"
+              >{/* Metodo para regitrar */}
+              Registrar
+            </button>
+          )}
           {/* <Link to= '/Principal'>
             <p>hola</p>
           </Link> */}
-          
+
           {isLogin && (
             <button
               type="button"
@@ -186,3 +238,12 @@ const AuthPage: React.FC = () => {
 };
 
 export default AuthPage;
+
+
+
+// const Mostrar: React.FC = () =>{
+//   <Router>
+//  <Layout></Layout>
+//  <Toaster position="top-right" reverseOrder={false} />
+// </Router>
+// }

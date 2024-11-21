@@ -174,7 +174,7 @@ const OrderDetail = () => {
                       className="bg-white p-4 rounded-lg shadow-inner mb-4"
                     >
                       <p>
-                        <strong>Cantidad:</strong> {pedido.cantidad}
+                        <strong>Producto #    {pedido.cantidad}</strong>
                       </p>
                       <p>
                         <strong>Subtotal:</strong>{" "}

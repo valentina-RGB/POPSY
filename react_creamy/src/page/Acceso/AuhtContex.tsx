@@ -1,43 +1,41 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { Navigate } from 'react-router-dom';
 
-interface AuthContextType {
+interface AuthContextProps {
   isAuthenticated: boolean;
-  role: number;
-  login: (role: number) => void;
+  login: (token: string) => void;
   logout: () => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
-export const useAuth = (): AuthContextType => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    const data = !!localStorage.getItem('jwtToken');
+    return data;
+  });
 
-interface AuthProviderProps {
-  children: ReactNode;
-}
-
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [role, setRole] = useState<number>(0);
-
-  const login = (role: number) => {
+  const login = (token: string) => {
+    localStorage.setItem('jwtToken', token);
     setIsAuthenticated(true);
-    setRole(role);
   };
 
   const logout = () => {
+    localStorage.removeItem('jwtToken');
     setIsAuthenticated(false);
-    setRole(0);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, role, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
+};
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth debe ser usado dentro de un AuthProvider');
+  }
+  return context;
 };

@@ -29,6 +29,7 @@ module.exports = (sequelize) =>{
                 onDelete: 'CASCADE'       
                 
         },
+       
         cantidad: {
             type: DataTypes.INTEGER,
             allowNull:true
@@ -46,7 +47,8 @@ module.exports = (sequelize) =>{
         Adiciones.belongsToMany(models.Insumos, { through:'Adiciones_Insumos', foreignKey:'ID_adicion_p', otherKey: 'ID_insumo_p', as: 'Insumos'});
         Adiciones.belongsTo(models.Producto_Pedidos, {foreignKey: 'ID_producto_pedido' });
         Adiciones.belongsTo(models.Producto_Ventas, {foreignKey: 'ID_producto_venta' });
-        //Producto_Pedidos.hasMany(models.Adiciones, { foreignKey: 'ID_producto_pedidos', as:'Adiciones'});
+        
+        
     }
     return Adiciones;
 }

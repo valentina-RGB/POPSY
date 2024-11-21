@@ -1,5 +1,4 @@
 import { Toaster } from 'react-hot-toast';
-
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Navbar from "./components/navbar_prueba"; // Asegúrate de que el path sea correcto
@@ -20,6 +19,10 @@ import PedidoDetalles from './page/Order/Order_details';
 import Login from './page/Acceso/login';
 import SignUp from './page/Acceso/signUp';
 import OrderAdd from './page/Order/Order_add';
+import { AuthProvider } from './page/Acceso/AuhtContex';
+import ProtectedRoute from './page/Acceso/ProtecdRouted';
+import RolList from './page/Roles/ListRol';
+import UsuarioList from './page/Usuarios/ListUsuario';
 
 const Loader: React.FC = () => (
   <div className="tw-flex tw-justify-center tw-items-center tw-h-screen">
@@ -36,14 +39,14 @@ const Layout: React.FC = () => {
     useEffect(() => {
       // Activa el loader al cambiar de ruta
       setIsLoading(true);
-  
+
       const timer = setTimeout(() => {
         setIsLoading(false); // Simula una carga, puedes ajustarlo según necesites
       }, 500); // Tiempo opcional para simular la carga
-  
+
       return () => clearTimeout(timer); // Limpia el temporizador
     }, [location.pathname]); // Se ejecuta cuando cambia la ruta
-  
+
     if (isLoading) {
       return <Loader />;
     }
@@ -62,24 +65,112 @@ const Layout: React.FC = () => {
           <div className="tw-bg-white tw-rounded-2xl tw-shadow-lg tw-p-4 md:tw-p-6 tw-min-h-[calc(100vh-150px)]">
             {/* Definición de rutas */}
             <Routes>
-              <Route path="/" element={<Navigate to="/Dashboard" />} />
-              <Route path="/Dashboard" element={<Dashboard />} />
-              <Route path="/Categorias" element={<Categorias />} />
-              <Route path="/Insumos" element={<Insumos />} />
-              <Route path="/historial-entradas" element={<EntriesList />} />
-              <Route path="/Ventas" element={<Ventas />} />
-              <Route path="/Productos" element={<Productos />} />
-              <Route path="/Pedidos" element={<Pedidos />} />
+              <Route path="/" element={<Navigate to="/login" />} />
+              <Route
+                path="/Dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                } />
+              <Route
+                path="/Categorias"
+                element={
+                  <ProtectedRoute>
+                    <Categorias />
+                  </ProtectedRoute>
+                } />
+              <Route
+                path="/Insumos"
+                element={
+                  <ProtectedRoute>
+                    <Insumos />
+                  </ProtectedRoute>
+                } />
+              <Route
+                path="/historial-entradas"
+                element={
+                  <ProtectedRoute>
+                    <Categorias />
+                  </ProtectedRoute>
+                } />
+              <Route
+                path="/Ventas"
+                element={
+                  <ProtectedRoute>
+                    <Ventas />
+                  </ProtectedRoute>
+                } />
+              <Route
+                path="/Productos"
+                element={
+                  <ProtectedRoute>
+                    <Productos />
+                  </ProtectedRoute>
+                } />
+              <Route
+                path="/Pedidos"
+                element={
+                  <ProtectedRoute>
+                    <Pedidos />
+                  </ProtectedRoute>
+                } />
+
+
               <Route path="/pedido/:id" element={<PedidoDetalles />} />
-              <Route path="/Editar-pedido/:id" element={<OrderAdd/>} />
-              <Route path="/roles" element={<ListarRoles />} />
-              <Route path="/Clientes" element={<ListarClientes />} />
-              <Route path="/agregar-cliente" element={<AddCliente />} />
-              <Route path="/Usuarios" element={<ListarUsuarios />} />
+
+
+              <Route
+                path="/Editar-pedido"
+                element={
+                  <ProtectedRoute>
+                    <Pedidos />
+                  </ProtectedRoute>
+                } />
+              <Route
+                path="/roles"
+                element={
+                  <ProtectedRoute>
+                    <RolList />
+                  </ProtectedRoute>
+                } />
+              <Route
+                path="/Clientes"
+                element={
+                  <ProtectedRoute>
+                    <ListarClientes />
+                  </ProtectedRoute>
+                } />
+              <Route
+                path="/agregar-cliente"
+                element={
+                  <ProtectedRoute>
+                    <AddCliente />
+                  </ProtectedRoute>
+                } />
+              <Route
+                path="/Usuarios"
+                element={
+                  <ProtectedRoute>
+                    <UsuarioList />
+                  </ProtectedRoute>
+                } />
+              <Route
+                path="/Agregar-pedidos"
+                element={
+                  <ProtectedRoute>
+                    <OrderAdd />
+                  </ProtectedRoute>
+                } />
+              <Route
+                path="/Agregar-ventas"
+                element={
+                  <ProtectedRoute>
+                    <Ventasadd />
+                  </ProtectedRoute>
+                } />
               <Route path="/Login" element={<Login />} />
               <Route path="/SignUp" element={<SignUp />} />
-              <Route path="/Agregar-pedidos" element={<OrderAdd />} />
-              <Route path="/Agregar-ventas" element={<Ventasadd />} />
             </Routes>
             <footer className="tw-mt-6 tw-bg-white tw-rounded-lg tw-shadow-md tw-p-4">
               <div className="tw-container-fluid">
@@ -104,10 +195,12 @@ const Layout: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <Router>
-      <Layout />
-      <Toaster position="top-right" reverseOrder={false} />
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Layout />
+        <Toaster position="top-right" reverseOrder={false} />
+      </Router>
+    </AuthProvider>
   );
 };
 

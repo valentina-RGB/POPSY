@@ -46,17 +46,17 @@ module.exports = (sequelize, DataTypes) => {
   Producto_Ventas.associate = function(models) {
 
 
-    Producto_Ventas.belongsTo(models.Ventas, {
-      foreignKey: 'ID_venta',
-      as: 'Venta',
-    });
-    Producto_Ventas.belongsTo(models.Productos, {
-      foreignKey: 'ID_producto',
-      as: 'Producto',
-    });
+          Producto_Ventas.belongsTo(models.Ventas, {
+            foreignKey: 'ID_venta',
+            as: 'Venta'
+          });
+          Producto_Ventas.belongsTo(models.Productos, {
+            foreignKey: 'ID_producto',
+            as: 'Producto'
+          });
 
   // Relación con Adiciones
-  Producto_Ventas.hasMany(models.Adiciones, { foreignKey: 'ID_producto_venta', as:'Adiciones'});
+  Producto_Ventas.hasMany(models.Adiciones, { foreignKey: 'ID_producto_ventas', as:'Adiciones'});
  
 }
 

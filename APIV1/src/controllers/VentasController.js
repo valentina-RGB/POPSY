@@ -1,6 +1,7 @@
 const express = require('express');
 const { request, response } = require('express');
 const ventasService = require('../services/VentasServices');
+const Estado_ventas = require('../../models/Estado_ventas');
 
 // Obtener todas las ventas
 const getAllVentas = async (req, res) => {
@@ -42,31 +43,30 @@ CrearVentas = async  (req = request, res= response) => {
 };
 
 const updateEstadoVenta = async (req, res) => {
+    const { id } = req.params; // ID de la venta
+    const { ID_estado_venta } = req.body; // Nuevo estado
+
     try {
-        console.log('Update Estado Venta called');
-        const { id } = req.params;
-        const { ID_estado_venta } = req.body;
-
-        // Verificar si el estado de venta existe
-        const estadoVenta = await Estado_ventas.findByPk(ID_estado_venta);
-        if (!estadoVenta) {
-            return res.status(400).json({ menssage: 'Estado de venta no encontrado' });
-        }
-
         // Verificar si la venta existe
         const venta = await Ventas.findByPk(id);
         if (!venta) {
             return res.status(404).json({ error: 'Venta no encontrada' });
         }
 
-        // Actualizar el estado de la venta
+        // Verificar si el estado de venta existe
+        const estadoVenta = await Estado_ventas.findByPk(ID_estado_venta);
+        if (!estadoVenta) {
+            return res.status(400).json({ error: 'Estado de venta no encontrado' });
+        }
+
+        // Actualizar la venta
         venta.ID_estado_venta = ID_estado_venta;
         await venta.save();
 
-        res.status(200).json(venta);
+        res.status(200).json({ message: 'Estado de venta actualizado', venta });
     } catch (error) {
-        console.error(error); // Agrega esta línea para ver errores en los logs
-        res.status(500).json({ error: error.message });
+        console.error('Error al actualizar estado de venta:', error);
+        res.status(500).json({ error: 'Ocurrió un error al actualizar el estado de la venta.' });
     }
 };
 

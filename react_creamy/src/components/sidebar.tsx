@@ -10,11 +10,20 @@ import {
   CurrencyDollarIcon,
   ClipboardDocumentListIcon,
 } from "@heroicons/react/24/outline";
+import { useEffect, useState } from "react";
 
 const Menu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const localStorageData = localStorage.getItem('jwtToken');
+    if (localStorageData) {
+      setIsLoggedIn(true);
+    }
+  }, [])
   return (
     <aside
-      className={`tw-flex tw-flex-col tw-w-64 tw-h-screen tw-px-5 tw-py-8 tw-overflow-y-auto tw-bg-white tw-border-r dark:tw-bg-gray-900 dark:tw-border-gray-700 tw-pt-3
+      className={`${isLoggedIn ? "" : "tw-hidden"} tw-flex tw-flex-col tw-w-64 tw-h-screen tw-px-5 tw-py-8 tw-overflow-y-auto tw-bg-white tw-border-r dark:tw-bg-gray-900 dark:tw-border-gray-700 tw-pt-3
         ${isMenuOpen ? "tw-absolute tw-block" : "tw-hidden"} lg:${isMenuOpen ? "tw-block" : "tw-hidden"} lg:tw-static 
         tw-rounded-lg tw-shadow-lg`} // Bordes redondeados y sombra
       style={{ zIndex: 10 }} // Asegura que esté sobre otros elementos en vista móvil

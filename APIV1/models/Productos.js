@@ -80,17 +80,13 @@ module.exports = (sequelize, DataTypes) => {
 
 
      // Asociación con Ventas
-    Productos.hasMany(models.Producto_Ventas, {
+     Productos.hasMany(models.Producto_Ventas, {
       foreignKey: 'ID_producto',
       as: 'Producto_Venta' // Alias adicional para incluir la tabla intermedia
     });
   
-
-
-
-    Productos.belongsToMany(models.Ventas, { through: models.Producto_Ventas, foreignKey: 'ID_producto', otherKey: 'ID_venta', as: 'Ventas'});
-    // Productos.hasMany(models.Producto_Pedidos, { foreignKey: 'ID_productos', as: 'ProductoPedidos' });
-
+    Productos.belongsToMany(models.Ventas, { through: models.Producto_Ventas, foreignKey: 'ID_producto', otherKey: 'ID_venta', as: 'ventas'});
+    
 
 
      // Asociación con insumos
@@ -115,7 +111,7 @@ module.exports = (sequelize, DataTypes) => {
 
 
     Productos.belongsToMany(models.Pedidos, { through: models.Producto_Pedidos, foreignKey: 'ID_producto', otherKey: 'ID_pedido', as: 'Pedidos'});
-    // Productos.hasMany(models.Producto_Pedidos, { foreignKey: 'ID_productos', as: 'ProductoPedidos' });
+    
   };
 
   return Productos;
