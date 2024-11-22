@@ -298,13 +298,8 @@ const InsumosList: React.FC = () => {
   );
 
   return (
-    <motion.section
-      transition={{ duration: 0.5 }}
-      className="tw-min-h-screen tw-bg-gradient-to-br tw-to-gray-100 -tw-p-5"
-    >
-      <motion.div
-        className="tw-bg-white tw-rounded-2xl tw-shadow-2xl tw-p-6"
-      >
+    <section className="tw-min-h-screen tw-bg-gradient-to-br tw-to-gray-100 -tw-p-5">
+      <motion.div className="tw-bg-white tw-rounded-2xl tw-shadow-2xl tw-p-6">
         <h1 className="tw-font-bold tw-mb-6 tw-text-gray-800 tw-border-b-4 tw-border-blue-500 tw-pb-3">
           Insumos
         </h1>
@@ -351,20 +346,10 @@ const InsumosList: React.FC = () => {
             muiTablePaperProps={{
               sx: tableStyles
             }}
-
             enableColumnOrdering
             enableGlobalFilter
             positionToolbarAlertBanner="bottom"
-            // Optional: Add row hover and click animations
-            muiTableBodyRowProps={({ row }) => ({
-              sx: {
-                cursor: 'pointer',
-                transition: 'background-color 0.3s ease',
-                '&:hover': {
-                  backgroundColor: 'rgba(0,0,0,0.05)'
-                }
-              }
-            })}
+            // Optional: Add row hover and click animations          
           />
         )}
 
@@ -381,7 +366,7 @@ const InsumosList: React.FC = () => {
           {modalType === 'detail' && selectedInsumoId !== null && <InsumoDetails id={selectedInsumoId} onClose={handleModalCloseAndFetch} />}
         </Modal>
       </motion.div>
-    </motion.section>
+    </section>
   );
 
 };
