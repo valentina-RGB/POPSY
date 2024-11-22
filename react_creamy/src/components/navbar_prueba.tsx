@@ -93,7 +93,7 @@ const Navbar: React.FC<{ toggleMenu: () => void }> = ({ toggleMenu }) => {
           {/* User Profile */}
           <motion.div
             whileHover={{ scale: 1.05 }}
-            className="tw-flex tw-items-center tw-space-x-2"
+            className="tw-flex tw-items-center tw-space-x-"
           >
             <div className="tw-w-10 tw-h-10 tw-rounded-full tw-bg-blue-500 tw-flex tw-items-center tw-justify-center tw-text-white tw-font-bold">
               <FontAwesomeIcon icon={faUser} />

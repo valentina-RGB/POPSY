@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import { MaterialReactTable, type MRT_ColumnDef } from 'material-react-table';
-import { Venta } from '../../types/ventas';
+
 import api from '../../api/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faInfoCircle, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
@@ -9,7 +9,7 @@ import Modal from 'react-modal';
 import AddVenta from './CreateVenta';
 import VentaDetails from './VentaDetail';
 import Skeleton from '@mui/material/Skeleton';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export interface EstadoVenta {
   ID_estado_venta: number;
@@ -18,6 +18,7 @@ export interface EstadoVenta {
 
 const VentasList: React.FC = () => {
   const [ventas, setVentas] = useState<Venta[]>([]);
+  const navigate = useNavigate();
   const [isAddVentaModalOpen, setIsAddVentaModalOpen] = useState(false);
   const [isVentaDetailsModalOpen, setIsVentaDetailsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<'add' | 'detail' | null>(null);
@@ -54,11 +55,8 @@ const VentasList: React.FC = () => {
     setModalType('add');
   };
 
-  const handleOpenVentaDetailsModal = (id: number) => {
-    if (isAddVentaModalOpen) return; // Verifica que el otro modal no esté abierto
-    setSelectedVentaId(id);
-    setIsVentaDetailsModalOpen(true);
-    setModalType('detail');
+  const handleViewDetails = (id: number) => {
+    navigate(`/venta/${id}`); // Redirige a la página de detalle del pedido con el ID correspondiente
   };
 
   const handleCloseAddVentaModal = () => {
@@ -155,14 +153,6 @@ const VentasList: React.FC = () => {
       header: '#',
     },
     {
-      accessorKey: 'ID_cliente',
-      header: 'Cliente',
-      Cell: ({ cell }) => {
-        const cliente = ventas.find((venta) => venta.ID_venta === cell.row.original.ID_venta)?.Cliente;
-        return cliente ? cliente.nombre : 'Desconocido';
-      },
-    },
-    {
       accessorKey: 'fecha',
       header: 'Fecha',
       Cell: ({ cell }) => {
@@ -204,16 +194,29 @@ const VentasList: React.FC = () => {
       },
     },
     {
+      accessorKey: "precio_total",
+      header: "Precio Total",
+      Cell: ({ cell }) => {
+        const valor = cell.getValue<number>();
+        return valor !== undefined
+          ? new Intl.NumberFormat("es-ES", {
+              style: "currency",
+              currency: "COP",
+            }).format(valor)
+          : "No definido";
+      },
+    },
+    {
       id: 'acciones',
       header: 'Acciones',
       Cell: ({ row }) => (
         <div className="tw-flex tw-justify-center tw-gap-2">
           <button
-            onClick={() => handleOpenVentaDetailsModal(row.original.ID_venta)}
-            className="tw-bg-blue-500 tw-text-white tw-rounded-full tw-p-2 tw-shadow-md tw-hover:bg-blue-600 tw-transition-all tw-duration-300"
-          >
-            <FontAwesomeIcon icon={faInfoCircle} />
-          </button>
+              onClick={() => handleViewDetails(row.original.ID_venta)} // Redirige al detalle del pedido
+              className="tw-bg-green-500 tw-text-white tw-rounded-full tw-p-2 tw-shadow-md tw-hover:bg-green-600 tw-transition-all tw-duration-300"
+            >
+              <FontAwesomeIcon icon={faInfoCircle} />
+            </button>
         </div>
       ),
     },
@@ -244,22 +247,7 @@ const VentasList: React.FC = () => {
       ) : (
         <MaterialReactTable columns={columns} data={ventas} />
       )}
-      <Modal
-        isOpen={isAddVentaModalOpen || isVentaDetailsModalOpen}
-        onRequestClose={() => {
-          if (isAddVentaModalOpen) handleCloseAddVentaModal();
-          if (isVentaDetailsModalOpen) handleCloseVentaDetailsModal();
-        }}
-        className="tw-bg-white tw-p-0 tw-mb-12 tw-rounded-lg tw-border tw-border-gray-300 tw-max-w-lg tw-w-full tw-mx-auto"
-          overlayClassName="tw-fixed tw-inset-0 tw-bg-black tw-bg-opacity-40 tw-z-50 tw-flex tw-justify-center tw-items-center"
-      >
-  {/*     {isAddVentaModalOpen && (
-          <AddVenta isOpen={isAddVentaModalOpen} onClose={handleCloseAddVentaModal} onVentaCreated={handleCloseAddVentaModal} />
-        )} */}
-        {isVentaDetailsModalOpen && selectedVentaId !== null && (
-          <VentaDetails isOpen={isVentaDetailsModalOpen} onClose={handleCloseVentaDetailsModal} ventaId={selectedVentaId} />
-        )}
-      </Modal>
+
     </div>
   );
 };

@@ -49,7 +49,7 @@ const AuthPage: React.FC = () => {
 
 
           toast.success('Inicio de sesión exitoso', { duration: 2000 });
-          navigate("/principal");
+          navigate("/dashboard#");
 
           // navega manualmente
 
@@ -238,12 +238,3 @@ const AuthPage: React.FC = () => {
 };
 
 export default AuthPage;
-
-
-
-// const Mostrar: React.FC = () =>{
-//   <Router>
-//  <Layout></Layout>
-//  <Toaster position="top-right" reverseOrder={false} />
-// </Router>
-// }

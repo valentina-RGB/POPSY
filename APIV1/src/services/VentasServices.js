@@ -58,7 +58,6 @@ const {Productos_adiciones, Ventas, Producto_Ventas,Producto_insumos, Adiciones,
                           model: Adiciones, 
                           as: 'Adiciones', 
                           attributes: ['cantidad', 'total'],
-                         
                           include:[
                             {
                               model: Insumos,  // Relación entre Adiciones e Insumos
@@ -67,7 +66,7 @@ const {Productos_adiciones, Ventas, Producto_Ventas,Producto_insumos, Adiciones,
                                 model:Adiciones_Insumos,
                                 attributes: ['cantidad','sub_total'],
                               },
-                              attributes: ['ID_insumo','descripcion_insumo', 'precio'],
+                              attributes: ['ID_insumo','descripcion_insumo', 'precio']
                             }
                           ]
                         }
@@ -123,9 +122,9 @@ const {Productos_adiciones, Ventas, Producto_Ventas,Producto_insumos, Adiciones,
                   precio_neto: producto.precio_neto,
                   sub_total: 0, // Se actualizará luego
               });
-                  for( const producto_ventas of  productos.Producto_Venta){
+                  for( const Producto_Ventas of  productos.Producto_Venta){
 
-                    for (const adiciones of producto_ventas.Adiciones) {
+                    for (const adiciones of Producto_Ventas.Adiciones) {
                       let adiciones_total = 0;
  
                       // Crear clave única para la combinación de insumos
@@ -137,7 +136,7 @@ const {Productos_adiciones, Ventas, Producto_Ventas,Producto_insumos, Adiciones,
                       const nuevaAdicion = await Adiciones.create({
                           cantidad: adiciones.cantidad || 1,
                           total: 0, // Se actualizará luego
-                          ID_producto_venta: productoVenta.ID_producto_venta,
+                          ID_producto_ventas: productoVenta.ID_producto_venta,
                       });
  
                       // Procesar insumos de la adición

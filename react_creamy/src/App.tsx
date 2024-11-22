@@ -16,6 +16,7 @@ import ListarUsuarios from './page/Usuarios/ListUsuario';
 import Productos from './page/Products/products-list';
 import Pedidos from './page/Order/Order_list';
 import PedidoDetalles from './page/Order/Order_details';
+import VentaDetalles from './page/Ventas/VentaDetail';
 import Login from './page/Acceso/login';
 import SignUp from './page/Acceso/signUp';
 import OrderAdd from './page/Order/Order_add';
@@ -61,7 +62,7 @@ const Layout: React.FC = () => {
         <Menu isMenuOpen={isMenuOpen} />
 
         {/* Contenido principal con suficiente padding-top */}
-        <div className="tw-flex-1 tw-p-4 md:tw-p-6 tw-overflow-auto "> {/* Ajuste de padding-top */}
+        <div className="tw-flex-1 tw-p-4 md:tw-p-1 tw-overflow-auto "> {/* Ajuste de padding-top */}
           <div className="tw-bg-white tw-rounded-2xl tw-shadow-lg tw-p-4 md:tw-p-6 tw-min-h-[calc(100vh-150px)]">
             {/* Definición de rutas */}
             <Routes>
@@ -91,7 +92,7 @@ const Layout: React.FC = () => {
                 path="/historial-entradas"
                 element={
                   <ProtectedRoute>
-                    <Categorias />
+                    <EntriesList />
                   </ProtectedRoute>
                 } />
               <Route
@@ -118,10 +119,11 @@ const Layout: React.FC = () => {
 
 
               <Route path="/pedido/:id" element={<PedidoDetalles />} />
+              <Route path="/venta/:id" element={<VentaDetalles />} />
 
 
               <Route
-                path="/Editar-pedido"
+                path="/Editar-pedido/:id"
                 element={
                   <ProtectedRoute>
                     <Pedidos />
