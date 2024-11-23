@@ -1432,3 +1432,4 @@ const handleChangeInsumo = (ID_insumo: number, cantidad: number, tipo: string) =
     </div>
   );
 }
+

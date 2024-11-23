@@ -1,5 +1,5 @@
 const Insumo = require('../models/insumos');
-const StockInsumo = require('../models/StockInsumo');
+const {StockInsumos} = require('../models');
 
 
 const getInsumoById = async (id) => {
@@ -75,7 +75,7 @@ const agregarEntrada = async (entrada) => {
             throw { status: 404, message: 'Insumo not found' };
         }
 
-        const stock = await StockInsumo.findOne({ where: { ID_porcion: ID_insumo } });
+        const stock = await StockInsumos.findOne({ where: {ID_insumo: insumo.ID_insumo } });
         if (!stock) {
             throw { status: 404, message: 'Stock not found for the insumo' };
         }
