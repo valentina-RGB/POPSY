@@ -168,20 +168,6 @@ const Productos: React.FC = () => {
         ),
       },
       {
-        accessorKey: 'descripcion',
-        header: 'Descripcion',
-        Cell: ({ cell }) => (
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3 }}
-            className="tw-font-semibold tw-text-gray-800"
-          >
-            {cell.getValue<string>()}
-          </motion.div>
-        ),
-      },
-      {
         accessorKey: 'precio_neto',
         header: 'Precio',
         Cell: ({ cell }) => {
