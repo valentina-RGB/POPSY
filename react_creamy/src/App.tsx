@@ -126,7 +126,7 @@ const Layout: React.FC = () => {
                 path="/Editar-pedido/:id"
                 element={
                   <ProtectedRoute>
-                    <Pedidos />
+                    <OrderAdd/>
                   </ProtectedRoute>
                 } />
               <Route
