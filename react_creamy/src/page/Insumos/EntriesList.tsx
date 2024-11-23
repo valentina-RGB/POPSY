@@ -183,12 +183,7 @@ const EntriesList: React.FC = () => {
             
             {/* Botón para editar */}
             
-            <button
-              onClick={() => handleEdit(row.original.ID_entrada)}
-              className="tw-bg-blue-500 tw-text-white tw-rounded-full tw-p-2 tw-shadow-md tw-hover:bg-blue-600 tw-transition-all tw-duration-300"
-            >
-              <FontAwesomeIcon icon={faEdit} title="Editar" />
-            </button>
+          
             <motion.button
               whileHover={{
                 scale: 1.1,

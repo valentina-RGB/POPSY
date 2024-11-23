@@ -227,68 +227,67 @@ const InsumosList: React.FC = () => {
               onClick={() => handleEdit(row.original.ID_insumo)}
               className="tw-group tw-bg-blue-500 tw-text-white tw-rounded-full tw-w-10 tw-h-10 tw-flex tw-items-center tw-justify-center tw-shadow-md tw-transition-all tw-duration-300 hover:tw-bg-blue-600 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-400 focus:tw-ring-opacity-75"
             >
-              <FontAwesomeIcon 
-          icon={faEdit} 
-          className="tw-transition-transform tw-group-hover:tw-rotate-12"
-          title="Editar" 
-        />
-
+              <FontAwesomeIcon
+                icon={faEdit}
+                className="tw-transition-transform tw-group-hover:tw-rotate-12"
+                title="Editar"
+              />
             </motion.button>
-           
+
 
             {/* Botón para eliminar */}
             <motion.button
-        whileHover={{ 
-          scale: 1.1, 
-          rotate: -5,
-          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
-        }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => handleDelete(row.original.ID_insumo)}
-        className="tw-group tw-bg-red-500 tw-text-white tw-rounded-full tw-w-10 tw-h-10 tw-flex tw-items-center tw-justify-center tw-shadow-md tw-transition-all tw-duration-300 hover:tw-bg-red-600 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-red-400 focus:tw-ring-opacity-75"
-      >
-        <FontAwesomeIcon 
-          icon={faTrash} 
-          className="tw-transition-transform tw-group-hover:tw-rotate-6"
-          title="Eliminar" 
-        />
-      </motion.button>
+              whileHover={{
+                scale: 1.1,
+                rotate: -5,
+                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
+              }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => handleDelete(row.original.ID_insumo)}
+              className="tw-group tw-bg-red-500 tw-text-white tw-rounded-full tw-w-10 tw-h-10 tw-flex tw-items-center tw-justify-center tw-shadow-md tw-transition-all tw-duration-300 hover:tw-bg-red-600 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-red-400 focus:tw-ring-opacity-75"
+            >
+              <FontAwesomeIcon
+                icon={faTrash}
+                className="tw-transition-transform tw-group-hover:tw-rotate-6"
+                title="Eliminar"
+              />
+            </motion.button>
 
             {/* Botón para agregar entrada */}
             <motion.button
-        whileHover={{ 
-          scale: 1.1, 
-          rotate: 5,
-          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
-        }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => handleAddEntry(row.original.ID_insumo)}
-        className="tw-group tw-bg-green-500 tw-text-white tw-rounded-full tw-w-10 tw-h-10 tw-flex tw-items-center tw-justify-center tw-shadow-md tw-transition-all tw-duration-300 hover:tw-bg-green-600 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-green-400 focus:tw-ring-opacity-75"
-      >
-        <FontAwesomeIcon 
-          icon={faBoxOpen} 
-          className="tw-transition-transform tw-group-hover:tw-scale-110"
-          title="Agregar entrada" 
-        />
-      </motion.button>
+              whileHover={{
+                scale: 1.1,
+                rotate: 5,
+                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
+              }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => handleAddEntry(row.original.ID_insumo)}
+              className="tw-group tw-bg-green-500 tw-text-white tw-rounded-full tw-w-10 tw-h-10 tw-flex tw-items-center tw-justify-center tw-shadow-md tw-transition-all tw-duration-300 hover:tw-bg-green-600 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-green-400 focus:tw-ring-opacity-75"
+            >
+              <FontAwesomeIcon
+                icon={faBoxOpen}
+                className="tw-transition-transform tw-group-hover:tw-scale-110"
+                title="Agregar entrada"
+              />
+            </motion.button>
 
-      {/* Botón para ver detalles */}
-      <motion.button
-        whileHover={{ 
-          scale: 1.1, 
-          rotate: -5,
-          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
-        }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => handleViewDetails(row.original.ID_insumo)}
-        className="tw-group tw-bg-gray-500 tw-text-white tw-rounded-full tw-w-10 tw-h-10 tw-flex tw-items-center tw-justify-center tw-shadow-md tw-transition-all tw-duration-300 hover:tw-bg-gray-600 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-gray-400 focus:tw-ring-opacity-75"
-      >
-        <FontAwesomeIcon 
-          icon={faEye} 
-          className="tw-transition-transform tw-group-hover:tw-scale-110"
-          title="Ver detalles" 
-        />
-      </motion.button>
+            {/* Botón para ver detalles */}
+            <motion.button
+              whileHover={{
+                scale: 1.1,
+                rotate: -5,
+                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
+              }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => handleViewDetails(row.original.ID_insumo)}
+              className="tw-group tw-bg-gray-500 tw-text-white tw-rounded-full tw-w-10 tw-h-10 tw-flex tw-items-center tw-justify-center tw-shadow-md tw-transition-all tw-duration-300 hover:tw-bg-gray-600 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-gray-400 focus:tw-ring-opacity-75"
+            >
+              <FontAwesomeIcon
+                icon={faEye}
+                className="tw-transition-transform tw-group-hover:tw-scale-110"
+                title="Ver detalles"
+              />
+            </motion.button>
           </div>
         ),
       }
@@ -311,8 +310,10 @@ const InsumosList: React.FC = () => {
           transition={{ delay: 0.2 }}
           className="tw-mb-6 tw-flex tw-space-x-4"
         >
-          <button onClick={handleAddInsumo} className="tw-bg-blue-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-shadow-md tw-hover:bg-blue-600 tw-transition-all tw-duration-300">
-            <FontAwesomeIcon icon={faPlus} /> Agregar Insumo
+          <button onClick={handleAddInsumo} 
+          className="tw-bg-blue-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-shadow-md tw-hover:bg-blue-600 tw-transition-all tw-duration-300">
+            <FontAwesomeIcon icon={faPlus} /> 
+            Agregar Insumo
           </button>
           <button onClick={() => navigate('/historial-entradas')} className="tw-bg-gray-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-shadow-md tw-hover:bg-gray-600 tw-transition-all tw-duration-300">
             <FontAwesomeIcon icon={faBoxOpen} /> Ver Historial de Entradas
@@ -349,7 +350,7 @@ const InsumosList: React.FC = () => {
             enableColumnOrdering
             enableGlobalFilter
             positionToolbarAlertBanner="bottom"
-            // Optional: Add row hover and click animations          
+          // Optional: Add row hover and click animations          
           />
         )}
 
