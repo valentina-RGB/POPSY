@@ -15,13 +15,12 @@ import { useEffect, useState } from "react";
 
 const Menu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const location = useLocation(); // Asegura que `location.pathname` esté disponible
 
   useEffect(() => {
-    const localStorageData = localStorage.getItem('jwtToken');
-    if (localStorageData) {
-      setIsLoggedIn(true);
-    }
-  }, [])
+    const localStorageData = localStorage.getItem("jwtToken");
+    setIsLoggedIn(!!localStorageData); // Evalúa si hay token
+  }, []);
 
   const navItems = [
     { label: "Dashboard", links: [{ path: "/Dashboard", name: "Dashboard", icon: HomeIcon }] },
@@ -50,11 +49,16 @@ const Menu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
     },
   ];
 
+  // Lógica para definir clases de visibilidad
+  const visibilityClass = isMenuOpen
+    ? "tw-translate-x-0 tw-opacity-100 tw-visible"
+    : "tw-translate-x-[-100%] tw-opacity-0 tw-invisible"; // Ocultar con transiciones
+
   return (
     <aside
-      className={`${isLoggedIn ? "" : "tw-hidden"} tw-flex tw-flex-col tw-w-64 tw-h-screen tw-px-5 tw-py-8 tw-overflow-y-auto tw-bg-white tw-border-r dark:tw-bg-gray-900 dark:tw-border-gray-700
-        tw-rounded-lg tw-shadow-lg  lg:${isMenuOpen ? "tw-block" : "tw-hidden"} lg:tw-static 
-        tw-rounded-lg tw-shadow-lg`}
+      className={`${isLoggedIn ? "" : "tw-hidden"} tw-flex tw-flex-col tw-w-64 tw-h-screen tw-px-5 tw-py-8 tw-overflow-y-auto 
+      tw-bg-white tw-border-r dark:tw-bg-gray-900 dark:tw-border-gray-700 
+      tw-rounded-lg tw-shadow-lg tw-transition-transform tw-duration-300 tw-ease-in-out ${visibilityClass}`}
       style={{ zIndex: 10 }}
     >
       <div className="tw-mt-4 tw-space-y-8">
