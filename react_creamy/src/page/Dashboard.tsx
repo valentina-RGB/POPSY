@@ -53,7 +53,6 @@ const Dashboard: React.FC = () => {
   
         setVentasData(ventas);
         setVentasPorDia(ventasPorDiaCantidad);
-  
         setTotalVentas(ventasResponse.data.datos.estadisticas.totalVentas);
         setLoading(false);
       } catch (error) {

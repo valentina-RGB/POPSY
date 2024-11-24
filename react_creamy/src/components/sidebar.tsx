@@ -1,14 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   HomeIcon,
-  ChartBarIcon,
-  CogIcon,
-  DocumentChartBarIcon,
   ClipboardDocumentIcon,
-  UsersIcon,
-  CubeIcon,
-  CurrencyDollarIcon,
-  ClipboardDocumentListIcon,
+  BuildingStorefrontIcon, // Para Insumos
+  ArrowPathIcon, // Para Entradas
+  CubeTransparentIcon, // Para Categorías
+  TagIcon, // Para Productos
+  TruckIcon, // Para Pedidos
+  BanknotesIcon, // Para Ventas
+  Cog6ToothIcon, // Para Roles
+  UserGroupIcon, // Para Usuarios
 } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 
@@ -21,103 +22,70 @@ const Menu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
       setIsLoggedIn(true);
     }
   }, [])
+
+  const navItems = [
+    { label: "Dashboard", links: [{ path: "/Dashboard", name: "Dashboard", icon: HomeIcon }] },
+    {
+      label: "Compras",
+      links: [
+        { path: "/Insumos", name: "Insumos", icon: BuildingStorefrontIcon },
+        { path: "/historial-entradas", name: "Entradas", icon: ArrowPathIcon },
+      ],
+    },
+    {
+      label: "Ventas",
+      links: [
+        { path: "/Categorias", name: "Categorías", icon: CubeTransparentIcon },
+        { path: "/Productos", name: "Productos", icon: TagIcon },
+        { path: "/Pedidos", name: "Pedidos", icon: TruckIcon },
+        { path: "/Ventas", name: "Ventas", icon: BanknotesIcon },
+      ],
+    },
+    {
+      label: "Configuración",
+      links: [
+        { path: "/Roles", name: "Roles", icon: Cog6ToothIcon },
+        { path: "/Usuarios", name: "Usuarios", icon: UserGroupIcon },
+      ],
+    },
+  ];
+
   return (
     <aside
-      className={`${isLoggedIn ? "" : "tw-hidden"} tw-flex tw-flex-col tw-w-64 tw-h-screen tw-px-5 tw-py-8 tw-overflow-y-auto tw-bg-white tw-border-r dark:tw-bg-gray-900 dark:tw-border-gray-700 tw-pt-3
-        ${isMenuOpen ? "tw-absolute tw-block" : "tw-hidden"} lg:${isMenuOpen ? "tw-block" : "tw-hidden"} lg:tw-static 
-        tw-rounded-lg tw-shadow-lg`} // Bordes redondeados y sombra
-      style={{ zIndex: 10 }} // Asegura que esté sobre otros elementos en vista móvil
+      className={`${isLoggedIn ? "" : "tw-hidden"} tw-flex tw-flex-col tw-w-64 tw-h-screen tw-px-5 tw-py-8 tw-overflow-y-auto tw-bg-white tw-border-r dark:tw-bg-gray-900 dark:tw-border-gray-700
+        tw-rounded-lg tw-shadow-lg  lg:${isMenuOpen ? "tw-block" : "tw-hidden"} lg:tw-static 
+        tw-rounded-lg tw-shadow-lg`}
+      style={{ zIndex: 10 }}
     >
-      <div className="tw-flex tw-flex-col tw-justify-between tw-flex-1 tw-mt-6">
-        <nav className="-tw-mx-3 tw-space-y-6">
-          <div className="tw-space-y-3">
-            <label className="tw-px-3 tw-text-xs tw-text-gray-500 tw-uppercase dark:tw-text-gray-400">Dashboard</label>
-
-            <Link
-              to="/Dashboard"
-              className="tw-flex tw-items-center tw-px-3 tw-py-2 tw-text-gray-600 tw-transition-colors tw-duration-300 tw-transform tw-rounded-lg 
-              dark:tw-text-gray-200 hover:tw-bg-gray-200 dark:hover:tw-bg-gray-800 dark:hover:tw-text-gray-200 hover:tw-text-gray-700"
-            >
-              <HomeIcon className="tw-w-6 tw-h-6 tw-text-indigo-600" />
-              <span className="tw-mx-3 tw-text-sm tw-font-medium">Dashboard</span>
-            </Link>
-            <label className="tw-px-3 tw-text-xs tw-text-gray-500 tw-uppercase dark:tw-text-gray-400">Compras</label>
-            <Link
-              to="/Insumos"
-              className="tw-flex tw-items-center tw-px-3 tw-py-2 tw-text-gray-600 tw-transition-colors tw-duration-300 tw-transform tw-rounded-lg 
-              dark:tw-text-gray-200 hover:tw-bg-gray-200 dark:hover:tw-bg-gray-800 dark:hover:tw-text-gray-200 hover:tw-text-gray-700"
-            >
-              <ClipboardDocumentIcon className="tw-w-6 tw-h-6 tw-text-indigo-600" />
-              <span className="tw-mx-3 tw-text-sm tw-font-medium">Insumos</span>
-            </Link>
-            <Link
-              to="/historial-entradas"
-              className="tw-flex tw-items-center tw-px-3 tw-py-2 tw-text-gray-600 tw-transition-colors tw-duration-300 tw-transform tw-rounded-lg 
-              dark:tw-text-gray-200 hover:tw-bg-gray-200 dark:hover:tw-bg-gray-800 dark:hover:tw-text-gray-200 hover:tw-text-gray-700"
-            >
-              <ClipboardDocumentIcon className="tw-w-6 tw-h-6 tw-text-indigo-600" />
-              <span className="tw-mx-3 tw-text-sm tw-font-medium">Entradas</span>
-            </Link>
-
-            <label className="tw-px-3 tw-text-xs tw-text-gray-500 tw-uppercase dark:tw-text-gray-400">Ventas</label>
-
-            <Link
-              to="/Categorias"
-              className="tw-flex tw-items-center tw-px-3 tw-py-2 tw-text-gray-600 tw-transition-colors tw-duration-300 tw-transform tw-rounded-lg 
-              dark:tw-text-gray-200 hover:tw-bg-gray-200 dark:hover:tw-bg-gray-800 dark:hover:tw-text-gray-200 hover:tw-text-gray-700"
-            >
-              <CubeIcon className="tw-w-6 tw-h-6 tw-text-indigo-600" />
-              <span className="tw-mx-3 tw-text-sm tw-font-medium">Categorías</span>
-            </Link>
-
-            <Link
-              to="/Productos"
-              className="tw-flex tw-items-center tw-px-3 tw-py-2 tw-text-gray-600 tw-transition-colors tw-duration-300 tw-transform tw-rounded-lg 
-              dark:tw-text-gray-200 hover:tw-bg-gray-200 dark:hover:tw-bg-gray-800 dark:hover:tw-text-gray-200 hover:tw-text-gray-700"
-            >
-              <DocumentChartBarIcon className="tw-w-6 tw-h-6 tw-text-indigo-600" />
-              <span className="tw-mx-3 tw-text-sm tw-font-medium">Productos</span>
-            </Link>
-
-            <Link
-              to="/Pedidos"
-              className="tw-flex tw-items-center tw-px-3 tw-py-2 tw-text-gray-600 tw-transition-colors tw-duration-300 tw-transform tw-rounded-lg 
-              dark:tw-text-gray-200 hover:tw-bg-gray-200 dark:hover:tw-bg-gray-800 dark:hover:tw-text-gray-200 hover:tw-text-gray-700"
-            >
-              <ClipboardDocumentListIcon className="tw-w-6 tw-h-6 tw-text-indigo-600" />
-              <span className="tw-mx-3 tw-text-sm tw-font-medium">Pedidos</span>
-            </Link>
-
-            <Link
-              to="/Ventas"
-              className="tw-flex tw-items-center tw-px-3 tw-py-2 tw-text-gray-600 tw-transition-colors tw-duration-300 tw-transform tw-rounded-lg 
-              dark:tw-text-gray-200 hover:tw-bg-gray-200 dark:hover:tw-bg-gray-800 dark:hover:tw-text-gray-200 hover:tw-text-gray-700"
-            >
-              <CurrencyDollarIcon className="tw-w-6 tw-h-6 tw-text-indigo-600" />
-              <span className="tw-mx-3 tw-text-sm tw-font-medium">Ventas</span>
-            </Link>
-
-            <label className="tw-px-3 tw-text-xs tw-text-gray-500 tw-uppercase dark:tw-text-gray-400">Configuración</label>
-
-            <Link
-              to="/Roles"
-              className="tw-flex tw-items-center tw-px-3 tw-py-2 tw-text-gray-600 tw-transition-colors tw-duration-300 tw-transform tw-rounded-lg 
-              dark:tw-text-gray-200 hover:tw-bg-gray-200 dark:hover:tw-bg-gray-800 dark:hover:tw-text-gray-200 hover:tw-text-gray-700"
-            >
-              <CogIcon className="tw-w-6 tw-h-6 tw-text-indigo-600" />
-              <span className="tw-mx-3 tw-text-sm tw-font-medium">Roles</span>
-            </Link>
-
-            <Link
-              to="/Usuarios"
-              className="tw-flex tw-items-center tw-px-3 tw-py-2 tw-text-gray-600 tw-transition-colors tw-duration-300 tw-transform tw-rounded-lg 
-              dark:tw-text-gray-200 hover:tw-bg-gray-200 dark:hover:tw-bg-gray-800 dark:hover:tw-text-gray-200 hover:tw-text-gray-700"
-            >
-              <UsersIcon className="tw-w-6 tw-h-6 tw-text-indigo-600" />
-              <span className="tw-mx-3 tw-text-sm tw-font-medium">Usuarios</span>
-            </Link>
+      <div className="tw-mt-4 tw-space-y-8">
+        {navItems.map((section) => (
+          <div key={section.label}>
+            <label className="tw-px-3 tw-text-xs tw-font-semibold tw-uppercase tw-text-gray-700 dark:tw-text-gray-400">
+              {section.label}
+            </label>
+            <div className="tw-mt-2 tw-space-y-2">
+              {section.links.map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  className={`tw-flex tw-items-center tw-px-3 tw-py-2 tw-rounded-lg tw-transition-colors tw-duration-300 
+                    ${
+                      location.pathname === link.path
+                        ? "tw-bg-indigo-100 tw-text-indigo-900 dark:tw-bg-indigo-600 dark:tw-text-white"
+                        : "tw-text-gray-600 hover:tw-bg-gray-200 hover:tw-text-gray-900 dark:tw-text-gray-300 dark:hover:tw-bg-gray-800 dark:hover:tw-text-white"
+                    }`}
+                >
+                  <link.icon
+                    className={`tw-w-6 tw-h-6 ${
+                      location.pathname === link.path ? "tw-text-indigo-700 dark:tw-text-white" : "tw-text-gray-500"
+                    }`}
+                  />
+                  <span className="tw-mx-3 tw-text-sm tw-font-medium">{link.name}</span>
+                </Link>
+              ))}
+            </div>
           </div>
-        </nav>
+        ))}
       </div>
     </aside>
   );
