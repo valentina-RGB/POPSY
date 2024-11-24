@@ -16,9 +16,9 @@ module.exports = (sequelize, DataTypes) => {
   // Crear datos por defecto después de sincronizar el modelo
   Tipo_insumos.afterSync(async (options) => {
     const defaultTypes = [
-      { ID_tipo_insumo: 1, descripcion_tipo: 'vasos' },
-      { ID_tipo_insumo: 2,descripcion_tipo: 'helados' },
-      { ID_tipo_insumo: 3,descripcion_tipo: 'salsa' }
+      { ID_tipo_insumo: 1, descripcion_tipo: 'helados' },
+      { ID_tipo_insumo: 2,descripcion_tipo: 'salsas' },
+      { ID_tipo_insumo: 3,descripcion_tipo: 'agregado' }
     ];
     for (const type of defaultTypes) {
       await Tipo_insumos.findOrCreate({ where: { descripcion_tipo: type.descripcion_tipo } });
