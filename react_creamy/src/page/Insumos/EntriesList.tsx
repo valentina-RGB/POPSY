@@ -241,7 +241,7 @@ const EntriesList: React.FC = () => {
           animate={{ x: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
           className="tw-mb-1 tw-flex tw-space-x-4"
-        ></motion.div>
+        >
 
       {/* Botón para volver a la página de insumos */}
       <button
@@ -250,7 +250,7 @@ const EntriesList: React.FC = () => {
       >
         Volver a Insumos
       </button>
-
+      </motion.div>
        {/* Skeleton Loader cuando loading es true */}
        {loading ? (
           <AnimatePresence>

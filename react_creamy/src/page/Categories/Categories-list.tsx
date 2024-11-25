@@ -236,10 +236,17 @@ const Categories: React.FC = () => {
       >
          
     <h1 className="tw-font-bold tw-mb-6 tw-text-gray-800 tw-border-b-4 tw-border-blue-500 tw-pb-3">Categorías</h1>
+    <motion.div 
+          initial={{ x: -50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="tw-mb-1 tw-flex tw-space-x-4"
+        >
     
          <button onClick={()=>handleModal('add')} className="tw-bg-blue-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-mb-4 tw-shadow-md tw-hover:bg-blue-600 tw-transition-all tw-duration-300">
            <FontAwesomeIcon icon={faPlus} /> Agregar categoría
          </button>
+         </motion.div>
           {/* Skeleton Loader cuando loading es true */}
           {loading ? (
           <AnimatePresence>

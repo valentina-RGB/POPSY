@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../api/api';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-hot-toast'; // Importa react-hot-toast
+import { toast } from 'react-hot-toast';
 
 interface CreateInsumoProps {
   onClose: () => void;
@@ -17,7 +17,7 @@ const CreateInsumo: React.FC<CreateInsumoProps> = ({ onClose }) => {
     Array<{ ID_tipo_insumo: number; descripcion_tipo: string }>
   >([]);
   const [error, setError] = useState<string | null>(null);
-  const [isStockDisabled, setIsStockDisabled] = useState(false); // Nuevo estado para controlar desactivación de stock
+  const [isStockDisabled, setIsStockDisabled] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,7 +34,6 @@ const CreateInsumo: React.FC<CreateInsumoProps> = ({ onClose }) => {
     fetchTiposInsumo();
   }, []);
 
-  // Efecto para desactivar stock si el tipo de insumo es 2
   useEffect(() => {
     if (tipoInsumo === '2') {
       setIsStockDisabled(true);
@@ -144,6 +143,11 @@ const CreateInsumo: React.FC<CreateInsumoProps> = ({ onClose }) => {
               ))}
             </select>
           </div>
+          {tipoInsumo === '2' && (
+            <p className="tw-text-yellow-600 tw-text-sm tw-mb-4">
+              Este tipo de insumo no requiere stock mínimo ni máximo.
+            </p>
+          )}
           <div className="tw-mb-4">
             <label
               htmlFor="stockMin"
@@ -159,7 +163,7 @@ const CreateInsumo: React.FC<CreateInsumoProps> = ({ onClose }) => {
               className="tw-mt-1 tw-w-full tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-green-500 tw-transition"
               placeholder="Stock mínimo"
               required
-              disabled={isStockDisabled} // Desactivar si tipo de insumo es 2
+              disabled={isStockDisabled}
             />
           </div>
           <div className="tw-mb-4">
@@ -177,7 +181,7 @@ const CreateInsumo: React.FC<CreateInsumoProps> = ({ onClose }) => {
               className="tw-mt-1 tw-w-full tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500 tw-transition"
               placeholder="Stock máximo"
               required
-              disabled={isStockDisabled} // Desactivar si tipo de insumo es 2
+              disabled={isStockDisabled}
             />
           </div>
           <div className="tw-flex tw-justify-end">
@@ -200,6 +204,5 @@ const CreateInsumo: React.FC<CreateInsumoProps> = ({ onClose }) => {
     </div>
   );
 };
-
 
 export default CreateInsumo;
