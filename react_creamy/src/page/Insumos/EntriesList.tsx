@@ -183,12 +183,7 @@ const EntriesList: React.FC = () => {
             
             {/* Botón para editar */}
             
-            <button
-              onClick={() => handleEdit(row.original.ID_entrada)}
-              className="tw-bg-blue-500 tw-text-white tw-rounded-full tw-p-2 tw-shadow-md tw-hover:bg-blue-600 tw-transition-all tw-duration-300"
-            >
-              <FontAwesomeIcon icon={faEdit} title="Editar" />
-            </button>
+          
             <motion.button
               whileHover={{
                 scale: 1.1,
@@ -246,7 +241,7 @@ const EntriesList: React.FC = () => {
           animate={{ x: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
           className="tw-mb-1 tw-flex tw-space-x-4"
-        ></motion.div>
+        >
 
       {/* Botón para volver a la página de insumos */}
       <button
@@ -255,7 +250,7 @@ const EntriesList: React.FC = () => {
       >
         Volver a Insumos
       </button>
-
+      </motion.div>
        {/* Skeleton Loader cuando loading es true */}
        {loading ? (
           <AnimatePresence>

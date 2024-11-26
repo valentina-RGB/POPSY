@@ -27,6 +27,7 @@ const PI = require('./v1/routers/productos_insumos')
 const bodyParser = require('body-parser'); // Corregir nombre
 const Joi = require('joi');
 const controllerAccess = require('../src/controllers/autenticacion');
+const dashboardRoutes = require('./v1/routers/dashboard');
 
 
 class Server {
@@ -51,7 +52,7 @@ class Server {
 
   syncDatabase = async () => {
     try {
-      //await db.sequelize.sync({ force: true });
+      // await db.sequelize.sync({ force: true });
       // await db.sequelize.sync({ alter: true });
       console.log("Todas las tablas han sido sincronizadas o creadas.");
     } catch (error) {
@@ -102,6 +103,8 @@ class Server {
       .use("/usuarios", usuariosRoutes)
 
       .use("/permiso", permisoRoutes)
+
+      .use("/dashboard", dashboardRoutes)
 
       // Configura la carpeta pública para servir archivos estáticos
       .use("/imagenes", express.static(path.join(__dirname, "../uploads")));

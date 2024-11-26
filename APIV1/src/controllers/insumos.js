@@ -57,48 +57,57 @@ const crearInsumo = async (req, res) => {
     const {
       ID_tipo_insumo,
       descripcion_insumo,
-      estado_insumo, // Opcional: Puedes incluir este campo si es necesario
+      estado_insumo,
       precio,
-      stock_min,
-      stock_max,
-      stock_actual,
-      medida,
-      unidad
+      stock, // Recibimos el objeto stock
     } = req.body;
 
     // Verificar si el insumo ya existe
-    const insumoExistente = await Insumos.findOne({ 
-      where: { descripcion_insumo } 
+    const insumoExistente = await Insumos.findOne({
+      where: { descripcion_insumo },
     });
 
     if (insumoExistente) {
       await transaction.rollback(); // Revertir la transacción si hay un duplicado
-      return res.status(400).json({ message: 'El insumo ya existe con la misma descripción.' });
+      return res
+        .status(400)
+        .json({ message: 'El insumo ya existe con la misma descripción.' });
     }
 
-    const insumo = await Insumos.create({
-      ID_tipo_insumo,
-      descripcion_insumo,
-      estado_insumo, 
-      precio
-    }, { transaction });
-  
-    await StockInsumos.create({
-      stock_min: stock_min || 0,
-      stock_max: stock_max || 100,
-      stock_actual: stock_actual || 0,
-      ID_insumo: insumo.ID_insumo,
-      medida: medida || 'unidad',
-      unidad: unidad || 0
-    }, { transaction });
+    const insumo = await Insumos.create(
+      {
+        ID_tipo_insumo,
+        descripcion_insumo,
+        estado_insumo,
+        precio,
+      },
+      { transaction }
+    );
 
-    await transaction.commit(); 
+    if (stock) {
+      const { stock_min = 0, stock_max = 100, stock_actual = 0 } = stock;
+
+      await StockInsumos.create(
+        {
+          stock_min,
+          stock_max,
+          stock_actual,
+          ID_insumo: insumo.ID_insumo,
+          medida: 'unidad', // Puedes modificar si se incluye en stock
+          unidad: 0,
+        },
+        { transaction }
+      );
+    }
+
+    await transaction.commit();
     res.status(201).json(insumo);
   } catch (error) {
-    await transaction.rollback(); 
+    await transaction.rollback();
     res.status(400).json({ message: error.message });
   }
 };
+
 
 const actualizarInsumo = async (req, res) => {
   const { id } = req.params;
@@ -107,78 +116,76 @@ const actualizarInsumo = async (req, res) => {
     estado_insumo,
     ID_tipo_insumo,
     precio,
-    stock_min,
-    stock_max,
-    medida,
-    unidad,
-    stock_actual
+    stock, // Recibimos el objeto stock para actualizarlo
   } = req.body;
 
-
-
-
+  const transaction = await db.sequelize.transaction();
+  
   try {
-    // Verificar si el insumo existe
-    const insumoExistente = await Insumos.findByPk(id);
-    if (!insumoExistente) {
+    // Buscar el insumo a actualizar
+    const insumo = await Insumos.findByPk(id);
+
+    if (!insumo) {
       return res.status(404).json({ message: 'Insumo no encontrado' });
     }
 
-    // Verificar si se está intentando actualizar la descripción del insumo a una ya existente
-    if (descripcion_insumo) {
-      const insumoDuplicado = await Insumos.findOne({
-        where: {
-          descripcion_insumo,
-          ID_insumo: { [db.Sequelize.Op.ne]: id } // Excluir el insumo actual
-        }
+    // Actualizar los campos principales del insumo
+    if (descripcion_insumo) insumo.descripcion_insumo = descripcion_insumo;
+    if (estado_insumo) insumo.estado_insumo = estado_insumo;
+    if (ID_tipo_insumo) insumo.ID_tipo_insumo = ID_tipo_insumo;
+    if (precio) insumo.precio = precio;
+
+    // Guardar cambios en la tabla Insumos
+    await insumo.save({ transaction });
+
+    // Si se proporciona el objeto stock, actualizar StockInsumos
+    if (stock) {
+      const { stock_min, stock_max, stock_actual } = stock;
+
+      const stockInsumo = await StockInsumos.findOne({
+        where: { ID_insumo: insumo.ID_insumo },
       });
 
-      if (insumoDuplicado) {
-        return res.status(400).json({ message: 'Ya existe otro insumo con la misma descripción.' });
-      }
-    }
-
-    // Actualizar el insumo
-    const [updated] = await Insumos.update(
-      {
-        descripcion_insumo,
-        estado_insumo,
-        ID_tipo_insumo,
-        precio
-      },
-      { where: { ID_insumo: id } }
-    );
-
-    if (updated) {
-      // Actualizar los datos del stock si se han recibido en el cuerpo de la solicitud
-      if (stock_min !== undefined || stock_max !== undefined || medida !== undefined || unidad !== undefined || stock_actual !== undefined) {
-        await StockInsumos.update(
+      if (!stockInsumo) {
+        // Si no existe el registro de StockInsumos, se crea uno nuevo
+        await StockInsumos.create(
           {
-            stock_min: stock_min !== undefined ? stock_min : insumoExistente.stock_min,
-            stock_max: stock_max !== undefined ? stock_max : insumoExistente.stock_max,
-            medida: medida !== undefined ? medida : insumoExistente.medida,
-            unidad: unidad !== undefined ? unidad : insumoExistente.unidad,
-            stock_actual: stock_actual !== undefined ? stock_actual : insumoExistente.stock_actual
+            stock_min: stock_min || 0,
+            stock_max: stock_max || 100,
+            stock_actual: stock_actual || 0,
+            ID_insumo: insumo.ID_insumo,
+            medida: medida || 'unidad', // Por defecto 'unidad'
+            unidad: unidad || 0, // Valor predeterminado de unidad
           },
-          { where: { ID_insumo: id } }
+          { transaction }
         );
+      } else {
+        // Si existe el registro, se actualizan los valores
+        if (stock_min !== undefined) stockInsumo.stock_min = stock_min;
+        if (stock_max !== undefined) stockInsumo.stock_max = stock_max;
+        if (stock_actual !== undefined) stockInsumo.stock_actual = stock_actual;
+        if (medida !== undefined) stockInsumo.medida = medida;
+        if (unidad !== undefined) stockInsumo.unidad = unidad;
+
+        await stockInsumo.save({ transaction });
       }
-
-      // Obtener el insumo actualizado con los datos del stock
-      const updatedInsumo = await Insumos.findOne({
-        where: { ID_insumo: id },
-        include: [{ model: StockInsumos, as: 'stock' }]
-      });
-
-      res.status(200).json(updatedInsumo);
-    } else {
-      res.status(404).json({ message: 'No se pudo actualizar el insumo.' });
     }
+
+    // Confirmar la transacción
+    await transaction.commit();
+
+    // Responder con el insumo actualizado
+    res.status(200).json(insumo);
   } catch (error) {
-    console.error('Error al actualizar el insumo:', error);
-    res.status(500).json({ message: 'Ocurrió un error al actualizar el insumo.' });
+    // Revertir la transacción en caso de error
+    await transaction.rollback();
+    res.status(400).json({ message: error.message });
   }
 };
+
+
+
+
 const eliminarInsumo = async (req, res) => {
   const { id } = req.params;
   try {

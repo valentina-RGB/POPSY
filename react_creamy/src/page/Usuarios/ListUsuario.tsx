@@ -10,7 +10,23 @@ import AddUsuario from './CreateUsuario';
 import EditUsuario from './EditUsuario';
 import Modal from 'react-modal';
 import Skeleton from '@mui/material/Skeleton';
+import { motion, AnimatePresence } from 'framer-motion';
 
+const tableStyles = {
+  '& .MuiTableHead-root': {
+    backgroundColor: '#f0f4f8',
+    borderBottom: '2px solid #2c3e50',
+  },
+  '& .MuiTableRow-root:hover': {
+    backgroundColor: 'rgba(44, 62, 80, 0.05)',
+    transition: 'background-color 0.3s ease',
+  },
+  '& .MuiTableCell-root': {
+    fontFamily: "'Inter', sans-serif",
+    padding: '16px',
+    borderBottom: '1px solid #e0e0e0',
+  }
+};
 Modal.setAppElement('#root');
 
 const UsuarioList: React.FC = () => {
@@ -107,18 +123,58 @@ const UsuarioList: React.FC = () => {
       {
         accessorKey: 'ID_usuario',
         header: 'ID',
+        Cell: ({ cell }) => (
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3 }}
+            className="tw-font-semibold tw-text-gray-800"
+          >
+            {cell.getValue<string>()}
+          </motion.div>
+        ),
       },
       {
         accessorKey: 'nombre',
         header: 'Nombre',
+        Cell: ({ cell }) => (
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3 }}
+            className="tw-font-semibold tw-text-gray-800"
+          >
+            {cell.getValue<string>()}
+          </motion.div>
+        ),
       },
       {
         accessorKey: 'email',
         header: 'Email',
+        Cell: ({ cell }) => (
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3 }}
+            className="tw-font-semibold tw-text-gray-800"
+          >
+            {cell.getValue<string>()}
+          </motion.div>
+        ),
       },
       {
         accessorKey: 'telefono',
         header: 'Teléfono',
+        Cell: ({ cell }) => (
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3 }}
+            className="tw-font-semibold tw-text-gray-800"
+          >
+            {cell.getValue<string>()}
+          </motion.div>
+        ),
       },
       {
         accessorKey: 'ID_rol',
@@ -150,12 +206,41 @@ const UsuarioList: React.FC = () => {
         header: 'Acciones',
         Cell: ({ row }) => (
           <div className="tw-flex tw-justify-center tw-gap-2">
-            <button onClick={() => handleEdit(row.original.ID_usuario)} className="tw-bg-blue-500 tw-text-white tw-rounded-full tw-p-2 tw-shadow-md tw-hover:bg-blue-600 tw-transition-all tw-duration-300">
-              <FontAwesomeIcon icon={faEdit} />
-            </button>
-            <button onClick={() => handleDelete(row.original.ID_usuario)} className="tw-bg-red-500 tw-text-white tw-rounded-full tw-p-2 tw-shadow-md tw-hover:bg-red-600 tw-transition-all tw-duration-300">
-              <FontAwesomeIcon icon={faTrash} />
-            </button>
+            <motion.button
+              whileHover={{
+                scale: 1.1,
+                rotate: 5,
+                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
+              }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => handleEdit(row.original.ID_usuario)}
+              className="tw-group tw-bg-blue-500 tw-text-white tw-rounded-full tw-w-10 tw-h-10 tw-flex tw-items-center tw-justify-center tw-shadow-md tw-transition-all tw-duration-300 hover:tw-bg-blue-600 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-400 focus:tw-ring-opacity-75"
+            >
+              <FontAwesomeIcon 
+          icon={faEdit} 
+          className="tw-transition-transform tw-group-hover:tw-rotate-12"
+          title="Editar" 
+        />
+
+            </motion.button>
+            
+            {/* Botón para eliminar */}
+            <motion.button
+        whileHover={{ 
+          scale: 1.1, 
+          rotate: -5,
+          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
+        }}
+        whileTap={{ scale: 0.95 }}
+        onClick={() => handleDelete(row.original.ID_usuario)} 
+        className="tw-group tw-bg-red-500 tw-text-white tw-rounded-full tw-w-10 tw-h-10 tw-flex tw-items-center tw-justify-center tw-shadow-md tw-transition-all tw-duration-300 hover:tw-bg-red-600 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-red-400 focus:tw-ring-opacity-75"
+      >
+        <FontAwesomeIcon 
+          icon={faTrash} 
+          className="tw-transition-transform tw-group-hover:tw-rotate-6"
+          title="Eliminar" 
+        />
+      </motion.button>
           </div>
         ),
       },
@@ -164,22 +249,50 @@ const UsuarioList: React.FC = () => {
   );
 
   return (
-    <section className="tw-rounded-lg mb-3 mb-lg-5 p-6 bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out">
-      <div className="tw-p-6 tw-bg-gray-50 tw-min-h-screen">
-        <h1 className="page-heading">Usuarios</h1>
+    <section className="tw-min-h-screen tw-bg-gradient-to-br tw-to-gray-100 -tw-p-5">
+      <motion.div className="tw-bg-white tw-rounded-2xl tw-shadow-2xl tw-p-6">
+      <h1 className="tw-font-bold tw-mb-6 tw-text-gray-800 tw-border-b-4 tw-border-blue-500 tw-pb-3">Usuarios</h1>
+      <motion.div 
+          initial={{ x: -50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="tw-mb-1 tw-flex tw-space-x-4"
+        >
         <button onClick={handleAddUsuario} className="tw-bg-blue-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-mb-4 tw-shadow-md tw-hover:bg-blue-600 tw-transition-all tw-duration-300">
           <FontAwesomeIcon icon={faPlus} /> Agregar usuario
         </button>
+        </motion.div>
         {loading ? (
-          <div className="w-full max-w-md mx-auto p-9">
-            <Skeleton className="h-6 w-52" />
-            <Skeleton className="h-4 w-48 mt-6" />
-            <Skeleton className="h-4 w-full mt-4" />
-            <Skeleton className="h-4 w-64 mt-4" />
-            <Skeleton className="h-4 w-4/5 mt-4" />
-          </div>
+          <AnimatePresence>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="tw-space-y-4"
+            >
+              {[...Array(5)].map((_, index) => (
+                <Skeleton
+                  key={index}
+                  variant="rectangular"
+                  width="100%"
+                  height={60}
+                  sx={{ borderRadius: '12px' }}
+                />
+              ))}
+            </motion.div>
+          </AnimatePresence>
         ) : (
-          <MaterialReactTable columns={columns} data={usuarios} />
+          <MaterialReactTable
+            columns={columns}
+            data={usuarios}
+            muiTablePaperProps={{
+              sx: tableStyles
+            }}
+            enableColumnOrdering
+            enableGlobalFilter
+            positionToolbarAlertBanner="bottom"
+            // Optional: Add row hover and click animations          
+          />
         )}
         <Modal
           isOpen={isModalOpen}
@@ -190,7 +303,7 @@ const UsuarioList: React.FC = () => {
           {modalType === 'add' && <AddUsuario onClose={handleModalCloseAndFetch} />}
           {modalType === 'edit' && selectedUsuarioId !== null && <EditUsuario id={selectedUsuarioId} onClose={handleModalCloseAndFetch} />}
         </Modal>
-      </div>
+      </motion.div>
     </section>
   );
 };
