@@ -92,6 +92,8 @@ const Iniciar_sesion = async (req, res) => {
     }
 
     // Verifica la contraseña
+    console.log(password, user.password);
+    
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (isPasswordCorrect) {
       // Genera el token JWT
