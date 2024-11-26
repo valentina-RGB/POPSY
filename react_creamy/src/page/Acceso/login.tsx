@@ -107,11 +107,10 @@ const AuthPage: React.FC = () => {
           pauseOnHover: true,
           draggable: true,
           progress: undefined         
-          // Navega a /index al cerrar la alerta
         })
       setTimeout(() => {
+        navigate('/Dashboard');
         window.location.reload();
-        navigate('/Roles');
       }, 1000 )
       ;
       } else {
