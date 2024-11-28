@@ -56,7 +56,7 @@ const AddUsuario: React.FC<AddUsuario> = ({onClose}) => {
 
       console.log(usuario);
 
-      await api.post('/signup', usuario);
+      await api.post('/usuarios', usuario);
       onClose();
       toast.success('El usuario se  ha agregada exitosamente.');
       navigate('/Usuarios')
