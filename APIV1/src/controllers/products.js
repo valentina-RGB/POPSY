@@ -45,13 +45,11 @@ const obtenerProductos = async (req, res) => {
     const {
       ID_tipo_productos,
       Insumos,
-      precio,
-      cantidad,
       nombre,
       descripcion,
       precio_neto,
-      estado_productos,
       ID_categorias,
+      stock_bola
       
     } = req.body;
 
@@ -66,14 +64,12 @@ const obtenerProductos = async (req, res) => {
       const productos = await ProductosService.CreateProdutos(
         ID_tipo_productos,
         Insumos,
-        precio,
-        cantidad,
         nombre,
         descripcion,
         precio_neto,
-        estado_productos,
         ID_categorias,
-        imagen
+        imagen,
+        stock_bola
       );
 
       if (productos) {
@@ -93,6 +89,7 @@ const obtenerProductos = async (req, res) => {
       precio_neto,
       estado_productos,
       ID_categorias,
+      stock_bola
     } = req.body;
 
     let imagen = null;
@@ -129,10 +126,9 @@ const obtenerProductos = async (req, res) => {
         nombre: nombre || ProductoExistente.nombre,
         descripcion: descripcion || ProductoExistente.descripcion,
         precio_neto: precio_neto || ProductoExistente.precio_neto,
-        estado_productos:
-        estado_productos || ProductoExistente.estado_productos,
-        ID_tipo_productos:
-          ID_tipo_productos || ProductoExistente.ID_tipo_productos,
+        estado_productos: estado_productos || ProductoExistente.estado_productos,
+        ID_tipo_productos: ID_tipo_productos || ProductoExistente.ID_tipo_productos,
+        stock_bola: stock_bola || ProductoExistente.stock_bola,
         ID_categorias: ID_categorias || ProductoExistente.ID_categorias,
         imagen: imagen || "N/A",
       };
@@ -186,14 +182,9 @@ if (Array.isArray(Insumos)) {
       if (productoInsumo) {
         // Actualizar el insumo existente
         await productoInsumo.update({
-          cantidad:
-            insumo.Producto_insumos.cantidad || productoInsumo.cantidad,
-          configuracion:
-            insumo.Producto_insumos.configuracion ||
-            productoInsumo.configuracion,
+          cantidad:insumo.Producto_insumos.cantidad || productoInsumo.cantidad,
           precio:
-            (insumo.precio || productoInsumo.precio) *
-            (insumo.Producto_insumos.cantidad || productoInsumo.cantidad),
+            (insumo.precio || productoInsumo.precio)*(insumo.Producto_insumos.cantidad || productoInsumo.cantidad),
         });
       } else {
         // Si el insumo no existe, lo creamos
@@ -201,7 +192,6 @@ if (Array.isArray(Insumos)) {
           ID_productos_tipo: id,
           ID_insumos_tipo: insumo.ID_insumo,
           cantidad: insumo.Producto_insumos.cantidad,
-          configuracion: insumo.Producto_insumos.configuracion,
           precio: insumo.precio * insumo.Producto_insumos.cantidad,
         });
       }

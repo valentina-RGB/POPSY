@@ -5,5 +5,6 @@ export interface Producto {
     estado_productos:string;
     tipo_producto: number;
     categorias: number;
+    stock_bola: number;
     imagen: File;
 }

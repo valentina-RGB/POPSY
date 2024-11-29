@@ -5,7 +5,6 @@ const {
   Producto_insumos,
   Productos,
   Tipo_productos,
-  Adiciones,
   Categorias,
 } = require("../../models");
 
@@ -18,7 +17,7 @@ const getProductos = async (res,req ) => {
             {
               model: Insumos,
               as: "Insumos",
-              through: { attributes: ["cantidad", "configuracion", "precio"] },
+              through: { attributes: ["cantidad", "precio"] },
             }
           ]
         }
@@ -42,7 +41,7 @@ const getProductos = async (res,req ) => {
         {
           model: Insumos,
           as: "Insumos",
-          through: { attributes: ["cantidad", "configuracion", "precio"] },
+          through: { attributes: ["cantidad", "precio"] },
         },
       ],
     });
@@ -51,13 +50,12 @@ const getProductos = async (res,req ) => {
   CreateProdutos = async (
     ID_tipo_productos,
     Insumos,
-    precio,
-    cantidad,
     nombre,
     descripcion,
     precio_neto,
     ID_categorias,
-    imagen
+    imagen,
+    stock_bola
   ) => {
     let bandera = false;
     let respuesta = "";
@@ -77,13 +75,6 @@ const getProductos = async (res,req ) => {
       }
     }
 
-    if (ID_categorias) {
-      const categoria = await Categorias.findByPk(ID_categorias); // Asegúrate de usar await aquí
-      if (!categoria) {
-        bandera = true;
-        respuesta = "Categoría no encontrada";
-      }
-    }
 
     if (nombre) {
       const Existenciaproducto = await Productos.findOne({
@@ -105,6 +96,8 @@ const getProductos = async (res,req ) => {
         ID_tipo_productos: ID_tipo_productos,
         ID_categorias: ID_categorias,
         imagen: imagen || "N/A",
+        stock_bola: stock_bola || 0
+        
       });
 
       if (Array.isArray(Insumos)) {
@@ -114,7 +107,6 @@ const getProductos = async (res,req ) => {
               ID_productos_tipo: Nuevoproducto.ID_producto,
               ID_insumos_tipo: insumo.ID_insumo,
               cantidad: insumo.Producto_insumos.cantidad,
-              configuracion: insumo.Producto_insumos.configuracion,
               precio: insumo.precio * insumo.Producto_insumos.cantidad,
             });
           } else {
