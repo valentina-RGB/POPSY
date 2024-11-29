@@ -16,39 +16,39 @@ import { toast } from "react-hot-toast";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
-// const tableStyles = {
-//   '& .MuiPaper-root': {
-//     boxShadow: 'none',
-//     border: '1px solid #e0e0e0',
-//     borderRadius: '8px',
-//     overflow: 'hidden'
-//   },
-//   '& .MuiTableHead-root': {
-//     backgroundColor: '#f8fafc',
-//     borderBottom: '2px solid #e2e8f0',
-//   },
-//   '& .MuiTableRow-root': {
-//     cursor: 'pointer',
-//     '&:hover': {
-//       backgroundColor: '#f1f5f9',
-//       transition: 'background-color 0.2s ease',
-//     }
-//   },
-//   '& .MuiTableCell-root': {
-//     fontFamily: "'Inter', sans-serif",
-//     padding: '16px',
-//     borderBottom: '1px solid #e2e8f0',
-//     '&.stock-cell': {
-//       display: 'flex',
-//       alignItems: 'center',
-//       gap: '8px'
-//     }
-//   },
-//   '& .MuiTableCell-head': {
-//     fontWeight: 600,
-//     color: '#1e293b'
-//   }
-// };
+const tableStyles = {
+  '& .MuiPaper-root': {
+    boxShadow: 'none',
+    border: '1px solid #e0e0e0',
+    borderRadius: '8px',
+    overflow: 'hidden'
+  },
+  '& .MuiTableHead-root': {
+    backgroundColor: '#f8fafc',
+    borderBottom: '2px solid #e2e8f0',
+  },
+  '& .MuiTableRow-root': {
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: '#f1f5f9',
+      transition: 'background-color 0.2s ease',
+    }
+  },
+  '& .MuiTableCell-root': {
+    fontFamily: "'Inter', sans-serif",
+    padding: '16px',
+    borderBottom: '1px solid #e2e8f0',
+    '&.stock-cell': {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px'
+    }
+  },
+  '& .MuiTableCell-head': {
+    fontWeight: 600,
+    color: '#1e293b'
+  }
+};
 
 type Insumo_adicion = {
   ID_insumo: number;
