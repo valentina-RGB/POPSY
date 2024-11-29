@@ -26,9 +26,10 @@ type Insumo = {
 
 interface AddProducto {
   onClose: () => void;
+  id: number | undefined;
 }
 
-const AddProductos: React.FC<AddProducto> = ({ onClose }) => {
+const AddProductos: React.FC<AddProducto> = ({ onClose, id}) => {
   const [descripcion, setDescripcion] = useState<string>("");
   const [estado, setEstado] = useState<string>("A");
   const [imagen, setImagen] = useState("");
@@ -88,6 +89,8 @@ const AddProductos: React.FC<AddProducto> = ({ onClose }) => {
   };
 
 
+  
+
   const [dragActive, setDragActive] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
 
@@ -106,7 +109,22 @@ const AddProductos: React.FC<AddProducto> = ({ onClose }) => {
   useEffect(() => {
     fetchTipo();
     fetchCategorias();
-   
+
+    if(id){
+      console.log('Holaaaaaa')
+      const fetchProducto = async () => {
+        try {
+          const response = await api.get(`/productos/${id}`);
+          const producto = response.data;
+          const {Insumos} = producto;
+          setFormData(producto);
+          setInputs(Insumos);
+        }catch (error) {
+          toast.error(String(error));
+        }
+      }
+      fetchProducto();
+    }
   }, []);
 
   // 2. Manejo de cambio en los inputs
@@ -167,7 +185,6 @@ const AddProductos: React.FC<AddProducto> = ({ onClose }) => {
 
     if (!formData.ID_categorias) {
       newErrors.categorias = "Campo obligatorio";
-     
     }
 
     if (!formData.nombre.trim()) {
@@ -184,27 +201,44 @@ const AddProductos: React.FC<AddProducto> = ({ onClose }) => {
 
 
     //VALIDACIONES 
+    setErrors(newErrors); 
 
-   
+      if(id && !newErrors.nombre && !newErrors.categorias && !newErrors.tipo_productos && !newErrors.insumos){
+          try {
+          await api.put(`/productos/${id}`, data, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+          onClose();
+          toast.success("El producto ha sido actualizado exitosamente.");
+          navigate("/productos");
+          resetForm();
+        } catch (error) {
+          toast.error(
+            "No se pudo actualizar el producto . Por favor, intente nuevamente."
+          );
+          setError(error);
+        }
 
-    setErrors(newErrors);
-
-    if (!newErrors.nombre && !newErrors.categorias && !newErrors.tipo_productos && !newErrors.insumos) {
-      try {
-        await api.post("/productos", data, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-        onClose();
-        toast.success("El producto se a agregado exitosamente.");
-        navigate("/productos");
-        resetForm();
-      } catch (error) {
-        toast.error(
-          "No se pudo agregar el producto . Por favor, intente nuevamente."
-        );
-        setError(error);
+      }else{
+        if (!newErrors.nombre && !newErrors.categorias && !newErrors.tipo_productos && !newErrors.insumos) {
+        try {
+          await api.post("/productos", data, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+          onClose();
+          toast.success("El producto se a agregado exitosamente.");
+          navigate("/productos");
+          resetForm();
+        } catch (error) {
+          toast.error(
+            "No se pudo agregar el producto . Por favor, intente nuevamente."
+          );
+          setError(error);
+        }
       }
     }
   };
@@ -365,7 +399,7 @@ useEffect(() => {
           <div className="tw-mb-4">
             <div className="tw-flex tw-flex-col tw-items-start tw-gap-2">
               <h2 className="tw-text-2xl tw-font-bold tw-text-[#6b46c1]">
-                Nuevo Producto
+                {id ? "Editar Producto" : "Agregar Producto"}
               </h2>
               <p className="tw-text-gray-500 dark:tw-text-gray-400">
                 Completa los siguientes campos para agregar un nuevo producto a tu
@@ -706,10 +740,11 @@ useEffect(() => {
           
           <button             
               onClick={() => handleModal()}
+              type="button"
               className="tw-bg-green-100 tw-text-green-700 tw-rounded tw-px-3 tw-py-1.5 hover:tw-bg-green-200 "
               >Añadir insumos 
           </button>
-          {errors.insumos && <p className="tw-mt-2 tw-text-sm tw-text-red-600">{errors.insumos}</p>}
+              {errors.insumos && <p className="tw-mt-2 tw-text-sm tw-text-red-600">{errors.insumos}</p>}
 
           </div>
        

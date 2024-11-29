@@ -16,6 +16,7 @@ import { toast } from "react-hot-toast";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
+
 const tableStyles = {
   '& .MuiPaper-root': {
     boxShadow: 'none',
@@ -144,13 +145,16 @@ export default function OrderAdd() {
 
 
 
-  useEffect(() => {
-  }), []
+  // useEffect(() => {
+    
+  // }), []
+
+  
 
   const combinedArray = [
     ...salsasAgregadas,
     ...insumosAgregados,
-    ...adiciones,
+    ...adiciones
   ];
   
   useEffect(() => {
@@ -266,6 +270,7 @@ export default function OrderAdd() {
         const generales = response.data.filter((insumo: Insumo_adicion) => insumo.ID_tipo_insumo !== 1 && insumo.ID_tipo_insumo !== 2 && insumo.estado_insumo === 'A');
 
         console.log(helados, salsas, generales)
+        
 
         setSalsaDisponibles(salsas);
         setBuscarHelado(helados);
@@ -284,21 +289,22 @@ export default function OrderAdd() {
   }, []);
 
 
+  const fetchStock = async () => {
+    try {
+      const response = await axios.get('http://localhost:3300/stock_insumos'); // Endpoint de insumos
+      const stock = response.data;
+      setStock(stock);
+
+      console.log('Stock',Stock);
+    } catch (error) {
+      console.error('Error al cargar el stock:', error);
+    }
+  };
+
+
   useEffect(() => {
-    const fetchStock = async () => {
-      try {
-        const response = await axios.get('http://localhost:3300/stock_insumos'); // Endpoint de insumos
-        const stock = response.data;
-        setStock(stock);
-
-        console.log('Stock',Stock);
-      } catch (error) {
-        console.error('Error al cargar el stock:', error);
-      }
-    };
-
     fetchStock();
-  }, []);
+  }),[];
 
 
   useEffect(() => {
@@ -345,14 +351,9 @@ export default function OrderAdd() {
       (input) => input.descripcion_insumo === insumo.descripcion_insumo
     );
 
-    // Valido el stock
-   
+    // Valido el stock  
 
-    if (InsumosExists) {
-
-
-      
-      
+    if (InsumosExists) {     
       handleChangeInsumo(insumo.ID_insumo, 1, 'helado');
       // Mostramos un mensaje toast
       toast.success(
@@ -529,8 +530,8 @@ export default function OrderAdd() {
             <button
               type="button"
               className="tw-px-4 tw-py-2 tw-bg-blue-500 tw-text-white tw-rounded-lg 
-                                 tw-transition-all hover:tw-bg-blue-600 disabled:tw-opacity-50
-                                 disabled:tw-cursor-not-allowed"
+              tw-transition-all hover:tw-bg-blue-600 disabled:tw-opacity-50
+              disabled:tw-cursor-not-allowed"
               onClick={() => {
                 setProductoActual(row.original.nombre);
                 SetIDActual(row.original.ID_producto);
@@ -708,35 +709,42 @@ export default function OrderAdd() {
   const handleChangeInsumo = (ID_insumo: number, cantidad: number, tipo: string) => {
     if (tipo === 'helado') {
       // Calcular la suma total de la cantidad en la lista de insumos
-      const cantidadTotal = insumosAgregados.reduce((acc, input) => acc + input.Adiciones_Insumos.cantidad, 0);
+       const cantidadTotal = insumosAgregados.reduce((acc, input) => acc + input.Adiciones_Insumos.cantidad, 0);
 
       const stock = Stock.find((s) => s.ID_insumo === ID_insumo);
 
-      if(stock && stock.stock_actual >= cantidadTotal && stock.stock_actual!=0){
-        const newInputs = insumosAgregados.map((input) => {
-          let newQuantity = isNaN(input.Adiciones_Insumos.cantidad + cantidad)
-            ? 1
-            : input.Adiciones_Insumos.cantidad + cantidad;
-          // const precio = isNaN(input.precio * newQuantity)? 1: input.precio * newQuantity;
-  
-          if (newQuantity < 1) {
-            newQuantity = 1;
-          }
-  
-          if (input.ID_insumo === ID_insumo) {
-            return {
-              ...input,
-              Adiciones_Insumos: {
-                ...input.Adiciones_Insumos,
-                cantidad: newQuantity,
-                // precio: precio
-              },
-            };
-          }
-          return input;
-        });
 
-        setInsumoAgregados(newInputs);
+      
+    
+      // const stock_producto = Producto.find((p) => p.ID_insumo === ID_insumo);
+
+      if(stock){  
+          const newInputs = insumosAgregados.map((input) => {
+            let newQuantity = isNaN(input.Adiciones_Insumos.cantidad + cantidad)
+              ? 1
+              : input.Adiciones_Insumos.cantidad + cantidad;
+            // const precio = isNaN(input.precio * newQuantity)? 1: input.precio * newQuantity;
+    
+            if (newQuantity < 1) {
+              newQuantity = 1;
+            }
+    
+            if (input.ID_insumo === ID_insumo) {
+              return {
+                ...input,
+                Adiciones_Insumos: {
+                  ...input.Adiciones_Insumos,
+                  cantidad: newQuantity,
+                  // precio: precio
+                },
+              };
+            }
+            return input;
+          });
+  
+          setInsumoAgregados(newInputs);
+        
+        
       }else{
         toast.error("No hay suficiente stock para agregar más insumos");
       }

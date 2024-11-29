@@ -9,7 +9,6 @@ import { toast } from 'react-hot-toast';
 import Modal from 'react-modal';
 import { Producto } from '../../types/Producto';
 import AddProductos from './products-add';
-import EditProductos from './products-edit';
 import ProductosDetail from './products-details';
 import Skeleton from '@mui/material/Skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -31,16 +30,18 @@ const tableStyles = {
   }
 };
 
+
+
 Modal.setAppElement('#root');
 
 const Productos: React.FC = () => {
   const [productos, setProductos] = useState<Producto[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalConfig, setModalConfig] = useState<{ type: 'add' | 'edit' | 'entry' | 'detail' | null; id: number | null }>({ type: null, id: null });
-  // const [isModalOpen2, setIsModalOpen2] = useState(false);
-
   const [loading, setLoading] = useState(true);
-  const fetchProducto = async () => {
+ 
+
+  const fetchProducto = async (): Promise<void> => {
     try {
       const response = await api.get('/productos');
       setProductos(response.data);
@@ -57,96 +58,76 @@ const Productos: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const handleDelete = useCallback(async (id: number) => {
-    toast.promise(api.delete(`productos/${id}`),
-      {
-        loading: 'Eliminando producto...',
-        success: '¡El producto ha sido eliminada!',
-        error: 'Hubo un problema al eliminar el producto.',
-      }
-    ).then(() => {
-      fetchProducto(); // Actualiza la lista después de eliminar
-    });
-  }, []);
-
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    // setModalConfig({type:null, id:null});
-    fetchProducto();
-  };
-
-
-
+  
   const handleToggleEstado = useCallback(async (id: number, estadoActual: string) => {
     const nuevoEstado = estadoActual === 'D' ? 'A' : 'D'
-
     try {
-      if (nuevoEstado === 'A') {
-        const toastId = toast(
-          <div>
-            <p>¿Estás seguro de que quieres cancelar el producto?</p>
-            <div>
-              <button
-                className="tw-bg-red-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-mr-2"
-                onClick={async () => {
-                  // Confirmar el cambio
-                  toast.dismiss(toastId); // Cerrar el toast con el ID
-                  try {
-                    await api.put(`/productos/${id}`, { estado_productos: nuevoEstado });
-                    setProductos(productos.map(pro => pro.ID_producto === id ? { ...pro, estado_productos: nuevoEstado } : pro
-                    ));
-                    toast.success('El estado del producto ha sido cambiado a "Cancelado".');
-                  } catch (error) {
-                    console.error('Error al cambiar el estado del producto:', error);
-                    toast.error('Hubo un problema al cambiar el estado del producto.');
-                  }
-                }}
-              >
-                Confirmar
-              </button>
-              <button
-                className="tw-bg-gray-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2"
-                onClick={() => toast.dismiss(toastId)} // Cierra el toast sin hacer nada
-              >
-                Cancelar
-              </button>
-            </div>
-          </div>,
-          {
-            duration: 8000, // Duración del toast para dar tiempo a responder
-          }
-        );
-        return; // Salimos aquí para no proceder con el cambio automático
-      } else {
-        await api.put(`/productos/${id}`, { estado_productos: nuevoEstado });
-        setProductos(productos.map(pro => pro.ID_producto === id ? { ...pro, estado_productos: nuevoEstado } : pro
-        ));
-        toast.success('¡El estado del producdo ha sido actualizado!');
-      }
+      await api.put(`/productos/${id}`, { estado_productos: nuevoEstado });
+      setProductos(productos.map(pro => pro.ID_producto === id ? { ...pro, estado_productos: nuevoEstado } : pro
+      ));
+      toast.success('El estado del producto ha sido actualizado.');
     } catch (error) {
       console.error('Error al cambiar el estado del producto:', error);
       toast.error('Hubo un problema al cambiar el estado del producto.');
     }
+
   }, [productos]);
 
-  useEffect(() => {
-    fetchProducto();
-  }, []);
+  const handleDelete = useCallback(async (id: number) => {
+    const toastId = toast(
+      <div>
+        <p>¿Estás seguro de que quieres eliminar el producto?</p>
+        <div>
+          <button
+            className="tw-bg-red-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-mr-2"
+            onClick={async () => {
+              // Confirmar el cambio
+              toast.dismiss(toastId); // Cerrar el toast con el ID
+              try {
+                await api.delete(`/productos/${id}`)               
+                toast.success('El producto a sido eliminado con éxito.');
+                fetchProducto()
+
+              } catch (error) {
+                console.error(
+                  "Error al cambiar el estado del pedido:",
+                  error
+                );
+                toast.error(
+                  "Hubo un problema al cambiar el estado del pedido."
+                );
+              }
+            }}
+          >
+            Confirmar
+          </button>
+          <button
+            className="tw-bg-gray-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2"
+            onClick={() => toast.dismiss(toastId)} // Cierra el toast sin hacer nada
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>,
+      {
+        duration: 8000 // Duración del toast para dar tiempo a responder
+      }
+    );
+    return; // Salimos aquí para no proceder con el cambio automático 
+  },[]);
 
 
-  type Categoria = {
-    ID_Categoria: number;
-    descripcion: string;
-
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setModalConfig({type:null, id:null});
+    fetchProducto(); 
   };
-  const [Categoria, setCategoria] = useState<Categoria[]>([]);
 
+  useEffect(() => {
+    fetchProducto(); // Actualiza la lista después de eliminar
+  },[]);
 
-
-
-
-  const columns = useMemo<MRT_ColumnDef<Producto>[]>(
+const columns = useMemo<MRT_ColumnDef<Producto>[]>(
 
     () => [
       {
@@ -327,8 +308,8 @@ const Productos: React.FC = () => {
           className="tw-bg-white tw-p-0 tw-mb-12 tw-rounded-lg tw-border tw-border-gray-300 tw-w-full tw-max-w-3xl tw-max-h-full tw-overflow-y-auto tw-mx-auto"
           overlayClassName="tw-fixed tw-inset-0 tw-bg-black tw-bg-opacity-40 tw-z-50 tw-flex tw-justify-center tw-items-center"
         >
-          {modalConfig.type === 'add' && <AddProductos onClose={handleCloseModal} />}
-          {modalConfig.type === 'edit' && modalConfig.id !== null && <EditProductos id={modalConfig.id} onClose={handleCloseModal} />}
+          {modalConfig.type === 'add' && <AddProductos id={0} onClose={handleCloseModal} />}
+          {modalConfig.type === 'edit' && modalConfig.id !== null && <AddProductos id={modalConfig.id} onClose={handleCloseModal} />}
           {modalConfig.type === 'detail' && modalConfig.id !== null && <ProductosDetail id={modalConfig.id} onClose={handleCloseModal} />}
         </Modal>
       </motion.div>

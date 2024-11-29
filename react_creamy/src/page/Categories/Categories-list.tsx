@@ -4,7 +4,7 @@ import api from '../../api/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faEdit, faTrash, faPlus, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons';
 // import { faSignInAlt } from '@fortawesome/free-solid-svg-icons';
-import { faEdit, faTrash, faPlus, faSignInAlt, faToggleOn, faToggleOff, faEye } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash, faPlus,faToggleOn, faToggleOff, faEye } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-hot-toast';  
 import Modal from 'react-modal';
 import { Categoria } from '../../types/Categoria';
@@ -39,6 +39,8 @@ const Categories: React.FC = () => {
 
 
   const [loading, setLoading] = useState(true);
+
+  
   const fetchCategorias = async () => {
     try {
       const response = await api.get('/categorias');
@@ -57,15 +59,48 @@ const Categories: React.FC = () => {
   };
 
   const handleDelete = useCallback(async(id: number)=>{
-    toast.promise(api.delete(`categorias/${id}`),
+    const toastId = toast(
+      <div>
+        <p>¿Estás seguro de que quieres eliminar la categoría?</p>
+        <div>
+          <button
+            className="tw-bg-red-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-mr-2"
+            onClick={async () => {
+              // Confirmar el cambio
+              toast.dismiss(toastId); // Cerrar el toast con el ID
+              try {
+                await api.delete(`/categorias/${id}`)
+                toast.success(
+                  '¡La categoría ha sido eliminada correctamente!.'
+                );
+                fetchCategorias(); 
+              } catch (error) {
+                console.error(
+                  "Error al eliminar la categoría",
+                  error
+                );
+                toast.error(
+                  "Hubo un problema al eliminar la categoría."
+                );
+              }
+            }}
+          >
+            Confirmar
+          </button>
+          <button
+            className="tw-bg-gray-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2"
+            onClick={() => toast.dismiss(toastId)} // Cierra el toast sin hacer nada
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>,
       {
-        loading: 'Eliminando categoría...',
-        success: '¡La categorpia ha sido eliminada!',
-        error: 'Hubo un problema al eliminar la categoría.',
+        duration: 8000, // Duración del toast para dar tiempo a responder
       }
-    ).then(() => {
-      fetchCategorias(); // Actualiza la lista después de eliminar
-    });
+    );
+   // Actualiza la lista después de eliminar
+     return; // Salimos aquí para no proceder con el cambio automático
   },[]);
 
   const handleToggleEstado = useCallback (async(id: number, estadoActual: string) =>{
