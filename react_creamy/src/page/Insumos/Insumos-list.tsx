@@ -36,8 +36,15 @@ const InsumosList: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<'add' | 'edit' | 'entry' | 'detail' | null>(null);
   const [selectedInsumoId, setSelectedInsumoId] = useState<number | null>(null);
+  const [tipoInsumo, setTipoInsumo] = useState<number | string>('');
   const navigate = useNavigate();
-
+  const [error, setError] = useState<string | null>(null);
+  interface TipoInsumo {
+    ID_tipo_insumo: number;
+    descripcion_tipo_insumo: string;
+  }
+  
+  const [tiposInsumo, setTiposInsumo] = useState<TipoInsumo[]>([]);
 
   const [loading, setLoading] = useState(true);
 
@@ -46,16 +53,35 @@ const InsumosList: React.FC = () => {
   }, []);
 
   const fetchInsumos = async () => {
-    setLoading(true); // Inicia el estado de carga
+    setLoading(true);
     try {
       const response = await api.get('/insumos');
-      setInsumos(response.data);
+      const data: Insumo[] = response.data.map((insumo: Insumo) => ({
+        ...insumo,
+        tipo_insumo: insumo.tipo_insumo || { descripcion_tipo_insumo: 'No especificado' }, // Manejo de fallos
+      }));
+      setInsumos(data);
     } catch (error) {
       console.error('Error al obtener los insumos:', error);
     } finally {
-      setLoading(false); // Finaliza el estado de carga
+      setLoading(false);
     }
   };
+
+  
+  
+  useEffect(() => {
+    const fetchTiposInsumo = async () => {
+      try {
+        const response = await api.get<TipoInsumo[]>('/tipoInsumos');
+        setTiposInsumo(response.data || []);
+      } catch (error) {
+        console.error('Error fetching types of insumos:', error);
+        setError('Error al cargar los tipos de insumos.');
+      }
+    };
+    fetchTiposInsumo();
+  }, []);
 
   const handleEdit = (id: number) => {
     setSelectedInsumoId(id);
@@ -160,6 +186,23 @@ const InsumosList: React.FC = () => {
           </motion.div>
         ),
       },
+      // {
+      //   accessorKey: 'tipo_insumo',
+      //   header: 'Tipo',
+      //   Cell: ({ cell }) => {
+      //     const descripcionTipo = cell.getValue<string>();
+      //     return (
+      //       <motion.div
+      //         initial={{ opacity: 0, x: -20 }}
+      //         animate={{ opacity: 1, x: 0 }}
+      //         transition={{ duration: 0.3 }}
+      //         className="tw-font-semibold tw-text-gray-800"
+      //       >
+      //         {descripcionTipo}
+      //       </motion.div>
+      //     );
+      //   },
+      // },
       {
         accessorKey: 'precio',
         header: 'Precio',

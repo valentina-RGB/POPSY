@@ -128,7 +128,7 @@ const EditInsumo: React.FC<EditInsumoProps> = ({ id, onClose }) => {
         <form onSubmit={handleSubmit}>
           <div className="tw-mb-4">
             <label htmlFor="descripcion" className="tw-block tw-text-sm tw-font-medium tw-text-gray-600">
-              Descripción del Insumo
+              Descripción del Insumo*
             </label>
             <input
               id="descripcion"
@@ -141,7 +141,7 @@ const EditInsumo: React.FC<EditInsumoProps> = ({ id, onClose }) => {
             />
           </div>
           <div className="tw-mb-4">
-            <label htmlFor="precio" className="tw-block tw-text-sm tw-font-medium tw-text-gray-600">Precio</label>
+            <label htmlFor="precio" className="tw-block tw-text-sm tw-font-medium tw-text-gray-600">Precio*</label>
             <input
               id="precio"
               type="number"
@@ -153,7 +153,7 @@ const EditInsumo: React.FC<EditInsumoProps> = ({ id, onClose }) => {
             />
           </div>
           <div className="tw-mb-4">
-            <label htmlFor="tipoInsumo" className="tw-block tw-text-sm tw-font-medium tw-text-gray-600">Tipo de Insumo</label>
+            <label htmlFor="tipoInsumo" className="tw-block tw-text-sm tw-font-medium tw-text-gray-600">Tipo de Insumo*</label>
             <select
               id="tipoInsumo"
               value={tipoInsumo}

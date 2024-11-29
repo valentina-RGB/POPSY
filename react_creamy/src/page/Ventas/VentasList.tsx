@@ -3,7 +3,7 @@ import { MaterialReactTable, type MRT_ColumnDef } from 'material-react-table';
 
 import api from '../../api/api';
 import { FontAwesomeIcon  } from '@fortawesome/react-fontawesome';
-import { faPlus, faInfoCircle, faSyncAlt, faEye } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faInfoCircle, faSyncAlt, faEye, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-hot-toast';
 import Modal from 'react-modal';
 import AddVenta from './CreateVenta';
@@ -182,24 +182,27 @@ const VentasList: React.FC = () => {
       header: 'Estado',
       Cell: ({ cell, row }) => {
         const estado = estadosVenta.find((e) => e.ID_estado_venta === cell.getValue<number>());
-        const nombreEstado = estado ? estado.descripcion : 'Desconocido';
-        const color = estado
-          ? {
-              'Pagado': 'tw-bg-green-100 tw-text-green-800',
-              'Cancelado': 'tw-bg-red-100 tw-text-red-800',
-            }[estado.descripcion]
-          : 'tw-bg-gray-100 tw-text-gray-800';
-
+        const nombreEstado = estado?.descripcion === 'Pagado' ? 'Pagado' : 'Cancelado';
+        const color =
+          estado?.descripcion === 'Pagado'
+            ? 'tw-bg-green-100 tw-text-green-800'
+            : 'tw-bg-red-100 tw-text-red-800';
+    
         return (
           <div className="tw-flex tw-items-center">
-            <span className={`tw-inline-block tw-text-xs tw-font-semibold tw-rounded-full tw-py-1 tw-px-2 ${color}`}>
+            <span
+              className={`tw-inline-block tw-text-xs tw-font-semibold tw-rounded-full tw-py-1 tw-px-2 ${color}`}
+            >
               {nombreEstado}
             </span>
             <button
               onClick={() => handleToggleEstado(row.original.ID_venta, cell.getValue<number>())}
               className="tw-ml-2 tw-text-gray-700 tw-transition-colors hover:tw-text-gray-900"
             >
-              <FontAwesomeIcon icon={faSyncAlt} className="tw-text-2xl" />
+              <FontAwesomeIcon
+                icon={estado?.descripcion === 'Pagado' ? faToggleOn : faToggleOff}
+                className="tw-text-2xl"
+              />
             </button>
           </div>
         );

@@ -47,7 +47,7 @@ const ConditionalLayout: React.FC<{ children: React.ReactNode }> = ({ children }
   }
 
   return (
-    <> 
+    <>
       <Navbar toggleMenu={toggleMenu} />
       <div className="tw-flex tw-flex-col md:tw-flex-row tw-pt-6">
         <Menu isMenuOpen={isMenuOpen} />
@@ -84,115 +84,127 @@ const App: React.FC = () => {
             {/* Rutas sin layout específico */}
             <Route path="/Login" element={<Login />} />
             <Route path="/SignUp" element={<SignUp />} />
+            <Route path="/" element={<Navigate to="/Home" />} />
 
             {/* Rutas principales */}
             <Route
-                path="/Dashboard"
-                element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                } />
-              <Route
-                path="/Home"
-                element={
-                  <ProtectedRoute>
-                    <Home username="defaultUser" role="defaultRole" />
-                  </ProtectedRoute>
-                } />
-              <Route
-                path="/Categorias"
-                element={
-                  <ProtectedRoute>
-                    <Categorias />
-                  </ProtectedRoute>
-                } />
-              <Route
-                path="/Insumos"
-                element={
-                  <ProtectedRoute>
-                    <Insumos />
-                  </ProtectedRoute>
-                } />
-              <Route
-                path="/historial-entradas"
-                element={
-                  <ProtectedRoute>
-                    <EntriesList />
-                  </ProtectedRoute>
-                } />
-              <Route
-                path="/Ventas"
-                element={
-                  <ProtectedRoute>
-                    <Ventas />
-                  </ProtectedRoute>
-                } />
-              <Route
-                path="/Productos"
-                element={
-                  <ProtectedRoute>
-                    <Productos />
-                  </ProtectedRoute>
-                } />
-              <Route
-                path="/Pedidos"
-                element={
-                  <ProtectedRoute>
-                    <Pedidos />
-                  </ProtectedRoute>
-                } />
-              <Route path="/pedido/:id" element={<PedidoDetalles />} />
-              <Route path="/venta/:id" element={<VentaDetalles />} />
-              <Route
-                path="/Editar-pedido/:id"
-                element={
-                  <ProtectedRoute>
-                    <OrderAdd />
-                  </ProtectedRoute>
-                } />
-              <Route
-                path="/roles"
-                element={
-                  <ProtectedRoute>
-                    <RolList />
-                  </ProtectedRoute>
-                } />
-              <Route
-                path="/Clientes"
-                element={
-                  <ProtectedRoute>
-                    <ListarClientes />
-                  </ProtectedRoute>
-                } />
-              <Route
-                path="/agregar-cliente"
-                element={
-                  <ProtectedRoute>
-                    <AddCliente />
-                  </ProtectedRoute>
-                } />
-              <Route
-                path="/Usuarios"
-                element={
-                  <ProtectedRoute>
-                    <UsuarioList />
-                  </ProtectedRoute>
-                } />
-              <Route
-                path="/Agregar-pedidos"
-                element={
-                  <ProtectedRoute>
-                    <OrderAdd />
-                  </ProtectedRoute>
-                } />
-              <Route
-                path="/Agregar-ventas"
-                element={
-                  <ProtectedRoute>
-                    <Ventasadd />
-                  </ProtectedRoute>
-                } />
+              path="/Dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } />
+            <Route
+              path="/Home"
+              element={
+                <ProtectedRoute>
+                  <Home username="defaultUser" role="defaultRole" />
+                </ProtectedRoute>
+              } />
+            <Route
+              path="/Categorias"
+              element={
+                <ProtectedRoute>
+                  <Categorias />
+                </ProtectedRoute>
+              } />
+            <Route
+              path="/Insumos"
+              element={
+                <ProtectedRoute>
+                  <Insumos />
+                </ProtectedRoute>
+              } />
+            <Route
+              path="/historial-entradas"
+              element={
+                <ProtectedRoute>
+                  <EntriesList />
+                </ProtectedRoute>
+              } />
+            <Route
+              path="/Ventas"
+              element={
+                <ProtectedRoute>
+                  <Ventas />
+                </ProtectedRoute>
+              } />
+            <Route
+              path="/Productos"
+              element={
+                <ProtectedRoute>
+                  <Productos />
+                </ProtectedRoute>
+              } />
+            <Route
+              path="/Pedidos"
+              element={
+                <ProtectedRoute>
+                  <Pedidos />
+                </ProtectedRoute>
+              } />
+            <Route path="/pedido/:id"
+              element=
+              {
+                <ProtectedRoute>
+                  <PedidoDetalles />
+                </ProtectedRoute>
+              } />
+            <Route path="/venta/:id"
+              element={
+                <ProtectedRoute>
+                  <VentaDetalles />
+                </ProtectedRoute>
+              } />
+            <Route
+              path="/Editar-pedido/:id"
+              element={
+                <ProtectedRoute>
+                  <OrderAdd />
+                </ProtectedRoute>
+              } />
+            <Route
+              path="/roles"
+              element={
+                <ProtectedRoute>
+                  <RolList />
+                </ProtectedRoute>
+              } />
+            <Route
+              path="/Clientes"
+              element={
+                <ProtectedRoute>
+                  <ListarClientes />
+                </ProtectedRoute>
+              } />
+            <Route
+              path="/agregar-cliente"
+              element={
+                <ProtectedRoute>
+                  <AddCliente />
+                </ProtectedRoute>
+              } />
+            <Route
+              path="/Usuarios"
+              element={
+                <ProtectedRoute>
+                  <UsuarioList />
+                </ProtectedRoute>
+              } />
+            <Route
+              path="/Agregar-pedidos"
+              element={
+                <ProtectedRoute>
+                  <OrderAdd />
+                </ProtectedRoute>
+              } />
+            <Route
+              path="/Agregar-ventas"
+              element={
+                <ProtectedRoute>
+                  <Ventasadd />
+                </ProtectedRoute>
+              } />
 
             {/* Ruta 404 */}
             <Route path="/404" element={<NotFoundPage />} />

@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Link } from 'react-router-dom';
 import { Cone, IceCream } from 'lucide-react';
 
@@ -42,12 +42,7 @@ const NotFoundPage = () => {
             >
               <span>Volver al Inicio</span>
             </Link>
-            <Link 
-              to="/menu" 
-              className="tw-border tw-border-blue-500 tw-text-blue-500 tw-px-6 tw-py-3 tw-rounded-full tw-transition tw-duration-300 hover:tw-bg-blue-500 hover:tw-text-white tw-flex tw-items-center tw-space-x-2"
-            >
-              <span>Ver Menú</span>
-            </Link>
+           
           </div>
         </div>
 

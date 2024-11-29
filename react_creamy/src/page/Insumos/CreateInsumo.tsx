@@ -88,7 +88,7 @@ const CreateInsumo: React.FC<CreateInsumoProps> = ({ onClose }) => {
               htmlFor="descripcion"
               className="tw-block tw-text-sm tw-font-medium tw-text-gray-600"
             >
-              Descripción del Insumo
+              Descripción del Insumo*
             </label>
             <input
               id="descripcion"
@@ -105,7 +105,7 @@ const CreateInsumo: React.FC<CreateInsumoProps> = ({ onClose }) => {
               htmlFor="precio"
               className="tw-block tw-text-sm tw-font-medium tw-text-gray-600"
             >
-              Precio
+              Precio*
             </label>
             <input
               id="precio"
@@ -122,7 +122,7 @@ const CreateInsumo: React.FC<CreateInsumoProps> = ({ onClose }) => {
               htmlFor="tipoInsumo"
               className="tw-block tw-text-sm tw-font-medium tw-text-gray-600"
             >
-              Tipo de Insumo
+              Tipo de Insumo*
             </label>
             <select
               id="tipoInsumo"
