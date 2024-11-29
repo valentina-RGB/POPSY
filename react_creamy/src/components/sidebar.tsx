@@ -1,30 +1,89 @@
 import { Link, useLocation } from "react-router-dom";
 import {
   HomeIcon,
-  ClipboardDocumentIcon,
-  BuildingStorefrontIcon, // Para Insumos
-  ArrowPathIcon, // Para Entradas
-  CubeTransparentIcon, // Para Categorías
-  TagIcon, // Para Productos
-  TruckIcon, // Para Pedidos
-  BanknotesIcon, // Para Ventas
-  Cog6ToothIcon, // Para Roles
-  UserGroupIcon, // Para Usuarios
+  BuildingStorefrontIcon,
+  ArrowPathIcon,
+  CubeTransparentIcon,
+  TagIcon,
+  TruckIcon,
+  BanknotesIcon,
+  Cog6ToothIcon,
+  UserGroupIcon,
 } from "@heroicons/react/24/outline";
-import { useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
+
+// Memoized NavLink component for performance optimization
+const NavLink = memo(({ 
+  path, 
+  name, 
+  icon: Icon, 
+  isActive 
+}: { 
+  path: string, 
+  name: string, 
+  icon: React.ComponentType<{ className?: string }>, 
+  isActive: boolean 
+}) => (
+  <Link
+    to={path}
+    aria-current={isActive ? "page" : undefined}
+    className={`tw-flex tw-items-center tw-px-3 tw-py-2 tw-rounded-lg tw-transition-colors tw-duration-300 
+      ${
+        isActive
+          ? "tw-bg-indigo-100 tw-text-indigo-900 dark:tw-bg-indigo-600 dark:tw-text-white"
+          : "tw-text-gray-600 hover:tw-bg-gray-200 hover:tw-text-gray-900 dark:tw-text-gray-300 dark:hover:tw-bg-gray-800 dark:hover:tw-text-white"
+      }`}
+  >
+    <Icon
+      className={`tw-w-6 tw-h-6 ${
+        isActive ? "tw-text-indigo-700 dark:tw-text-white" : "tw-text-gray-500"
+      }`}
+      aria-hidden="true"
+    />
+    <span className="tw-mx-3 tw-text-sm tw-font-medium">{name}</span>
+  </Link>
+));
 
 const Menu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const location = useLocation();
+
+  // Memoized login status check function
+  const checkLoginStatus = useCallback(() => {
+    try {
+      const localStorageData = localStorage.getItem("jwtToken");
+      setIsLoggedIn(!!localStorageData);
+    } catch (error) {
+      console.error("Error checking login status:", error);
+      setIsLoggedIn(false);
+    }
+  }, []);
 
   useEffect(() => {
-    const localStorageData = localStorage.getItem('jwtToken');
-    if (localStorageData) {
-      setIsLoggedIn(true);
-    }
-  }, [])
+    // Initial login status check
+    checkLoginStatus();
+    
+    // Add event listener for storage changes across tabs
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key === "jwtToken") {
+        checkLoginStatus();
+      }
+    };
 
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Cleanup event listener
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [checkLoginStatus]);
+
+  // Navigation items configuration
   const navItems = [
-    { label: "Dashboard", links: [{ path: "/Dashboard", name: "Dashboard", icon: HomeIcon }] },
+    { 
+      label: "Dashboard", 
+      links: [{ path: "/Dashboard", name: "Dashboard", icon: HomeIcon }] 
+    },
     {
       label: "Compras",
       links: [
@@ -50,41 +109,55 @@ const Menu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
     },
   ];
 
+  // Visibility class for menu open/close
+  const visibilityClass = isMenuOpen
+    ? "tw-translate-x-0 tw-opacity-100 tw-visible"
+    : "tw-translate-x-[-100%] tw-opacity-0 tw-invisible";
+
   return (
     <aside
-      className={`${isLoggedIn ? "" : "tw-hidden"} tw-flex tw-flex-col tw-w-64 tw-h-screen tw-px-5 tw-py-8 tw-overflow-y-auto tw-bg-white tw-border-r dark:tw-bg-gray-900 dark:tw-border-gray-700
-        tw-rounded-lg tw-shadow-lg  lg:${isMenuOpen ? "tw-block" : "tw-hidden"} lg:tw-static 
-        tw-rounded-lg tw-shadow-lg`}
-      style={{ zIndex: 10 }}
-    >
+  className={`${isLoggedIn ? "" : "tw-hidden"} 
+    tw-flex tw-flex-col 
+    tw-w-64 
+    tw-h-screen 
+    tw-px-5 
+    tw-py-8 
+    tw-overflow-y-auto 
+    tw-bg-white 
+    tw-border-rdark:tw-bg-gray-900 
+    dark:tw-border-gray-700 tw-rounded-lg 
+    tw-shadow-lg tw-transition-all 
+    tw-duration-300 tw-ease-in-out ${visibilityClass}
+    ${isMenuOpen ? "tw-absolute tw-block" : "tw-hidden"} lg:${isMenuOpen ? "tw-block" : "tw-hidden"} lg:tw-static 
+    tw-rounded-lg tw-shadow-lg ${visibilityClass} `}
+  style={{ zIndex: 10 }}
+  aria-label="Main Navigation"
+  role="navigation"
+>
       <div className="tw-mt-4 tw-space-y-8">
         {navItems.map((section) => (
-          <div key={section.label}>
-            <label className="tw-px-3 tw-text-xs tw-font-semibold tw-uppercase tw-text-gray-700 dark:tw-text-gray-400">
+          <nav key={section.label}>
+            <label 
+              className="tw-px-3 tw-text-xs tw-font-semibold tw-uppercase tw-text-gray-700 dark:tw-text-gray-400"
+              id={`section-${section.label.toLowerCase().replace(/\s+/g, '-')}`}
+            >
               {section.label}
             </label>
-            <div className="tw-mt-2 tw-space-y-2">
+            <div 
+              className="tw-mt-2 tw-space-y-2"
+              aria-labelledby={`section-${section.label.toLowerCase().replace(/\s+/g, '-')}`}
+            >
               {section.links.map((link) => (
-                <Link
+                <NavLink
                   key={link.name}
-                  to={link.path}
-                  className={`tw-flex tw-items-center tw-px-3 tw-py-2 tw-rounded-lg tw-transition-colors tw-duration-300 
-                    ${
-                      location.pathname === link.path
-                        ? "tw-bg-indigo-100 tw-text-indigo-900 dark:tw-bg-indigo-600 dark:tw-text-white"
-                        : "tw-text-gray-600 hover:tw-bg-gray-200 hover:tw-text-gray-900 dark:tw-text-gray-300 dark:hover:tw-bg-gray-800 dark:hover:tw-text-white"
-                    }`}
-                >
-                  <link.icon
-                    className={`tw-w-6 tw-h-6 ${
-                      location.pathname === link.path ? "tw-text-indigo-700 dark:tw-text-white" : "tw-text-gray-500"
-                    }`}
-                  />
-                  <span className="tw-mx-3 tw-text-sm tw-font-medium">{link.name}</span>
-                </Link>
+                  path={link.path}
+                  name={link.name}
+                  icon={link.icon}
+                  isActive={location.pathname === link.path}
+                />
               ))}
             </div>
-          </div>
+          </nav>
         ))}
       </div>
     </aside>

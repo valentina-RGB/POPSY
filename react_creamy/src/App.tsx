@@ -1,7 +1,7 @@
-import { Toaster } from 'react-hot-toast';
+import { Toaster, toast } from 'react-hot-toast';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import Navbar from "./components/navbar_prueba"; // Asegúrate de que el path sea correcto
+import { useState } from 'react';
+import Navbar from "./components/navbar_prueba";
 import Menu from "./components/sidebar";
 import Dashboard from "./page/Dashboard";
 import Categorias from "./page/Categories/Categories-list";
@@ -24,6 +24,7 @@ import { AuthProvider } from './page/Acceso/AuhtContex';
 import ProtectedRoute from './page/Acceso/ProtecdRouted';
 import RolList from './page/Roles/ListRol';
 import UsuarioList from './page/Usuarios/ListUsuario';
+import NotFoundPage from './components/404';
 
 const Loader: React.FC = () => (
   <div className="tw-flex tw-justify-center tw-items-center tw-h-screen">
@@ -33,38 +34,27 @@ const Loader: React.FC = () => (
 
 const Layout: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [canShowToast, setCanShowToast] = useState(true);
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
 
-    useEffect(() => {
-      // Activa el loader al cambiar de ruta
-      setIsLoading(true);
-
-      const timer = setTimeout(() => {
-        setIsLoading(false); // Simula una carga, puedes ajustarlo según necesites
-      }, 500); // Tiempo opcional para simular la carga
-
-      return () => clearTimeout(timer); // Limpia el temporizador
-    }, [location.pathname]); // Se ejecuta cuando cambia la ruta
-
-    if (isLoading) {
-      return <Loader />;
+  const showToast = (message: string) => {
+    if (canShowToast) {
+      toast(message);
+      setCanShowToast(false);
+      setTimeout(() => setCanShowToast(true), 2000); // Pausa de 2 segundos
     }
   };
 
   return (
     <>
-      {/* Navbar fijo */}
       <Navbar toggleMenu={toggleMenu} />
       <div className="tw-flex tw-flex-col md:tw-flex-row tw-pt-6">
-        {/* Sidebar o menú */}
         <Menu isMenuOpen={isMenuOpen} />
-
-        {/* Contenido principal con suficiente padding-top */}
-        <div className="tw-flex-1 tw-p-4 md:tw-p-1 tw-overflow-auto "> {/* Ajuste de padding-top */}
+        <div className="tw-flex-1 tw-p-4 md:tw-p-1 tw-overflow-auto">
           <div className="tw-bg-white tw-rounded-2xl tw-shadow-lg tw-p-4 md:tw-p-6 tw-min-h-[calc(100vh-150px)]">
-            {/* Definición de rutas */}
             <Routes>
               <Route path="/" element={<Navigate to="/login" />} />
               <Route
@@ -116,17 +106,14 @@ const Layout: React.FC = () => {
                     <Pedidos />
                   </ProtectedRoute>
                 } />
-
-
               <Route path="/pedido/:id" element={<PedidoDetalles />} />
               <Route path="/venta/:id" element={<VentaDetalles />} />
-
-
+              <Route path="/404" element={<NotFoundPage />} />
               <Route
                 path="/Editar-pedido/:id"
                 element={
                   <ProtectedRoute>
-                    <OrderAdd/>
+                    <OrderAdd />
                   </ProtectedRoute>
                 } />
               <Route
@@ -173,6 +160,8 @@ const Layout: React.FC = () => {
                 } />
               <Route path="/Login" element={<Login />} />
               <Route path="/SignUp" element={<SignUp />} />
+              
+              <Route path="*" element={<Navigate to="/404" replace />} />
             </Routes>
             <footer className="tw-mt-6 tw-bg-white tw-rounded-lg tw-shadow-md tw-p-4">
               <div className="tw-container-fluid">

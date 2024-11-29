@@ -397,6 +397,9 @@ const Pedidos: React.FC = () => {
           <MaterialReactTable
             columns={columns}
             data={pedidos}
+            initialState={{
+              sorting: [{ id: 'fecha', desc: true }], 
+            }}
             muiTablePaperProps={{
               sx: tableStyles
             }}

@@ -298,6 +298,9 @@ const VentasList: React.FC = () => {
           <MaterialReactTable
             columns={columns}
             data={ventas}
+            initialState={{
+              sorting: [{ id: 'fecha', desc: true }], 
+            }}
             muiTablePaperProps={{
               sx: tableStyles
             }}

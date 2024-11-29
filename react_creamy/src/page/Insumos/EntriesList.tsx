@@ -275,6 +275,9 @@ const EntriesList: React.FC = () => {
           <MaterialReactTable 
             columns={columns} 
             data={entries}
+            initialState={{
+              sorting: [{ id: 'fecha', desc: true }], 
+            }}
             muiTablePaperProps={{
               sx: tableStyles
             }}

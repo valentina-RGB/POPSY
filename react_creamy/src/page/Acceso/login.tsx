@@ -1,81 +1,57 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
-import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
-// import { Link } from "react-router-dom";
-// import { Layout } from 'lucide-react';
+import { IceCreamIcon, Lock, Mail, Eye, EyeOff } from 'lucide-react';
 
 Modal.setAppElement('#root');
 const API_URL = 'http://localhost:3300';
 
 const AuthPage: React.FC = () => {
-  const [isLogin, setIsLogin] = useState(true);
-  const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [token, setToken] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
   const navigate = useNavigate();
 
-  const handleSwitchAuthMode = () => {
-    setIsLogin((prev) => !prev);
-    setEmail('');
-    setPassword('');
-    setConfirmPassword('');
-  };
-
-  const handleForgotPassword = () => {
-    setIsForgotPasswordOpen(true);
-  };
-
-  const handleCloseForgotPassword = () => {
-    setIsForgotPasswordOpen(false);
-  };
-
-  const handleAuthSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
-      if (isLogin) {
-        const response = await axios.post(`${API_URL}/login`, {
-          email: email,
-          password: password,
+      const response = await axios.post(`${API_URL}/login`, { email, password });
+      const { resUser, token } = response.data;
+
+      if (token && resUser[0]) {
+        localStorage.setItem('jwtToken', token);
+        localStorage.setItem('ID_rol', resUser[0].ID_rol);
+        localStorage.setItem('ID_usuario', resUser[0].ID_usuario);
+        localStorage.setItem('userName', resUser[0].nombre);
+
+        toast.success(`Bienvenido, ${resUser[0].nombre}`, {
+          icon: '🍦',
+          style: { borderRadius: '10px', background: '#000', color: '#fff' },
         });
-        setToken(response.data.token);
 
-        //Alejo es un crack fgfgdgf 
-
-        if (response.data.resUser[0].ID_rol === 2) {
-
-
-          toast.success('Inicio de sesión exitoso', { duration: 2000 });
-          navigate("/dashboard#");
-
-          // navega manualmente
-
-        } else {
-          toast.error('No tienes permisos para esta acción', { duration: 2000 });
-        }
+       setTimeout(() => {
+          window.location.reload();
+          console.log('Login correcto');
+          window.location.href = '/dashboard';
+        }, 1500);
       } else {
-        if (password !== confirmPassword) {
-          toast.error('Las contraseñas no coinciden');
-          return;
-        }
-        await axios.post(`${API_URL}/signup`, {
-          email: email,
-          password: password,
-        });
-        toast.success('Usuario registrado exitosamente');
-        setIsLogin(true);
+        throw new Error('Token o roleId no recibidos');
       }
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.error || 'Error en la autenticación', { duration: 2000 });
-      } else {
-        toast.error('Error desconocido', { duration: 1500 });
-      }
+      toast.error('Credenciales incorrectas', {
+        icon: '❌',
+        style: { borderRadius: '10px', background: '#ff4b4b', color: '#fff' },
+      });
     }
   };
+
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+
+  const handleForgotPassword = () => setIsForgotPasswordOpen(true);
+  const handleCloseForgotPassword = () => setIsForgotPasswordOpen(false);
 
   const handleForgotPasswordSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -83,126 +59,63 @@ const AuthPage: React.FC = () => {
     handleCloseForgotPassword();
   };
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:3300/login', {
-        email,
-        password
-      });
-
-      const { resUser, token } = response.data;
-
-      if (token && resUser[0]) {
-        localStorage.setItem('jwtToken', token);
-        localStorage.setItem('ID_rol', resUser[0].ID_rol);
-        localStorage.setItem('ID_usuario', resUser[0].ID_usuario);
-        localStorage.setItem('userName', resUser[0].nombre); 
-        console.log('Token, ID_rol y ID_usuario almacenados:', { token, ID_rol: resUser[0].ID_rol, ID_usuario: resUser.ID_usuario });
-        toast.success('Bienvenido, ' + resUser[0].nombre, {
-          position: "top-right",
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined         
-          // Navega a /index al cerrar la alerta
-        })
-      setTimeout(() => {
-        window.location.reload();
-        navigate('/Roles');
-      }, 1000 )
-      ;
-      } else {
-        throw new Error('Token o roleId no recibidos');
-      }
-    } catch (error) {
-      console.error('Error durante el login:', error);
-      toast.error('Correo o contraseña incorrectos.', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    }
-  };
-
   return (
-
-
-
-    <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-min-h-screen tw-bg-gray-100">
-      <div className="tw-bg-white tw-p-6 tw-rounded-lg tw-shadow-md tw-w-full tw-max-w-md">
-        <h2 className="tw-text-2xl tw-font-bold tw-text-center tw-mb-4">
-          {isLogin ? 'Iniciar Sesión' : 'Registrar Usuario'}
+    <div className="tw-min-h-screen tw-bg-gradient-to-br tw-from-pink-100 tw-to-blue-100 tw-flex tw-items-center tw-justify-center tw-p-4">
+     <div className="tw-bg-gray-50 tw-rounded-2xl tw-shadow-2xl tw-p-8 tw-w-full tw-max-w-md tw-transform tw-transition-all tw-duration-500 tw-hover:scale-105">
+        <div className="tw-flex tw-justify-center tw-mb-6">
+          <IceCreamIcon size={64} className="tw-text-pink-500 tw-animate-bounce" />
+        </div>
+        <h2 className="tw-text-3xl tw-font-bold tw-text-center tw-mb-6 tw-text-pink-600">
+          Helados & Acceso
         </h2>
-        <form onSubmit={handleAuthSubmit} className="tw-flex tw-flex-col tw-gap-4">
-          <input
-            type="email"
-            placeholder="Correo electrónico"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="tw-border tw-rounded tw-p-2 tw-w-full"
-          />
-          <input
-            type="password"
-            placeholder="Contraseña"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="tw-border tw-rounded tw-p-2 tw-w-full"
-          />
-          {!isLogin && (
+
+        <form onSubmit={handleLogin} className="tw-space-y-4">
+          <div className="tw-relative">
+            <Mail className="tw-absolute tw-left-3 tw-top-1/2 tw--translate-y-1/2 tw-text-pink-400" />
             <input
-              type="password"
-              placeholder="Confirmar Contraseña"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              type="email"
+              placeholder="Correo electrónico"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
-              className="tw-border tw-rounded tw-p-2 tw-w-full"
+              className="tw-w-full tw-pl-10 tw-pr-4 tw-py-3 tw-rounded-lg tw-border tw-border-pink-200 tw-focus:outline-none tw-focus:ring-2 tw-focus:ring-pink-400 tw-transition"
             />
-          )}
-
-
-          {isLogin ? (
-            <button
-              type="submit"
-              className="tw-bg-blue-500 tw-text-white tw-py-2 tw-rounded tw-w-full"
-              onClick={handleLogin} >
-              Iniciar sesión
-            </button>) : (
-            <button
-              type="submit"
-              className="tw-bg-blue-500 tw-text-white tw-py-2 tw-rounded tw-w-full"
-              >{/* Metodo para regitrar */}
-              Registrar
-            </button>
-          )}
-          {/* <Link to= '/Principal'>
-            <p>hola</p>
-          </Link> */}
-
-          {isLogin && (
+          </div>
+          <div className="tw-relative">
+            <Lock className="tw-absolute tw-left-3 tw-top-1/2 tw--translate-y-1/2 tw-text-pink-400" />
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="tw-w-full tw-pl-10 tw-pr-12 tw-py-3 tw-rounded-lg tw-border tw-border-pink-200 tw-focus:outline-none tw-focus:ring-2 tw-focus:ring-pink-400 tw-transition"
+            />
             <button
               type="button"
-              onClick={handleForgotPassword}
-              className="tw-text-blue-500 tw-text-sm tw-underline tw-mt-2"
+              onClick={togglePasswordVisibility}
+              className="tw-absolute tw-right-3 tw-top-1/2 tw--translate-y-1/2 tw-text-pink-400 tw-focus:outline-none"
             >
-              ¿Olvidaste tu contraseña?
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
-          )}
+          </div>
+          <button
+            type="submit"
+            className="tw-w-full tw-bg-pink-500 tw-text-white tw-py-3 tw-rounded-lg tw-hover:bg-pink-600 tw-transition tw-duration-300 tw-ease-in-out tw-transform tw-hover:scale-105"
+          >
+            Ingresar
+          </button>
         </form>
-        <button
-          onClick={handleSwitchAuthMode}
-          className="tw-text-gray-600 tw-text-sm tw-underline tw-mt-4"
-        >
-          {isLogin ? '¿No tienes una cuenta? Regístrate' : '¿Ya tienes una cuenta? Inicia sesión'}
-        </button>
+
+        <div className="tw-text-center tw-mt-4">
+          <button
+            type="button"
+            onClick={handleForgotPassword}
+            className="tw-text-pink-500 tw-underline tw-hover:text-pink-700 tw-transition"
+          >
+            ¿Olvidaste tu contraseña?
+          </button>
+        </div>
       </div>
 
       <Modal
@@ -219,9 +132,9 @@ const AuthPage: React.FC = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="tw-border tw-rounded tw-p-2 tw-w-full"
+            className="tw-w-full tw-pl-10 tw-pr-4 tw-py-3 tw-rounded-lg tw-border tw-border-pink-200 tw-focus:outline-none tw-focus:ring-2 tw-focus:ring-pink-400 tw-transition"
           />
-          <button type="submit" className="tw-bg-blue-500 tw-text-white tw-py-2 tw-rounded tw-w-full">
+          <button type="submit" className="tw-w-full tw-bg-pink-500 tw-text-white tw-py-3 tw-rounded-lg tw-hover:bg-pink-600 tw-transition tw-duration-300 tw-ease-in-out tw-transform tw-hover:scale-105">
             Enviar correo de recuperación
           </button>
           <button
@@ -233,6 +146,8 @@ const AuthPage: React.FC = () => {
           </button>
         </form>
       </Modal>
+
+      <Toaster position="top-right" />
     </div>
   );
 };
