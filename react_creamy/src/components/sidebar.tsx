@@ -9,6 +9,7 @@ import {
   BanknotesIcon,
   Cog6ToothIcon,
   UserGroupIcon,
+  ChartBarIcon 
 } from "@heroicons/react/24/outline";
 import { memo, useCallback, useEffect, useState } from "react";
 
@@ -82,7 +83,10 @@ const Menu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
   const navItems = [
     { 
       label: "Dashboard", 
-      links: [{ path: "/Dashboard", name: "Dashboard", icon: HomeIcon }] 
+      links: [
+        { path: "/Home", name: "Home", icon: HomeIcon },
+        { path: "/Dashboard", name: "Dashboard", icon: ChartBarIcon   },
+      ], 
     },
     {
       label: "Compras",
@@ -116,24 +120,24 @@ const Menu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
 
   return (
     <aside
-  className={`${isLoggedIn ? "" : "tw-hidden"} 
-    tw-flex tw-flex-col 
-    tw-w-64 
-    tw-h-screen 
-    tw-px-5 
-    tw-py-8 
-    tw-overflow-y-auto 
-    tw-bg-white 
-    tw-border-rdark:tw-bg-gray-900 
-    dark:tw-border-gray-700 tw-rounded-lg 
-    tw-shadow-lg tw-transition-all 
-    tw-duration-300 tw-ease-in-out ${visibilityClass}
-    ${isMenuOpen ? "tw-absolute tw-block" : "tw-hidden"} lg:${isMenuOpen ? "tw-block" : "tw-hidden"} lg:tw-static 
-    tw-rounded-lg tw-shadow-lg ${visibilityClass} `}
-  style={{ zIndex: 10 }}
-  aria-label="Main Navigation"
-  role="navigation"
->
+      className={`${isLoggedIn ? "" : "tw-hidden"} 
+        tw-flex tw-flex-col 
+        tw-w-64 
+        tw-h-screen 
+        tw-px-5 
+        tw-py-8 
+        tw-overflow-y-auto 
+        tw-bg-white 
+        tw-border-rdark:tw-bg-gray-900 
+        dark:tw-border-gray-700 tw-rounded-lg 
+        tw-shadow-lg tw-transition-all 
+        tw-duration-300 tw-ease-in-out ${visibilityClass}
+        ${isMenuOpen ? "tw-absolute tw-block" : "tw-hidden"} lg:${isMenuOpen ? "tw-block" : "tw-hidden"} lg:tw-static 
+        tw-rounded-lg tw-shadow-lg ${visibilityClass} `}
+      style={{ zIndex: 10 }}
+      aria-label="Main Navigation"
+      role="navigation"
+    >
       <div className="tw-mt-4 tw-space-y-8">
         {navItems.map((section) => (
           <nav key={section.label}>

@@ -1,5 +1,5 @@
 import { Toaster, toast } from 'react-hot-toast';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import Navbar from "./components/navbar_prueba";
 import Menu from "./components/sidebar";
@@ -25,6 +25,7 @@ import ProtectedRoute from './page/Acceso/ProtecdRouted';
 import RolList from './page/Roles/ListRol';
 import UsuarioList from './page/Usuarios/ListUsuario';
 import NotFoundPage from './components/404';
+import Home from './page/Home';
 
 const Loader: React.FC = () => (
   <div className="tw-flex tw-justify-center tw-items-center tw-h-screen">
@@ -32,36 +33,71 @@ const Loader: React.FC = () => (
   </div>
 );
 
-const Layout: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [canShowToast, setCanShowToast] = useState(true);
+const ConditionalLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const location = useLocation();
+  const [isMenuOpen, setIsMenuOpen] = useState(true);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const showToast = (message: string) => {
-    if (canShowToast) {
-      toast(message);
-      setCanShowToast(false);
-      setTimeout(() => setCanShowToast(true), 2000); // Pausa de 2 segundos
-    }
-  };
+  // Si la ruta es específicamente 404, no renderizar el layout
+  if (location.pathname === '/404' || location.pathname === '/login' || location.pathname === '/Login') {
+    return <>{children}</>;
+  }
 
   return (
-    <>
+    <> 
       <Navbar toggleMenu={toggleMenu} />
       <div className="tw-flex tw-flex-col md:tw-flex-row tw-pt-6">
         <Menu isMenuOpen={isMenuOpen} />
         <div className="tw-flex-1 tw-p-4 md:tw-p-1 tw-overflow-auto">
           <div className="tw-bg-white tw-rounded-2xl tw-shadow-lg tw-p-4 md:tw-p-6 tw-min-h-[calc(100vh-150px)]">
-            <Routes>
-              <Route path="/" element={<Navigate to="/login" />} />
-              <Route
+            {children}
+            <footer className="tw-mt-6 tw-bg-white tw-rounded-lg tw-shadow-md tw-p-4">
+              <div className="tw-container-fluid">
+                <div className="tw-text-center md:tw-text-left tw-mb-2 md:tw-mb-0">
+                  <div className="tw-col-md-6 tw-text-center tw-text-md-start tw-fw-bold">
+                    <p className="tw-mb-2 tw-mb-md-0 tw-fw-bold">
+                      Creamy Soft &copy; {new Date().getFullYear()}
+                    </p>
+                  </div>
+                  <div className="tw-col-md-6 tw-text-center tw-text-md-end tw-text-gray-400">
+                    <p className="tw-mb-0">Version 1.3.2</p>
+                  </div>
+                </div>
+              </div>
+            </footer>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+const App: React.FC = () => {
+  return (
+    <AuthProvider>
+      <Router>
+        <ConditionalLayout>
+          <Routes>
+            {/* Rutas sin layout específico */}
+            <Route path="/Login" element={<Login />} />
+            <Route path="/SignUp" element={<SignUp />} />
+
+            {/* Rutas principales */}
+            <Route
                 path="/Dashboard"
                 element={
                   <ProtectedRoute>
                     <Dashboard />
+                  </ProtectedRoute>
+                } />
+              <Route
+                path="/Home"
+                element={
+                  <ProtectedRoute>
+                    <Home username="defaultUser" role="defaultRole" />
                   </ProtectedRoute>
                 } />
               <Route
@@ -108,7 +144,6 @@ const Layout: React.FC = () => {
                 } />
               <Route path="/pedido/:id" element={<PedidoDetalles />} />
               <Route path="/venta/:id" element={<VentaDetalles />} />
-              <Route path="/404" element={<NotFoundPage />} />
               <Route
                 path="/Editar-pedido/:id"
                 element={
@@ -158,37 +193,12 @@ const Layout: React.FC = () => {
                     <Ventasadd />
                   </ProtectedRoute>
                 } />
-              <Route path="/Login" element={<Login />} />
-              <Route path="/SignUp" element={<SignUp />} />
-              
-              <Route path="*" element={<Navigate to="/404" replace />} />
-            </Routes>
-            <footer className="tw-mt-6 tw-bg-white tw-rounded-lg tw-shadow-md tw-p-4">
-              <div className="tw-container-fluid">
-                <div className="tw-text-center md:tw-text-left tw-mb-2 md:tw-mb-0">
-                  <div className="tw-col-md-6 tw-text-center tw-text-md-start tw-fw-bold">
-                    <p className="tw-mb-2 tw-mb-md-0 tw-fw-bold">
-                      Creamy Soft &copy; {new Date().getFullYear()}
-                    </p>
-                  </div>
-                  <div className="tw-col-md-6 tw-text-center tw-text-md-end tw-text-gray-400">
-                    <p className="tw-mb-0">Version 1.3.2</p>
-                  </div>
-                </div>
-              </div>
-            </footer>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};
 
-const App: React.FC = () => {
-  return (
-    <AuthProvider>
-      <Router>
-        <Layout />
+            {/* Ruta 404 */}
+            <Route path="/404" element={<NotFoundPage />} />
+            <Route path="*" element={<Navigate to="/404" />} />
+          </Routes>
+        </ConditionalLayout>
         <Toaster position="top-right" reverseOrder={false} />
       </Router>
     </AuthProvider>

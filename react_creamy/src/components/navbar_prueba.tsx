@@ -74,7 +74,7 @@ const Navbar: React.FC<{ toggleMenu: () => void }> = ({ toggleMenu }) => {
             className="tw-lg:tw-hidden tw-text-gray-600 hover:tw-text-blue-500 tw-transition-colors"
           >
             <FontAwesomeIcon
-              icon={isOpen ? faTimes : faBars}
+              icon={isOpen ? faBars :  faTimes}
               className="tw-text-2xl"
             />
           </motion.button>
