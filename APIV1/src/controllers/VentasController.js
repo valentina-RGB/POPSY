@@ -1,7 +1,7 @@
 const express = require('express');
 const { request, response } = require('express');
 const ventasService = require('../services/VentasServices');
-const Estado_ventas = require('../../models/Estado_ventas');
+const { Ventas, Estado_ventas } = require('../../models');
 
 // Obtener todas las ventas
 const getAllVentas = async (req, res) => {
@@ -42,51 +42,73 @@ CrearVentas = async  (req = request, res= response) => {
 
 };
 
+
 const updateEstadoVenta = async (req, res) => {
-    const { id } = req.params; // ID de la venta
-    const { ID_estado_venta } = req.body; // Nuevo estado
+    const { id } = req.params;
+    const { ID_estado_venta } = req.body;
+
+    console.log('ID de venta:', id);
+    console.log('Nuevo estado:', ID_estado_venta);
 
     try {
-        // Verificar si la venta existe
+        // Verificar primero los estados existentes
+        const estadosDisponibles = await Estado_ventas.findAll();
+        console.log('Estados disponibles:', estadosDisponibles.map(e => e.toJSON()));
+
+        // Buscar la venta
         const venta = await Ventas.findByPk(id);
+
+        console.log('Venta encontrada:', venta ? venta.toJSON() : 'No encontrada');
+
         if (!venta) {
             return res.status(404).json({ error: 'Venta no encontrada' });
         }
 
         // Verificar si el estado de venta existe
         const estadoVenta = await Estado_ventas.findByPk(ID_estado_venta);
+        
+        console.log('Estado encontrado:', estadoVenta ? estadoVenta.toJSON() : 'No encontrado');
+
         if (!estadoVenta) {
             return res.status(400).json({ error: 'Estado de venta no encontrado' });
         }
 
         // Actualizar la venta
         venta.ID_estado_venta = ID_estado_venta;
-        await venta.save();
+        
+        try {
+            await venta.save();
+            console.log('Venta después de guardar:', venta.toJSON());
+        } catch (saveError) {
+            console.error('Error específico al guardar:', saveError);
+            console.error('Detalles del error:', saveError.errors || saveError.message);
+            return res.status(500).json({ 
+                error: 'Error al guardar la venta',
+                details: saveError.errors ? saveError.errors.map(e => e.message) : saveError.message
+            });
+        }
 
-        res.status(200).json({ message: 'Estado de venta actualizado', venta });
+        res.status(200).json({ 
+            message: 'Estado de venta actualizado', 
+            venta: venta.toJSON() 
+        });
+
     } catch (error) {
         console.error('Error al actualizar estado de venta:', error);
-        res.status(500).json({ error: 'Ocurrió un error al actualizar el estado de la venta.' });
+        console.error('Detalles del error:', error.errors || error.message);
+        res.status(500).json({ 
+            error: 'Ocurrió un error al actualizar el estado de la venta.',
+            details: error.errors ? error.errors.map(e => e.message) : error.message
+        });
     }
 };
 
 // Eliminar una venta
-deleteVenta= async (req = request, res= response) =>{
-    const { id } = req.params;
-        try{
-            const dato = await ventasService.DeleteVentas(id);
-            res.status(204).json({message: 'El dato fue eliminado', dato});
-        }catch(error){
-            const statusCode = error.status || 500;
-            res.status(statusCode).json({ error: error.message || 'Internal Server Error' });
-        }      
-}
 
 module.exports = {
     CrearVentas,
     getAllVentas,
     getVentaById,
     updateEstadoVenta,
-    deleteVenta
 
 };
