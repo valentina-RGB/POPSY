@@ -36,9 +36,10 @@ const EditEntry: React.FC<EditEntryProps> = ({ id, onClose }) => {
       await api.put(`/historial_entradas/${id}`, { cantidad: cantidadNumerica });
       onClose();  // Cierra el modal
       toast.success('La entrada ha sido actualizada exitosamente.');
-    } catch (error) {
-      console.error('Error al actualizar la entrada:', error);
-      toast.error('No se pudo actualizar la entrada.');
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message || 'No se pudo agregar la entrada del insumo. Intente nuevamente.';
+      toast.error(errorMessage); // Mostrar el mensaje específico del servidor
     }
   };
 

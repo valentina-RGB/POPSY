@@ -48,44 +48,64 @@ const updateEntrada = async (req, res) => {
   const { cantidad } = req.body;
 
   try {
+    // Validación de la cantidad (debe ser un número entero positivo)
+    if (!cantidad || cantidad <= 0 || !Number.isInteger(cantidad)) {
+      return res.status(400).json({
+        error: `Cantidad inválida. Debe ser un número entero positivo mayor que 0. Cantidad recibida: ${cantidad}`,
+      });
+    }
+
     // Encuentra la entrada a actualizar
     const entrada = await HistorialEntradas.findByPk(id);
-
     if (!entrada) {
-      return res.status(404).json({ error: 'Entrada no encontrada' });
+      return res.status(404).json({ error: 'La entrada especificada no existe en el historial.' });
     }
 
     // Encuentra el stock del insumo relacionado
     const stockInsumo = await StockInsumos.findOne({ where: { ID_insumo: entrada.ID_insumo } });
-
     if (!stockInsumo) {
-      return res.status(404).json({ error: 'Stock del insumo no encontrado' });
+      return res.status(404).json({ error: 'No se encontró un registro de stock para este insumo.' });
     }
 
     // Calcula la diferencia entre la nueva cantidad y la cantidad anterior
     const diferenciaCantidad = cantidad - entrada.cantidad;
 
-    // Actualiza el stock actual basado en la diferencia
-    stockInsumo.stock_actual = stockInsumo.stock_actual + diferenciaCantidad;
-
-    // Verifica que el stock no sea negativo
-    if (stockInsumo.stock_actual < 0) {
-      return res.status(400).json({ error: 'El stock del insumo no puede ser negativo' });
+    // Verifica que la nueva cantidad no deje el stock en negativo
+    if (stockInsumo.stock_actual + diferenciaCantidad < 0) {
+      return res.status(400).json({
+        error: `La cantidad especificada resulta en un stock negativo. Stock actual: ${stockInsumo.stock_actual}, cantidad que intentas restar: ${Math.abs(diferenciaCantidad)}.`,
+      });
     }
 
-    // Guarda los cambios en el stock
+    // Verifica que el nuevo stock no exceda el stock máximo permitido
+    if (stockInsumo.stock_actual + diferenciaCantidad > stockInsumo.stock_max) {
+      return res.status(400).json({
+        error: `El stock actualizado excedería el máximo permitido. Stock actual: ${stockInsumo.stock_actual}, stock máximo: ${stockInsumo.stock_max}, cantidad que intentas agregar: ${diferenciaCantidad}.`,
+      });
+    }
+
+    // Actualiza el stock actual basado en la diferencia
+    stockInsumo.stock_actual += diferenciaCantidad;
     await stockInsumo.save();
 
     // Actualiza la cantidad en el historial de entradas
     entrada.cantidad = cantidad;
     await entrada.save();
 
-    res.json({ message: 'Entrada actualizada exitosamente', entrada });
+    res.json({
+      message: 'Entrada actualizada exitosamente.',
+      entrada,
+      stock_actual: stockInsumo.stock_actual,
+      stock_max: stockInsumo.stock_max,
+    });
   } catch (error) {
     console.error('Error al actualizar la entrada:', error);
-    res.status(500).json({ error: 'Error al actualizar la entrada' });
+    res.status(500).json({
+      error: `Error al actualizar la entrada: ${error.message}`,
+    });
   }
 };
+
 
 // Eliminar una entrada por ID
 const deleteEntrada = async (req, res) => {

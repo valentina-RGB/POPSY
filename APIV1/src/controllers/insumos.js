@@ -205,12 +205,44 @@ const eliminarInsumo = async (req, res) => {
 
 const agregarEntrada = async (req, res) => {
   const { id } = req.params;
+
   try {
+    // Verificar si el insumo existe
     const insumo = await Insumos.findByPk(id);
     if (!insumo) {
-      return res.status(404).json({ message: 'Insumo no encontrado' });
+      return res.status(404).json({
+        message: `El insumo con ID ${id} no se encontró en la base de datos.`,
+      });
     }
+
     const { cantidad, descripcion } = req.body;
+
+    // Validar que se proporcione una cantidad válida
+    if (!cantidad || cantidad <= 0) {
+      return res.status(400).json({
+        message: `Por favor, proporciona una cantidad válida mayor a 0. Cantidad recibida: ${cantidad}`,
+      });
+    }
+
+    // Obtener el stock actual y el stock máximo del insumo
+    const stockInsumo = await StockInsumos.findOne({
+      where: { ID_insumo: id },
+    });
+
+    if (!stockInsumo) {
+      return res.status(404).json({
+        message: `El insumo con ID ${id} no tiene un registro de stock asociado. Por favor, asegúrate de que el insumo tenga configurado un stock.`,
+      });
+    }
+
+    const { stock_actual, stock_max } = stockInsumo;
+
+    // Verificar si el nuevo stock excede el máximo permitido
+    if (stock_actual + cantidad > stock_max) {
+      return res.status(400).json({
+        message: `No se puede agregar la cantidad especificada. El stock actual es ${stock_actual}, y el máximo permitido es ${stock_max}. Intentaste agregar ${cantidad}, lo que excedería el límite.`,
+      });
+    }
 
     // Registrar la entrada en el historial de entradas
     await HistorialEntradas.create({
@@ -220,14 +252,35 @@ const agregarEntrada = async (req, res) => {
       fecha: new Date(),
     });
 
-    // Actualizar el stock_actual en Stock_insumos
+    // Actualizar el stock_actual en StockInsumos
     await StockInsumos.increment('stock_actual', { by: cantidad, where: { ID_insumo: id } });
 
-    res.status(201).json({ message: 'Entrada registrada y stock actualizado' });
+    // Obtener el stock actualizado
+    const stockActualizado = await StockInsumos.findOne({
+      where: { ID_insumo: id },
+      attributes: ['stock_actual', 'stock_max'],
+    });
+
+    const { stock_actual: nuevoStockActual, stock_max: nuevoStockMax } = stockActualizado;
+
+    // Responder con el mensaje de éxito
+    res.status(201).json({
+      message: `Entrada registrada exitosamente.`,
+      details: {
+        stock_actual: nuevoStockActual,
+        stock_max: nuevoStockMax,
+        cantidad_agregada: cantidad,
+      },
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      message: `Ocurrió un error al intentar registrar la entrada: ${error.message}`,
+    });
   }
 };
+
+
+
 const getInsumoDetails = async (req, res) => {
   try {
       const { id } = req.params;

@@ -61,9 +61,10 @@ const AddEntry: React.FC<AddEntryProps> = ({ id, onClose }) => {
       onClose(); 
       toast.success('La entrada del insumo se ha agregado exitosamente.');
       navigate('/Insumos'); 
-    } catch (error) {
-      console.error('Error al agregar la entrada:', error);
-      toast.error('No se pudo agregar la entrada del insumo. Por favor, intente nuevamente.');
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message || 'No se pudo agregar la entrada del insumo. Intente nuevamente.';
+      toast.error(errorMessage); // Mostrar el mensaje específico del servidor
     }
   };
 

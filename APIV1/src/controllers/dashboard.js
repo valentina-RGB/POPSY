@@ -1,4 +1,4 @@
-const { Producto_Ventas, Productos, Ventas, Estado_ventas, sequelize, Sequelize } = require('../../models');
+const { Producto_Ventas, Productos, Ventas, Estado_ventas, Insumos, StockInsumos, sequelize, Sequelize } = require('../../models');
 const { Op } = require('sequelize');
 
 const obtenerProductosMasVendidos = async (req, res) => {
@@ -174,7 +174,51 @@ const obtenerVentas = async (req, res) => {
     }
 };
 
+const getInsumosCriticos = async (req, res) => {
+    try {
+        // Consulta para obtener insumos con stock actual menor al mínimo
+        const insumosCriticos = await StockInsumos.findAll({
+            where: {
+                stock_actual: { [Sequelize.Op.lt]: Sequelize.col('stock_min') },
+            },
+            include: [
+                {
+                    model: Insumos,
+                    as: 'insumo', // Alias correcto según la asociación definida
+                    attributes: ['ID_insumo', 'descripcion_insumo', 'precio', 'estado_insumo'], // Atributos deseados del insumo
+                },
+            ],
+            attributes: ['ID_stock_insumo', 'stock_actual', 'stock_min', 'stock_max', 'ID_insumo'], // Atributos deseados del stock
+        });
+
+        // Manejo de respuesta cuando no hay insumos críticos
+        if (insumosCriticos.length === 0) {
+            return res.status(200).json({
+                message: 'No hay insumos críticos en este momento.',
+                data: [],
+            });
+        }
+
+        // Respuesta exitosa
+        res.status(200).json({
+            message: 'Insumos críticos obtenidos exitosamente.',
+            data: insumosCriticos,
+        });
+    } catch (error) {
+        console.error('Error al obtener insumos críticos:', error);
+
+        // Manejo de errores del servidor
+        res.status(500).json({
+            error: 'Error al obtener insumos críticos.',
+            details: process.env.NODE_ENV === 'development' ? error.message : undefined,
+        });
+    }
+};
+
+  
+
 module.exports = {
     obtenerProductosMasVendidos,
     obtenerVentas,
+    getInsumosCriticos,
 };

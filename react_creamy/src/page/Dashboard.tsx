@@ -16,6 +16,7 @@ import {
   DollarSign,
   Calendar,
   ShoppingBag,
+  Package,
 } from "lucide-react";
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement);
@@ -27,13 +28,30 @@ const Dashboard: React.FC = () => {
     total_vendido: number;
   }
 
+  interface InsumoCritico {
+  ID_stock_insumo: number;
+  stock_actual: number;
+  stock_min: number;
+  stock_max: number;
+  insumo: {
+    ID_insumo: number;
+    descripcion_insumo: string;
+    precio: number;
+    estado_insumo: string;
+  };
+}
+
+
   const [productosMasVendidos, setProductosMasVendidos] = useState<Producto[]>([]);
   const [ventasData, setVentasData] = useState<{ fecha: string; precio_total: number }[]>([]);
   const [ventasPorDia, setVentasPorDia] = useState<{ [key: string]: number }>({});
   const [totalVentas, setTotalVentas] = useState(0);
+  const [insumosCriticos, setInsumosCriticos] = useState<InsumoCritico[]>([]);
   const [filtro, setFiltro] = useState<"mes" | "dias">("mes");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,6 +61,9 @@ const Dashboard: React.FC = () => {
   
         const ventasResponse = await axios.get(`http://localhost:3300/dashboard/ventas?filtro=${filtro}`);
         const ventas = ventasResponse.data.datos.ventas;
+
+        const response = await axios.get('http://localhost:3300/dashboard/insumos');
+        setInsumosCriticos(response.data.data); 
   
         // Agrupar las ventas por día y contar su cantidad
         const ventasPorDiaCantidad = ventas.reduce((acc: { [key: string]: number }, venta: { fecha_sin_hora: string }) => {
@@ -92,6 +113,22 @@ const Dashboard: React.FC = () => {
         fill: true,
       },
     ],
+  };
+
+  const calculateStockStatus = (current: number, min: number, max: number) => {
+    if (current <= 0) return 'Agotado'; // Stock actual es 0 o menor
+    if (current < min) return 'Crítico'; // Stock actual menor al mínimo
+    if (current < max / 2) return 'Bajo'; // Stock actual menor a la mitad del máximo
+    return 'Normal'; // Stock en nivel adecuado
+  };
+  
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'Agotado': return 'tw-bg-red-100 tw-text-red-800';
+      case 'Crítico': return 'tw-bg-orange-100 tw-text-orange-800';
+      case 'Bajo': return 'tw-bg-yellow-100 tw-text-yellow-800';
+      default: return 'tw-bg-green-100 tw-text-green-800'; // Para 'Normal'
+    }
   };
 
   const statsCards = [
@@ -164,6 +201,51 @@ const Dashboard: React.FC = () => {
             <Pie data={pieData} />
           </div>
         </div>
+
+        <div className="tw-bg-white tw-rounded-xl tw-shadow-md tw-p-6">
+      <div className="tw-flex tw-justify-between tw-items-center tw-mb-6">
+        <h2 className="tw-text-xl tw-font-bold tw-text-gray-800">Insumos Críticos</h2>
+        <Package className="tw-h-6 tw-w-6 tw-text-gray-500" />
+      </div>
+
+      {insumosCriticos.length === 0 ? (
+        <div className="tw-text-center tw-text-gray-500 tw-py-4">
+          No hay insumos críticos en este momento
+        </div>
+      ) : (
+        <div className="tw-space-y-4">
+          {insumosCriticos.map((insumo) => {
+            const stockStatus = calculateStockStatus(insumo.stock_actual, insumo.stock_min, insumo.stock_max);
+            
+            return (
+              <div 
+                key={insumo.ID_stock_insumo} 
+                className="tw-border tw-border-gray-200 tw-rounded-lg tw-p-4 tw-flex tw-justify-between tw-items-center"
+              >
+                <div>
+                  <h3 className="tw-font-semibold tw-text-gray-800">
+                    {insumo.insumo.descripcion_insumo}
+                  </h3>
+                  <div className="tw-text-sm tw-text-gray-600 tw-mt-1">
+                    Precio: ${insumo.insumo.precio.toLocaleString()}
+                  </div>
+                </div>
+                <div className="tw-flex tw-items-center tw-space-x-4">
+                  <div className="tw-flex tw-flex-col tw-items-end">
+                    <span className={`tw-px-2 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium ${getStatusColor(stockStatus)}`}>
+                      {stockStatus}
+                    </span>
+                    <div className="tw-text-sm tw-text-gray-600 tw-mt-1">
+                      Stock: {insumo.stock_actual} / {insumo.stock_min}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
       </div>
     </div>
   );
