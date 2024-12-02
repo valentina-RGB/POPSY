@@ -1,4 +1,4 @@
-import { Toaster, toast } from 'react-hot-toast';
+import { Toaster} from 'react-hot-toast';
 import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import Navbar from "./components/navbar_prueba";
@@ -9,10 +9,10 @@ import Insumos from "./page/Insumos/Insumos-list";
 import EntriesList from "./page/Insumos/EntriesList";
 import Ventas from "./page/Ventas/VentasList";
 import Ventasadd from "./page/Ventas/CreateVenta";
-import ListarRoles from './page/Roles/ListRol';
+// import ListarRoles from './page/Roles/ListRol';
 import AddCliente from './page/Clientes/CreateCliente';
 import ListarClientes from './page/Clientes/ListCliente';
-import ListarUsuarios from './page/Usuarios/ListUsuario';
+// import ListarUsuarios from './page/Usuarios/ListUsuario';
 import Productos from './page/Products/products-list';
 import Pedidos from './page/Order/Order_list';
 import PedidoDetalles from './page/Order/Order_details';

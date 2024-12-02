@@ -51,7 +51,7 @@ const AuthPage: React.FC = () => {
        setTimeout(() => {
           window.location.reload();
           console.log('Login correcto');
-          window.location.href = '/Home#';
+          window.location.href = '/Dashboard#';
         }, 1500);
       } else {
         throw new Error('Token o roleId no recibidos');

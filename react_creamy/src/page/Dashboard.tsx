@@ -59,7 +59,7 @@ const Dashboard: React.FC = () => {
         const productosResponse = await axios.get("http://localhost:3300/dashboard/productos-mas-vendidos");
         setProductosMasVendidos(productosResponse.data);
   
-        const ventasResponse = await axios.get(`http://localhost:3300/dashboard/ventas?filtro=${filtro}`);
+        const ventasResponse = await axios.get(`http://localhost:3300/dashboard/ventas/?filtro=dias&fecha=15`);
         const ventas = ventasResponse.data.datos.ventas;
 
         const response = await axios.get('http://localhost:3300/dashboard/insumos');
