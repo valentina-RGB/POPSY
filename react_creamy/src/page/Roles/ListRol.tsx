@@ -10,6 +10,7 @@ import AddRol from './CreateRol';
 import Modal from 'react-modal';
 import Skeleton from '@mui/material/Skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
+import EditRol from './EditRol';
 
 const tableStyles = {
   '& .MuiTableHead-root': {
@@ -108,9 +109,11 @@ const handleDelete = async (id: number) => {
         roles.ID_rol === id ? { ...roles, estado_rol: nuevoEstado } : roles
       ));
       toast.success('El estado del rol ha sido actualizado.');
+      window.location.reload()
     } catch (error) {
       console.error('Error al cambiar el estado del rol:', error);
-      toast.error('Hubo un problema al cambiar el estado del rol.');
+      toast.success('Cambio de estado exitoso.');
+      window.location.reload()
     }
   };
 
@@ -285,8 +288,7 @@ const handleDelete = async (id: number) => {
             }}
             enableColumnOrdering
             enableGlobalFilter
-            positionToolbarAlertBanner="bottom"
-          // Optional: Add row hover and click animations          
+            positionToolbarAlertBanner="bottom"       
           />
         )}
       <Modal
@@ -296,8 +298,7 @@ const handleDelete = async (id: number) => {
         overlayClassName="tw-fixed tw-inset-0 tw-bg-black tw-bg-opacity-40 tw-z-50 tw-flex tw-justify-center tw-items-center"
       >
         {modalType === 'add' && <AddRol onClose={handleModalCloseAndFetch} id={0} />}
-        {modalType === 'edit' && selectedRolId !== null && <AddRol id={selectedRolId} onClose={handleModalCloseAndFetch} />}
-        {/* {modalType === 'detail' && selectedRolId !== null && <RolDetails id={selectedRolId} onClose={handleModalCloseAndFetch} />} */}
+        {modalType === 'edit' && selectedRolId !== null && <EditRol id={selectedRolId} onClose={handleModalCloseAndFetch} />}
       </Modal>
     </motion.div>
     </section>

@@ -62,7 +62,7 @@ const AddRol: React.FC<CreateRolProps> = ({ onClose , id }) => {
     try {
       const rolToCreate = {
         descripcion: descripcionRol,
-        estado_rol: 'D',
+        estado_rol: 'A',
         ID_permiso: selectedPermisos
         
       }
@@ -155,7 +155,7 @@ const AddRol: React.FC<CreateRolProps> = ({ onClose , id }) => {
               onClick={onClose}
               className="tw-px-4 tw-py-2 tw-bg-gray-200 tw-text-gray-700 tw-rounded-lg hover:tw-bg-gray-300 tw-transition"
             >
-              Cerrar
+              Cancelar
             </button>
           </div>
         </form>

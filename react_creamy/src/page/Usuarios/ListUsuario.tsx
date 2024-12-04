@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { MaterialReactTable, type MRT_ColumnDef } from 'material-react-table';
 import { Usuario } from '../../types/usuarios';
-import { Rol } from '../../types/roles';
+import { Rol } from '../../types/rol';
 import api from '../../api/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faPlus, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons';
@@ -119,6 +119,7 @@ const UsuarioList: React.FC = () => {
         usuario.ID_usuario === id ? { ...usuario, estado: nuevoEstado } : usuario
       ));
       toast.success('El estado del usuario ha sido actualizado.');
+      
     } catch (error) {
       console.error('Error al cambiar el estado del usuario:', error);
       toast.error('Hubo un problema al cambiar el estado del usuario.');
@@ -211,7 +212,7 @@ const UsuarioList: React.FC = () => {
         Cell: ({ cell }) => getRolDescripcion(cell.getValue<number>()), // Muestra la descripción del rol
       },
       {
-        accessorKey: 'estado_usuario',
+        accessorKey: 'estado',
         header: 'Estado',
         Cell: ({ cell, row }) => (
           <div className="tw-flex tw-items-center">
@@ -319,8 +320,7 @@ const UsuarioList: React.FC = () => {
             }}
             enableColumnOrdering
             enableGlobalFilter
-            positionToolbarAlertBanner="bottom"
-            // Optional: Add row hover and click animations          
+            positionToolbarAlertBanner="bottom"        
           />
         )}
         <Modal

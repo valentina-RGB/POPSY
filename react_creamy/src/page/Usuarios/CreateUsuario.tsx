@@ -142,6 +142,13 @@ const AddUsuario: React.FC<AddUsuario> = ({onClose}) => {
           >
             Agregar Usuario
           </button>
+          <button
+              type="button"
+              onClick={onClose}
+              className="tw-px-4 tw-py-2 tw-bg-gray-200 tw-text-gray-700 tw-rounded-lg hover:tw-bg-gray-300 tw-transition"
+            >
+              Cancelar
+            </button>
         </form>
         {error && <p className="tw-text-red-500 tw-mb-4">{error}</p>}
       </div>
