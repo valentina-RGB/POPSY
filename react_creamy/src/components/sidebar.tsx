@@ -60,6 +60,10 @@ const Menu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
     }
   }, []);
 
+  // const haspermission = (permission) => {
+  //   return permission.includes(permission);
+  // };
+
   useEffect(() => {
     // Initial login status check
     checkLoginStatus();

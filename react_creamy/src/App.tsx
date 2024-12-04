@@ -4,15 +4,13 @@ import { useState } from 'react';
 import Navbar from "./components/navbar_prueba";
 import Menu from "./components/sidebar";
 import Dashboard from "./page/Dashboard";
-import Categorias from "./page/Categories/Categories-list";
+import Categories from "./page/Categories/Categories-list";
 import Insumos from "./page/Insumos/Insumos-list";
 import EntriesList from "./page/Insumos/EntriesList";
-import Ventas from "./page/Ventas/VentasList";
+import VentasList from "./page/Ventas/VentasList";
 import Ventasadd from "./page/Ventas/CreateVenta";
-// import ListarRoles from './page/Roles/ListRol';
 import AddCliente from './page/Clientes/CreateCliente';
 import ListarClientes from './page/Clientes/ListCliente';
-// import ListarUsuarios from './page/Usuarios/ListUsuario';
 import Productos from './page/Products/products-list';
 import Pedidos from './page/Order/Order_list';
 import PedidoDetalles from './page/Order/Order_details';
@@ -105,7 +103,7 @@ const App: React.FC = () => {
               path="/Categorias"
               element={
                 <ProtectedRoute>
-                  <Categorias />
+                  <Categories />
                 </ProtectedRoute>
               } />
             <Route
@@ -126,7 +124,7 @@ const App: React.FC = () => {
               path="/Ventas"
               element={
                 <ProtectedRoute>
-                  <Ventas />
+                  <VentasList />
                 </ProtectedRoute>
               } />
             <Route

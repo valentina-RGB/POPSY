@@ -69,16 +69,45 @@ const UsuarioList: React.FC = () => {
   };
 
   const handleDelete = async (id: number) => {
-    toast.promise(
-      api.delete(`/usuarios/${id}`),
+    const toastId = toast(
+      <div>
+        <p>¿Estás seguro de que quieres eliminar el Usuario?</p>
+        <div>
+          <button
+            className="tw-bg-red-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-mr-2"
+            onClick={async () => {
+              toast.dismiss(toastId);
+              try {
+                await api.delete(`/Usuarios/${id}`)               
+                toast.success('El usuario a sido eliminado con éxito.');
+                window.location.reload()
+
+              } catch (error) {
+                console.error(
+                  "Error al cambiar el estado del usuario:",
+                  error
+                );
+                toast.error(
+                  "Hubo un problema al cambiar el estado del usuario."
+                );
+              }
+            }}
+          >
+            Confirmar
+          </button>
+          <button
+            className="tw-bg-gray-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2"
+            onClick={() => toast.dismiss(toastId)} 
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>,
       {
-        loading: 'Eliminando usuario...',
-        success: '¡El usuario ha sido eliminado!',
-        error: 'Hubo un problema al eliminar el usuario.',
+        duration: 8000 
       }
-    ).then(() => {
-      fetchUsuarios();
-    });
+    );
+    return; 
   };
 
   const handleToggleEstado = async (id: number, estadoActual: string) => {

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { toast } from 'react-hot-toast';
+
 import {
   faSignOutAlt,
   faBars,
@@ -46,13 +48,38 @@ const Navbar: React.FC<{ toggleMenu: () => void }> = ({ toggleMenu }) => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("jwtToken");
-    localStorage.removeItem("ID_rol");
-    localStorage.removeItem("ID_usuario");
-    localStorage.removeItem("userName");
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
+    const toastId = toast(
+      <div>
+        <p>¿Estás seguro de que deseas cerrar sesión?</p>
+        <div>
+          <button
+            className="tw-bg-red-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-mr-2"
+            onClick={async () => {
+              localStorage.removeItem("jwtToken");
+              localStorage.removeItem("ID_rol");
+              localStorage.removeItem("ID_usuario");
+              localStorage.removeItem("userName");
+              setTimeout(() => {
+                window.location.reload();
+              }, 1000);
+            }}
+          >
+            Confirmar
+          </button>
+          <button
+            className="tw-bg-gray-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2"
+            onClick={() => toast.dismiss(toastId)}
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>,
+      {
+        duration: 8000
+      }
+    );
+    return;
+
   };
 
   return (
@@ -60,9 +87,8 @@ const Navbar: React.FC<{ toggleMenu: () => void }> = ({ toggleMenu }) => {
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className={`tw-relative tw-top-0 tw-left-0 tw-right-0 tw-z-50 tw-bg-white tw-shadow-md tw-py-3 ${
-        isLoggedIn ? "" : "tw-hidden"
-      }`}
+      className={`tw-relative tw-top-0 tw-left-0 tw-right-0 tw-z-50 tw-bg-white tw-shadow-md tw-py-3 ${isLoggedIn ? "" : "tw-hidden"
+        }`}
     >
       <div className="tw-container tw-mx-auto tw-px-4 tw-flex tw-justify-between tw-items-center">
         {/* Logo and Mobile Menu Toggle */}
@@ -74,7 +100,7 @@ const Navbar: React.FC<{ toggleMenu: () => void }> = ({ toggleMenu }) => {
             className="tw-lg:tw-hidden tw-text-gray-600 hover:tw-text-blue-500 tw-transition-colors"
           >
             <FontAwesomeIcon
-              icon={isOpen ? faBars :  faTimes}
+              icon={isOpen ? faBars : faTimes}
               className="tw-text-2xl"
             />
           </motion.button>

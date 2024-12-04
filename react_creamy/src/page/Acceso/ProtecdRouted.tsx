@@ -18,18 +18,16 @@ function validateCurrentRoute(
 
   console.log(roleID, routeName, permissions, rolePermissions);
   
-
   const permiso = permissions.find((permiso) => permiso.descripcion === routeName);
   if (!permiso) return false;
   console.log(permiso.ID_permiso);
   
-
   const hasPermission = rolePermissions.some(
     (rolePermiso) =>
       rolePermiso.ID_roles === roleID && rolePermiso.ID_permisos === permiso.ID_permiso
   );
-  console.log(hasPermission);
   
+  console.log(hasPermission);
 
   return hasPermission;
 }
@@ -80,7 +78,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }: ProtectedRo
   );
 
   if (!isAllowed) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/Home" replace />;
   }
 
   return <>{children}</>;

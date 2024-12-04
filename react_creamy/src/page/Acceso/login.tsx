@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -15,21 +15,15 @@ const AuthPage: React.FC = () => {
   const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem('jwtToken');
-    localStorage.removeItem('ID_rol');
-    localStorage.removeItem('ID_usuario');
-    localStorage.removeItem('userName');
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
-  };
-
-  useEffect(() => {
-    if (localStorage.getItem('jwtToken')) {
-      handleLogout();
-    }
-  }, []); 
+  // const handleLogout = () => {
+  //   localStorage.removeItem('jwtToken');
+  //   localStorage.removeItem('ID_rol');
+  //   localStorage.removeItem('ID_usuario');
+  //   localStorage.removeItem('userName');
+  //   setTimeout(() => {
+  //     window.location.reload();
+  //   }, 1000);
+  // };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,9 +43,8 @@ const AuthPage: React.FC = () => {
         });
 
        setTimeout(() => {
-          window.location.reload();
           console.log('Login correcto');
-          window.location.href = '/Dashboard#';
+          navigate("/Home");        
         }, 1500);
       } else {
         throw new Error('Token o roleId no recibidos');
