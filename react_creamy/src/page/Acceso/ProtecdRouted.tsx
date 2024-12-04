@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from './AuhtContex';
+import { Rol } from '../../types/rol';
+import { Permiso } from '../../types/permiso';
+import { PermisoRol } from '../../types/permiso_rol';
+import axios from 'axios';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
