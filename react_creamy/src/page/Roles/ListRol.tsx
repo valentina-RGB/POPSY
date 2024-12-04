@@ -1,12 +1,12 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { MaterialReactTable, type MRT_ColumnDef } from 'material-react-table';
-import { Rol } from '../../types/roles';
+import { Rol } from '../../types/rol';
 import api from '../../api/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faPlus, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-hot-toast';
 import AddRol from './CreateRol';
-import EditRol from './EditRol';
+// import EditRol from './EditRol';
 import Modal from 'react-modal';
 import Skeleton from '@mui/material/Skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -58,17 +58,45 @@ const RolList: React.FC = () => {
   };
 
 const handleDelete = async (id: number) => {
-  try {
-    await api.delete(`/roles/${id}`);
-    toast.success('¡El rol ha sido eliminado!');
-    fetchRol();
-  } catch (error) {
-    if ((error as any).response && (error as any).response.status === 500) {
-      toast.error('No se puede eliminar el rol porque está siendo referenciado en otra parte.');
-    } else {
-      toast.error('Hubo un problema al eliminar el rol.');
+  const toastId = toast(
+    <div>
+      <p>¿Estás seguro de que quieres eliminar el Rol?</p>
+      <div>
+        <button
+          className="tw-bg-red-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-mr-2"
+          onClick={async () => {
+            toast.dismiss(toastId);
+            try {
+              await api.delete(`/Roles/${id}`)               
+              toast.success('El rol a sido eliminado con éxito.');
+              window.location.reload()
+
+            } catch (error) {
+              console.error(
+                "Error al cambiar el estado del rol:",
+                error
+              );
+              toast.error(
+                "Hubo un problema al cambiar el estado del rol."
+              );
+            }
+          }}
+        >
+          Confirmar
+        </button>
+        <button
+          className="tw-bg-gray-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2"
+          onClick={() => toast.dismiss(toastId)} 
+        >
+          Cancelar
+        </button>
+      </div>
+    </div>,
+    {
+      duration: 8000 
     }
-  }
+  );
+  return;
 };
 
   const handleToggleEstado = async (id: number, estadoActual: string) => {
@@ -152,20 +180,20 @@ const handleDelete = async (id: number) => {
           </div>
         ),
       },
-      {
-        accessorKey: 'ID_permiso.descripcion',
-        header: 'permiso',
-        Cell: ({ cell }) => (
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3 }}
-            className="tw-font-semibold tw-text-gray-800"
-          >
-            {cell.getValue<String>() ?? 'N/A'}
-          </motion.div>
-        ),
-      },
+      // {
+      //   accessorKey: 'ID_permiso.descripcion',
+      //   header: 'permiso',
+      //   Cell: ({ cell }) => (
+      //     <motion.div
+      //       initial={{ opacity: 0, x: -20 }}
+      //       animate={{ opacity: 1, x: 0 }}
+      //       transition={{ duration: 0.3 }}
+      //       className="tw-font-semibold tw-text-gray-800"
+      //     >
+      //       {cell.getValue<String>() ?? 'N/A'}
+      //     </motion.div>
+      //   ),
+      // },
       {
         id: 'acciones',
         header: 'Acciones',
