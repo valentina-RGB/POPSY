@@ -15,23 +15,27 @@ const AuthPage: React.FC = () => {
   const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
   const navigate = useNavigate();
 
-  // const handleLogout = () => {
-  //   localStorage.removeItem('jwtToken');
-  //   localStorage.removeItem('ID_rol');
-  //   localStorage.removeItem('ID_usuario');
-  //   localStorage.removeItem('userName');
-  //   setTimeout(() => {
-  //     window.location.reload();
-  //   }, 1000);
-  // };
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const response = await axios.post(`${API_URL}/login`, { email, password });
       const { resUser, token } = response.data;
 
-      if (token && resUser[0]) {
+      if (!resUser[0]) {
+        throw new Error('Usuario no encontrado');
+      }
+
+      // Validación del estado del usuario
+      if (resUser[0].estado !== 'A') {
+        toast.error('Tu cuenta está desactivada. Contacta al administrador.', {
+          icon: '❌',
+          style: { borderRadius: '10px', background: '#ff4b4b', color: '#fff' },
+        });
+        return;
+      }
+
+      // Almacenar datos del usuario y token
+      if (token) {
         localStorage.setItem('jwtToken', token);
         localStorage.setItem('ID_rol', resUser[0].ID_rol);
         localStorage.setItem('ID_usuario', resUser[0].ID_usuario);
@@ -42,18 +46,19 @@ const AuthPage: React.FC = () => {
           style: { borderRadius: '10px', background: '#fff', color: '#000' },
         });
 
-       setTimeout(() => {
+        setTimeout(() => {
           console.log('Login correcto');
-          navigate("/Home");        
+          navigate("/Home");
         }, 1500);
       } else {
-        throw new Error('Token o roleId no recibidos');
+        throw new Error('Token no recibido');
       }
     } catch (error) {
-      toast.error('Credenciales incorrectas', {
+      toast.error('Credenciales incorrectas o cuenta desactivada', {
         icon: '❌',
         style: { borderRadius: '10px', background: '#ff4b4b', color: '#fff' },
       });
+      console.error('Error en el login:', error);
     }
   };
 
@@ -70,7 +75,7 @@ const AuthPage: React.FC = () => {
 
   return (
     <div className="tw-min-h-screen tw-bg-gradient-to-br tw-from-pink-100 tw-to-blue-100 tw-flex tw-items-center tw-justify-center tw-p-4">
-     <div className="tw-bg-gray-50 tw-rounded-2xl tw-shadow-2xl tw-p-8 tw-w-full tw-max-w-md tw-transform tw-transition-all tw-duration-500 tw-hover:scale-105">
+      <div className="tw-bg-gray-50 tw-rounded-2xl tw-shadow-2xl tw-p-8 tw-w-full tw-max-w-md tw-transform tw-transition-all tw-duration-500 tw-hover:scale-105">
         <div className="tw-flex tw-justify-center tw-mb-6">
           <IceCreamIcon size={64} className="tw-text-pink-500 tw-animate-bounce" />
         </div>
