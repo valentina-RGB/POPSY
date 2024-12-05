@@ -167,3 +167,5 @@ const AuthPage: React.FC = () => {
 };
 
 export default AuthPage;
+
+// Mucha suerte por siempre
