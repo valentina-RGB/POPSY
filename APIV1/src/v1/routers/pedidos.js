@@ -10,5 +10,6 @@ router.get('/:id', PedidosController.obtenerPedidosPorId);
 router.post('/', PedidosController.CrearPedidos);
 router.put('/:id', PedidosController.ModificarPedidos);
 router.delete('/:id', PedidosController.eliminarPedidos);
+router.delete('/eliminar/:id', PedidosController.eliminar)
 
 module.exports = router;
