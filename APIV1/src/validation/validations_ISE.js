@@ -22,11 +22,12 @@ const createInsumosSchema = Joi.object({
         'any.only': 'El estado del insumo debe ser "D" (Desactivado) o "A" (Activo).',
         'any.required': 'El estado del insumo es requerido.',
       }),
-    precio: Joi.number().positive().optional()
+      precio: Joi.number().min(0).optional()
       .messages({
         'number.base': 'El precio debe ser un número.',
-        'number.positive': 'El precio debe ser un número positivo.',
+        'number.min': 'El precio debe ser un número positivo o cero.',
       }),
+    
     stock: Joi.object({
       stock_min: Joi.number().integer().min(0).required()
         .messages({
@@ -76,10 +77,10 @@ const updateInsumosSchema = Joi.object({
         'string.base': 'El estado del insumo debe ser una cadena de texto.',
         'any.only': 'El estado del insumo debe ser "D" (Desactivado) o "A" (Activo).'
       }),
-    precio: Joi.number().positive().optional()
+      precio: Joi.number().min(0).optional()
       .messages({
         'number.base': 'El precio debe ser un número.',
-        'number.positive': 'El precio debe ser un número positivo.'
+        'number.min': 'El precio debe ser un número positivo o cero.',
       }),
     stock: Joi.object({
       stock_min: Joi.number().integer().min(0).optional()

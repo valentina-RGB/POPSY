@@ -16,6 +16,7 @@ const EditInsumo: React.FC<EditInsumoProps> = ({ id, onClose }) => {
   const [tipoInsumo, setTipoInsumo] = useState<number | string>('');
   const [tiposInsumo, setTiposInsumo] = useState<Array<{ ID_tipo_insumo: number, descripcion_tipo: string }>>([]);
   const [error, setError] = useState<string | null>(null);
+  const [isPrecioDisabled, setIsPrecioDisabled] = useState(false); // Estado para controlar si el precio está desactivado
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,6 +27,11 @@ const EditInsumo: React.FC<EditInsumoProps> = ({ id, onClose }) => {
         setDescripcionInsumo(response.data.descripcion_insumo);
         setPrecio(response.data.precio);
         setTipoInsumo(response.data.ID_tipo_insumo);
+
+        // Desactivar el campo de precio si el tipo de insumo es 2
+        if (response.data.ID_tipo_insumo === 2) {
+          setIsPrecioDisabled(true);
+        }
       } catch (error) {
         console.error('Error al obtener el insumo:', error);
         setError('Error al cargar el insumo.');
@@ -100,7 +106,7 @@ const EditInsumo: React.FC<EditInsumoProps> = ({ id, onClose }) => {
         `/insumos/${id}`,
         {
           descripcion_insumo: descripcionInsumo,
-          precio: Number(precio),
+          precio: isPrecioDisabled ? 0 : Number(precio), // Si el campo está desactivado, se establece en 0
           ID_tipo_insumo: Number(tipoInsumo),
         },
         {
@@ -150,6 +156,7 @@ const EditInsumo: React.FC<EditInsumoProps> = ({ id, onClose }) => {
               className="tw-mt-1 tw-w-full tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500 tw-transition"
               placeholder="Precio del insumo"
               required
+              disabled={isPrecioDisabled} // Desactiva el campo si el tipo de insumo es 2
             />
           </div>
           <div className="tw-mb-4">
@@ -157,7 +164,14 @@ const EditInsumo: React.FC<EditInsumoProps> = ({ id, onClose }) => {
             <select
               id="tipoInsumo"
               value={tipoInsumo}
-              onChange={(e) => setTipoInsumo(e.target.value)}
+              onChange={(e) => {
+                setTipoInsumo(e.target.value);
+                if (e.target.value === '2') {
+                  setIsPrecioDisabled(true); // Desactiva el campo de precio si el tipo es 2
+                } else {
+                  setIsPrecioDisabled(false);
+                }
+              }}
               className="tw-mt-1 tw-w-full tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500 tw-transition"
             >
               <option value="" disabled>Selecciona un tipo de insumo</option>
