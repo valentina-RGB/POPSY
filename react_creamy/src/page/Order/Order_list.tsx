@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEdit,
   faTrash,
+  faTimes,
   faPlus, faEye
 } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-hot-toast";
@@ -185,6 +186,7 @@ useEffect(() => {
                       )
                     );
                     await api.delete(`/pedidos/eliminar/${ID_pedido}`)
+                    fetchPedido()
                     toast.success(
                       'El estado del pedido ha sido cambiado a "Cancelado".'
                     );
@@ -381,9 +383,9 @@ useEffect(() => {
                 className="tw-group tw-bg-red-500 tw-text-white tw-rounded-full tw-w-10 tw-h-10 tw-flex tw-items-center tw-justify-center tw-shadow-md tw-transition-all tw-duration-300 hover:tw-bg-red-600 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-red-400 focus:tw-ring-opacity-75"
               >
                 <FontAwesomeIcon
-                  icon={faTrash}
+                  icon={faTimes}
                   className="tw-transition-transform tw-group-hover:tw-rotate-6"
-                  title="Eliminar"
+                  title="Cancelar"
                 />
               </motion.button>
               <motion.button
