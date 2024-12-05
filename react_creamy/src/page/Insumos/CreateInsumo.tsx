@@ -39,6 +39,7 @@ const CreateInsumo: React.FC<CreateInsumoProps> = ({ onClose }) => {
       setIsStockDisabled(true);
       setStockMin('0');
       setStockMax('0');
+      setPrecio(0);
     } else {
       setIsStockDisabled(false);
     }
@@ -46,15 +47,17 @@ const CreateInsumo: React.FC<CreateInsumoProps> = ({ onClose }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!descripcionInsumo || !precio || !tipoInsumo) {
+    if (!descripcionInsumo || (!precio && tipoInsumo !== '2') || !tipoInsumo) {
       setError('Por favor, completa todos los campos.');
       return;
     }
 
     try {
+      const precioFinal = tipoInsumo === '2' ? 0 : Number(precio);
+
       await api.post('/insumos', {
         descripcion_insumo: descripcionInsumo,
-        precio: Number(precio),
+        precio: precioFinal,
         ID_tipo_insumo: Number(tipoInsumo),
         estado_insumo: 'A', // Estado predeterminado
         stock: {
@@ -69,11 +72,12 @@ const CreateInsumo: React.FC<CreateInsumoProps> = ({ onClose }) => {
       console.error('Error al agregar el insumo:', error);
       setError(
         'Error al agregar el insumo: ' +
-          (error.response?.data?.message || 'Error desconocido')
+        (error.response?.data?.message || 'Error desconocido')
       );
       toast.error('Hubo un problema al agregar el insumo.');
     }
   };
+
 
   return (
     <div className="fixed inset-0 flex items-center justify-center">
@@ -111,11 +115,17 @@ const CreateInsumo: React.FC<CreateInsumoProps> = ({ onClose }) => {
               id="precio"
               type="number"
               value={precio}
-              onChange={(e) => setPrecio(e.target.value)}
+              onChange={(e) => {
+                if (tipoInsumo !== '2') {
+                  setPrecio(e.target.value);
+                }
+              }}
               className="tw-mt-1 tw-w-full tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500 tw-transition"
               placeholder="Precio del insumo"
               required
+              disabled={tipoInsumo === '2'} // Desactiva el campo si tipoInsumo es 2
             />
+
           </div>
           <div className="tw-mb-4">
             <label
