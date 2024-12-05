@@ -49,7 +49,7 @@ type Venta = {
   ProductosLista: Producto[];
 };
 
-const VentaDetail = () => {
+const Ventas_Detalles = () => {
   const { id } = useParams();
   const [venta, setVenta] = useState<Venta | null>(null);
   const [expandedProducts, setExpandedProducts] = useState<number[]>([]);
@@ -293,4 +293,4 @@ const VentaDetail = () => {
   
 };
 
-export default VentaDetail;
+export default Ventas_Detalles;

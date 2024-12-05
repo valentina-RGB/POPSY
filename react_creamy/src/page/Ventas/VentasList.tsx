@@ -33,7 +33,7 @@ export interface EstadoVenta {
   descripcion: 'Pagado' | 'Cancelado'; // Ajusta según los estados que manejas
 }
 
-const VentasList: React.FC = () => {
+const Ventas: React.FC = () => {
   const [ventas, setVentas] = useState<Venta[]>([]);
   const navigate = useNavigate();
   const [isAddVentaModalOpen, setIsAddVentaModalOpen] = useState(false);
@@ -325,4 +325,4 @@ const VentasList: React.FC = () => {
   );
 };
 
-export default VentasList;
+export default Ventas;

@@ -49,7 +49,7 @@ type Pedido = {
   ProductosLista: Producto[];
 };
 
-const OrderDetail = () => {
+const Pedidos_Detalles = () => {
   const { id } = useParams();
   const [pedido, setPedido] = useState<Pedido | null>(null);
   const [expandedProducts, setExpandedProducts] = useState<number[]>([]);
@@ -293,4 +293,4 @@ const OrderDetail = () => {
   
 };
 
-export default OrderDetail;
+export default Pedidos_Detalles;

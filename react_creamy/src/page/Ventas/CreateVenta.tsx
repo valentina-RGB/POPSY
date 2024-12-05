@@ -66,7 +66,7 @@ type Producto = {
   ID_producto: number | null;
   nombre: string;
   cantidad: number;
-  estado_productos:string;
+  estado_productos: string;
   precio_neto: number;
   Producto_Venta: {
 
@@ -96,10 +96,10 @@ type Venta = {
 
 
 type Stock_insumo = {
-    stock_min: number,
-    stock_max: number,
-    stock_actual: number,      
-    ID_insumo: number    
+  stock_min: number,
+  stock_max: number,
+  stock_actual: number,
+  ID_insumo: number
 }
 
 const cache = {
@@ -111,7 +111,7 @@ const cache = {
 
 
 
-export default function OrderAdd() {
+export default function Ventasadd() {
   const { id } = useParams();
   const [productoActual, setProductoActual] = useState<string | null>(null);
   const [IDActual, SetIDActual] = useState<number | null>(null);
@@ -128,7 +128,7 @@ export default function OrderAdd() {
 
   const [salsasAgregadas, setsalsasAgregadas] = useState<Insumo_adicion[]>([]);
   const [salsasDisponibles, setSalsaDisponibles] = useState<Insumo_adicion[]>([]);
-  const [Stock , setStock] = useState<Stock_insumo[]>([]);
+  const [Stock, setStock] = useState<Stock_insumo[]>([]);
 
   // const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
   const [debouncedSearchTerm2, setDebouncedSearchTerm2] = useState(TerminosHelado);
@@ -151,7 +151,7 @@ export default function OrderAdd() {
     ...insumosAgregados,
     ...adiciones,
   ];
-  
+
   useEffect(() => {
     const generalizarItems = (array: Insumo_adicion[]) => {
       const nuevoArray = array.reduce((acc: Insumo_adicion[], item) => {
@@ -164,9 +164,9 @@ export default function OrderAdd() {
           );
           return acc;
         }
-  
+
         const existingItem = acc.find((it) => it.ID_insumo === item.ID_insumo);
-  
+
         if (existingItem) {
           // Actualizamos el existente
           existingItem.Adiciones_Insumos.cantidad += item.Adiciones_Insumos.cantidad;
@@ -181,23 +181,23 @@ export default function OrderAdd() {
             },
           });
         }
-  
+
         return acc;
       }, []);
-  
+
       // Actualizamos el estado una vez, fuera del reduce
       setLista(nuevoArray);
-  
+
       // Calcular y mostrar el total de todas las adiciones
       const total = calcularTotalAdiciones(nuevoArray);
       console.log("Total de todas las adiciones:", total);
     };
-  
+
     generalizarItems(combinedArray);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [salsasAgregadas, insumosAgregados, adiciones]);
-  
-  
+
+
 
 
 
@@ -242,7 +242,7 @@ export default function OrderAdd() {
 
   useEffect(() => {
     if (!debouncedSearchTerm3) {
-    
+
     } else {
       const InsumosFiltrados = buscarInsumos.filter((insumos) =>
         insumos.descripcion_insumo
@@ -290,7 +290,7 @@ export default function OrderAdd() {
         const stock = response.data;
         setStock(stock);
 
-        console.log('Stock',Stock);
+        console.log('Stock', Stock);
       } catch (error) {
         console.error('Error al cargar el stock:', error);
       }
@@ -304,7 +304,7 @@ export default function OrderAdd() {
     const fecht = async () => {
       try {
         const response = await api.get(`http://localhost:3300/productos`)
-        const data = response.data.filter((producto:Producto)=>producto.estado_productos ==='D')
+        const data = response.data.filter((producto: Producto) => producto.estado_productos === 'D')
         setProducts(data);
 
         cache.Productos = data
@@ -345,13 +345,13 @@ export default function OrderAdd() {
     );
 
     // Valido el stock
-   
+
 
     if (InsumosExists) {
 
 
-      
-      
+
+
       handleChangeInsumo(insumo.ID_insumo, 1, 'helado');
       // Mostramos un mensaje toast
       toast.success(
@@ -414,7 +414,7 @@ export default function OrderAdd() {
   const handleSalsaChange = (salsa: Insumo_adicion) => {
     setsalsasAgregadas((prevSalsas) => {
       const siExiste = prevSalsas.some((s) => s.ID_insumo === salsa.ID_insumo);
-  
+
       if (siExiste) {
         // Si la salsa ya está agregada, la eliminamos
         return prevSalsas.filter((s) => s.ID_insumo !== salsa.ID_insumo);
@@ -442,24 +442,24 @@ export default function OrderAdd() {
   useEffect(() => {
     console.log("Estado de salsas agregadas actualizado:", salsasAgregadas);
   }, [salsasAgregadas]);
-  
+
 
 
   const [Lista, setLista] = useState<Insumo_adicion[]>([]);
 
 
   const calcularTotalAdiciones = (lista: Insumo_adicion[]) => {
-      // Sumar todos los totales de cada item en Lista
-      const total = lista.reduce((acc, item) => {
-        // Verifica si Adiciones_Insumos tiene un total y lo suma
-        if (item.Adiciones_Insumos && typeof item.Adiciones_Insumos.total === "number") {
-          return acc + item.Adiciones_Insumos.total;
-        }
-        return acc;
-      }, 0); // Inicializamos el acumulador en 0
-  
-      return total;
-    };
+    // Sumar todos los totales de cada item en Lista
+    const total = lista.reduce((acc, item) => {
+      // Verifica si Adiciones_Insumos tiene un total y lo suma
+      if (item.Adiciones_Insumos && typeof item.Adiciones_Insumos.total === "number") {
+        return acc + item.Adiciones_Insumos.total;
+      }
+      return acc;
+    }, 0); // Inicializamos el acumulador en 0
+
+    return total;
+  };
 
 
 
@@ -513,7 +513,7 @@ export default function OrderAdd() {
                         ${stock > 0
                   ? 'tw-bg-green-100 tw-text-green-800'
                   : 'tw-bg-[#98b1e7a8] tw-text-[#6834f7] tw-font-bold'}`}>
-                {stock > 0  ? `${stock} Disponible` : 'N/A'}
+                {stock > 0 ? `${stock} Disponible` : 'N/A'}
               </span>
             </div>
           );
@@ -567,9 +567,9 @@ export default function OrderAdd() {
       };
 
       //Verificar que la lista no este vacía
-      if(Lista.length <= 0){
+      if (Lista.length <= 0) {
         toast.error("Debes de seleccionar almenos un insumo")
-        return 
+        return
       }
 
       console.log('Nueva adición:', nuevaAdicion);
@@ -591,7 +591,7 @@ export default function OrderAdd() {
                 estado_productos: producto.estado_productos,
                 Producto_Venta: producto.Producto_Venta.map((productoVenta) => ({
                   ...productoVenta,
-                  cantidad: productoVenta.cantidad + 1, 
+                  cantidad: productoVenta.cantidad + 1,
                   sub_total: (productoVenta.cantidad + 1) * producto.precio_neto, // Actualizar sub_total
                   Adiciones: [
                     ...productoVenta.Adiciones, // Conservar las adiciones anteriores
@@ -711,17 +711,17 @@ export default function OrderAdd() {
 
       const stock = Stock.find((s) => s.ID_insumo === ID_insumo);
 
-      if(stock && stock.stock_actual >= cantidadTotal && stock.stock_actual!=0){
+      if (stock && stock.stock_actual >= cantidadTotal && stock.stock_actual != 0) {
         const newInputs = insumosAgregados.map((input) => {
           let newQuantity = isNaN(input.Adiciones_Insumos.cantidad + cantidad)
             ? 1
             : input.Adiciones_Insumos.cantidad + cantidad;
           // const precio = isNaN(input.precio * newQuantity)? 1: input.precio * newQuantity;
-  
+
           if (newQuantity < 1) {
             newQuantity = 1;
           }
-  
+
           if (input.ID_insumo === ID_insumo) {
             return {
               ...input,
@@ -736,11 +736,11 @@ export default function OrderAdd() {
         });
 
         setInsumoAgregados(newInputs);
-      }else{
+      } else {
         toast.error("No hay suficiente stock para agregar más insumos");
       }
 
-     
+
 
       // const newInputsAdiciones = insumosAgregados.map((input) => {
       //   // let newQuantity= isNaN(input.Adiciones_Insumos.cantidad + cantidad)
@@ -769,7 +769,7 @@ export default function OrderAdd() {
       //   return input;
       // });
 
-     
+
       // if(cantidadTotal<2){
       //   setInsumoAgregados(newInputs);
       // }else{
@@ -802,7 +802,7 @@ export default function OrderAdd() {
         }
 
         if (input.ID_insumo === ID_insumo) {
-          if(stock && stock.stock_actual >= cantidadTotal && stock.stock_actual !=0){
+          if (stock && stock.stock_actual >= cantidadTotal && stock.stock_actual != 0) {
             return {
               ...input,
               Adiciones_Insumos: {
@@ -811,10 +811,10 @@ export default function OrderAdd() {
                 // precio: precio
               },
             };
-          }else{
+          } else {
             toast.error('No hay suficiente stock para agregar más insumos')
           }
-         
+
         }
         return input;
       });
@@ -826,16 +826,16 @@ export default function OrderAdd() {
   }
 
 
- 
-
-  
-
-
-  
 
 
 
-// CONFIGURACIÓN DE LOS PRODUCTOS AGREGADOS
+
+
+
+
+
+
+  // CONFIGURACIÓN DE LOS PRODUCTOS AGREGADOS
 
   const handleCantidadAdicionChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -848,7 +848,7 @@ export default function OrderAdd() {
       setProductosAgregados((prevProductos) =>
         prevProductos.map((producto) => {
           if (producto.ID_producto === id_producto) {
-        
+
             const nuevoProductoVenta = producto.Producto_Venta.map((productoVenta) => {
               // Actualizamos Adiciones
               const nuevasAdiciones = productoVenta.Adiciones.map((adicion) => {
@@ -934,8 +934,8 @@ export default function OrderAdd() {
 
                       const nuevosInsumos = adicion.Insumos.map((insumo) => {
                         if (insumo.ID_insumo === insumoId) {
-                          
-                          if(stock && stock.stock_actual >= cantidadTotal && stock.stock_actual !=0){
+
+                          if (stock && stock.stock_actual >= cantidadTotal && stock.stock_actual != 0) {
                             const nuevoTotalInsumo = insumo.precio * newCantidadInsumo;
                             return {
                               ...insumo,
@@ -944,7 +944,7 @@ export default function OrderAdd() {
                                 total: nuevoTotalInsumo, // Aseguramos la propiedad "total"
                               },
                             };
-                          }else{
+                          } else {
                             toast.error(`El stock de ${insumo.descripcion_insumo} es de ${stock?.stock_actual}`);
                             return {
                               ...insumo,
@@ -953,8 +953,8 @@ export default function OrderAdd() {
                                 total: insumo.precio // Aseguramos la propiedad "total"
                               },
                             }
-                          }                  
-                       }
+                          }
+                        }
                         return insumo;
                       });
 
@@ -988,50 +988,50 @@ export default function OrderAdd() {
       return prevProductos.map((producto) => {
         // Verificamos si es el producto que queremos modificar
         if (producto.ID_producto === id_producto) {
-          
+
           const Producto_Venta_Actualizado = producto.Producto_Venta.map((productoVenta) => {
             // Filtramos las adiciones para eliminar la que coincida con `id_adicion`
             const nuevasAdiciones = productoVenta.Adiciones.filter(
               (adicion) => adicion.id_adicion !== id_adicion
             );
-  
+
             // Recalculamos el subtotal basándonos en las adiciones restantes
             const nuevoSubTotal = nuevasAdiciones.reduce(
               (acc, adicion) => acc + adicion.total,
               0
             );
-  
+
             return {
               ...productoVenta,
               sub_total: nuevoSubTotal, // Actualizamos el subtotal
               Adiciones: nuevasAdiciones, // Actualizamos las adiciones
             };
           });
-  
+
           // Recalculamos la cantidad total del producto sumando las cantidades de las adiciones restantes
           const nuevaCantidad = Producto_Venta_Actualizado.reduce((acc, venta) => {
             return acc + venta.Adiciones.reduce((accAdicion, adicion) => accAdicion + adicion.cantidad, 0);
           }, 0);
-  
+
           return {
             ...producto,
             cantidad: nuevaCantidad, // Actualizamos la cantidad total del producto
-            Producto_Venta: Producto_Venta_Actualizado, 
+            Producto_Venta: Producto_Venta_Actualizado,
           };
 
-         
+
         }
         return producto; // Devolvemos el producto sin cambios si no coincide
       })
-       // Eliminamos productos cuya cantidad sea 0
-       .filter((producto) => producto.cantidad > 0);
+        // Eliminamos productos cuya cantidad sea 0
+        .filter((producto) => producto.cantidad > 0);
     });
 
-    
+
   };
 
   // Función para eliminar un producto de la lista de productos agregados
- 
+
   const eliminarProducto = (index: number) => {
     // Mostramos un toast de advertencia con opciones
     toast(
@@ -1081,9 +1081,9 @@ export default function OrderAdd() {
     );
   };
 
-  
 
-// PRECIO TOTAL
+
+  // PRECIO TOTAL
 
   const totalVenta = productosAgregados.reduce((sum, producto) => {
     // Calcular el total de todas las adiciones de este producto
@@ -1109,11 +1109,11 @@ export default function OrderAdd() {
 
 
   // Desplegar productos
-    const [activeIndex, setActiveIndex] = useState<number | null>(null);
-    const toggleAccordion = (index: number) => {
-      setActiveIndex(activeIndex === index ? null : index);
-    }
-  
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const toggleAccordion = (index: number) => {
+    setActiveIndex(activeIndex === index ? null : index);
+  }
+
 
 
 
@@ -1275,23 +1275,23 @@ export default function OrderAdd() {
 
 
                     {/* Calculo del subtotal para cada producto */}
-                  <div className="tw-space-x-2 tw-flex tw-align-middle">
-                  <p className="tw-text-sm">
-                      {/* Subtotal: 
+                    <div className="tw-space-x-2 tw-flex tw-align-middle">
+                      <p className="tw-text-sm">
+                        {/* Subtotal: 
               {producto.subtotal.toFixed(2)} */}
-                      cantidad de productos: 
-                    </p>
-                    <span className="tw-inline-flex tw-items-center tw-justify-center tw-bg-[#ad58ce8a] tw-text-[#541c61] tw-w-8 tw-h-6 tw-rounded-full tw-text-sm tw-font-medium">{producto.cantidad}</span>
-                  </div>
+                        cantidad de productos:
+                      </p>
+                      <span className="tw-inline-flex tw-items-center tw-justify-center tw-bg-[#ad58ce8a] tw-text-[#541c61] tw-w-8 tw-h-6 tw-rounded-full tw-text-sm tw-font-medium">{producto.cantidad}</span>
+                    </div>
 
                     <div className="tw-flex tw-items-center tw-space-x-2">
-                  
-                       <button
+
+                      <button
                         className="tw-text-red-600 tw-p-2"
                         onClick={() => eliminarProducto(index)}
-                       >
-                       <Trash2 className="tw-h-4 tw-w-4" />
-                     </button>
+                      >
+                        <Trash2 className="tw-h-4 tw-w-4" />
+                      </button>
                     </div>
                   </div>
                 )}
@@ -1635,7 +1635,7 @@ export default function OrderAdd() {
                       <div className="tw-flex tw-items-center tw-gap-2">
                         <h3 className="tw-text-lg tw-font-semibold tw-text-gray-900">Adiciones</h3>
                         <span className="tw-bg-blue-100 tw-text-blue-800 tw-text-[10px] tw-font-medium tw-px-1.5 tw-py-0.5 tw-rounded-full">
-                          {buscarInsumos.length} 
+                          {buscarInsumos.length}
                         </span>
                       </div>
 

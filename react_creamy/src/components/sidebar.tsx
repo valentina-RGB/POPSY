@@ -9,26 +9,38 @@ import {
   BanknotesIcon,
   Cog6ToothIcon,
   UserGroupIcon,
-  ChartBarIcon 
+  ChartBarIcon
 } from "@heroicons/react/24/outline";
 import { memo, useCallback, useEffect, useState } from "react";
+import axios from "axios";
+
+
+
+
+
+
+type rol = {
+  ID_perimiso: number;
+  descripcion: string;
+}
+
 
 // Memoized NavLink component for performance optimization
-const NavLink = memo(({ 
-  path, 
-  name, 
-  icon: Icon, 
-  isActive 
-}: { 
-  path: string, 
-  name: string, 
-  icon: React.ComponentType<{ className?: string }>, 
-  isActive: boolean 
+const NavLink = memo(({
+  path,
+  name,
+  icon: Icon,
+  isActive
+}: {
+  path: string,
+  name: string,
+  icon: React.ComponentType<{ className?: string }>,
+  isActive: boolean
 }) => (
   <Link
     to={path}
     aria-current={isActive ? "page" : undefined}
-    className={`tw-flex tw-items-center tw-px-3 tw-py-2 tw-rounded-lg tw-transition-colors tw-duration-300 
+    className={`tw-flex tw-items-center tw-px-3 tw-py-2 tw-rounded-lg tw-transition-colors tw-duration-300
       ${
         isActive
           ? "tw-bg-indigo-100 tw-text-indigo-900 dark:tw-bg-indigo-600 dark:tw-text-white"
@@ -45,9 +57,12 @@ const NavLink = memo(({
   </Link>
 ));
 
+
 const Menu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [roles , setroles] = useState<rol[]>([])
   const location = useLocation();
+
 
   // Memoized login status check function
   const checkLoginStatus = useCallback(() => {
@@ -60,14 +75,11 @@ const Menu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
     }
   }, []);
 
-  // const haspermission = (permission) => {
-  //   return permission.includes(permission);
-  // };
 
   useEffect(() => {
     // Initial login status check
     checkLoginStatus();
-    
+   
     // Add event listener for storage changes across tabs
     const handleStorageChange = (event: StorageEvent) => {
       if (event.key === "jwtToken") {
@@ -75,22 +87,24 @@ const Menu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
       }
     };
 
+
     window.addEventListener('storage', handleStorageChange);
-    
+   
     // Cleanup event listener
     return () => {
       window.removeEventListener('storage', handleStorageChange);
     };
   }, [checkLoginStatus]);
 
+
   // Navigation items configuration
   const navItems = [
-    { 
-      label: "Dashboard", 
+    {
+      label: "Dashboard",
       links: [
         { path: "/Home", name: "Home", icon: HomeIcon },
         { path: "/Dashboard", name: "Dashboard", icon: ChartBarIcon   },
-      ], 
+      ],
     },
     {
       label: "Compras",
@@ -117,26 +131,68 @@ const Menu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
     },
   ];
 
+
+
+
+
+
+ 
+
+
+
+
+  useEffect(() => {
+    // Verificar si el usuario está autenticado
+    const token = localStorage.getItem("jwtToken");
+    const storedUserName = localStorage.getItem("userName");
+    const storedUserRole = localStorage.getItem("ID_rol");
+
+
+    if (token && storedUserName && storedUserRole) {
+      setIsLoggedIn(true);
+      // setUserName(storedUserName);
+
+
+      // Fetch para obtener el rol
+
+
+      const fecth = async() =>{
+        const response = await axios.get(`http://localhost:3300/roles/${storedUserRole}`)
+     
+        const {Permiso} = response.data
+        setroles(Permiso)
+        // console.log('rol',{roles}, storedUserRole, 'esta',response.data)
+ 
+      }
+
+
+      fecth();
+    }
+  }, []);
+
+
+  console.log("holiii")
   // Visibility class for menu open/close
   const visibilityClass = isMenuOpen
     ? "tw-translate-x-0 tw-opacity-100 tw-visible"
     : "tw-translate-x-[-100%] tw-opacity-0 tw-invisible";
 
+
   return (
     <aside
-      className={`${isLoggedIn ? "" : "tw-hidden"} 
-        tw-flex tw-flex-col 
-        tw-w-64 
-        tw-h-screen 
-        tw-px-5 
-        tw-py-8 
-        tw-overflow-y-auto 
-        tw-bg-white 
-        tw-border-rdark:tw-bg-gray-900 
-        dark:tw-border-gray-700 tw-rounded-lg 
-        tw-shadow-lg tw-transition-all 
+      className={`${isLoggedIn ? "" : "tw-hidden"}
+        tw-flex tw-flex-col
+        tw-w-64
+        tw-h-screen
+        tw-px-5
+        tw-py-8
+        tw-overflow-y-auto
+        tw-bg-white
+        tw-border-rdark:tw-bg-gray-900
+        dark:tw-border-gray-700 tw-rounded-lg
+        tw-shadow-lg tw-transition-all
         tw-duration-300 tw-ease-in-out ${visibilityClass}
-        ${isMenuOpen ? "tw-absolute tw-block" : "tw-hidden"} lg:${isMenuOpen ? "tw-block" : "tw-hidden"} lg:tw-static 
+        ${isMenuOpen ? "tw-absolute tw-block" : "tw-hidden"} lg:${isMenuOpen ? "tw-block" : "tw-hidden"} lg:tw-static
         tw-rounded-lg tw-shadow-lg ${visibilityClass} `}
       style={{ zIndex: 10 }}
       aria-label="Main Navigation"
@@ -145,25 +201,32 @@ const Menu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
       <div className="tw-mt-4 tw-space-y-8">
         {navItems.map((section) => (
           <nav key={section.label}>
-            <label 
+            <label
               className="tw-px-3 tw-text-xs tw-font-semibold tw-uppercase tw-text-gray-700 dark:tw-text-gray-400"
               id={`section-${section.label.toLowerCase().replace(/\s+/g, '-')}`}
             >
               {section.label}
             </label>
-            <div 
+            <div
               className="tw-mt-2 tw-space-y-2"
               aria-labelledby={`section-${section.label.toLowerCase().replace(/\s+/g, '-')}`}
             >
-              {section.links.map((link) => (
-                <NavLink
+              {section.links.map((link) => {
+                if(roles.length > 0){
+                const permiso = roles.find((permiso) => permiso.descripcion.toLowerCase() ===link.name.toLowerCase());
+               
+                return permiso ? (
+                  <NavLink
                   key={link.name}
                   path={link.path}
                   name={link.name}
                   icon={link.icon}
                   isActive={location.pathname === link.path}
                 />
-              ))}
+                ):null;
+                }
+                return null;          
+              })}
             </div>
           </nav>
         ))}
@@ -172,4 +235,8 @@ const Menu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
   );
 };
 
+
 export default Menu;
+
+
+

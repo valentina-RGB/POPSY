@@ -4,24 +4,24 @@ import { useState } from 'react';
 import Navbar from "./components/navbar_prueba";
 import Menu from "./components/sidebar";
 import Dashboard from "./page/Dashboard";
-import Categories from "./page/Categories/Categories-list";
+import Categorias from "./page/Categories/Categories-list";
 import Insumos from "./page/Insumos/Insumos-list";
-import EntriesList from "./page/Insumos/EntriesList";
-import VentasList from "./page/Ventas/VentasList";
+import Entradas from "./page/Insumos/EntriesList";
+import Ventas from "./page/Ventas/VentasList";
 import Ventasadd from "./page/Ventas/CreateVenta";
 import AddCliente from './page/Clientes/CreateCliente';
 import ListarClientes from './page/Clientes/ListCliente';
 import Productos from './page/Products/products-list';
 import Pedidos from './page/Order/Order_list';
-import PedidoDetalles from './page/Order/Order_details';
-import VentaDetalles from './page/Ventas/VentaDetail';
+import Pedidos_Detalles from './page/Order/Order_details';
+import Ventas_Detalles from './page/Ventas/VentaDetail';
 import Login from './page/Acceso/login';
 import SignUp from './page/Acceso/signUp';
 import OrderAdd from './page/Order/Order_add';
 import { AuthProvider } from './page/Acceso/AuhtContex';
 import ProtectedRoute from './page/Acceso/ProtecdRouted';
-import RolList from './page/Roles/ListRol';
-import UsuarioList from './page/Usuarios/ListUsuario';
+import Roles from './page/Roles/ListRol';
+import Usuarios from './page/Usuarios/ListUsuario';
 import NotFoundPage from './components/404';
 import Home from './page/Home';
 
@@ -103,7 +103,7 @@ const App: React.FC = () => {
               path="/Categorias"
               element={
                 <ProtectedRoute>
-                  <Categories />
+                  <Categorias />
                 </ProtectedRoute>
               } />
             <Route
@@ -117,14 +117,14 @@ const App: React.FC = () => {
               path="/historial-entradas"
               element={
                 <ProtectedRoute>
-                  <EntriesList />
+                  <Entradas />
                 </ProtectedRoute>
               } />
             <Route
               path="/Ventas"
               element={
                 <ProtectedRoute>
-                  <VentasList />
+                  <Ventas/>
                 </ProtectedRoute>
               } />
             <Route
@@ -145,13 +145,13 @@ const App: React.FC = () => {
               element=
               {
                 <ProtectedRoute>
-                  <PedidoDetalles />
+                  <Pedidos_Detalles />
                 </ProtectedRoute>
               } />
             <Route path="/venta/:id"
               element={
                 <ProtectedRoute>
-                  <VentaDetalles />
+                  <Ventas_Detalles />
                 </ProtectedRoute>
               } />
             <Route
@@ -165,7 +165,7 @@ const App: React.FC = () => {
               path="/roles"
               element={
                 <ProtectedRoute>
-                  <RolList />
+                  <Roles />
                 </ProtectedRoute>
               } />
             <Route
@@ -186,7 +186,7 @@ const App: React.FC = () => {
               path="/Usuarios"
               element={
                 <ProtectedRoute>
-                  <UsuarioList />
+                  <Usuarios />
                 </ProtectedRoute>
               } />
             <Route

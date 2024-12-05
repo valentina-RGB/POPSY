@@ -30,7 +30,7 @@ const tableStyles = {
 
 Modal.setAppElement('#root');
 
-const RolList: React.FC = () => {
+const Roles: React.FC = () => {
   const [roles, setRol] = useState<Rol[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<'add' | 'edit' | 'entry' | 'detail' | null>(null);
@@ -291,4 +291,4 @@ const handleDelete = async (id: number) => {
   );
 };
 
-export default RolList;
+export default Roles;

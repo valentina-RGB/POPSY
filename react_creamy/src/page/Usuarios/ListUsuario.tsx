@@ -29,7 +29,7 @@ const tableStyles = {
 };
 Modal.setAppElement('#root');
 
-const UsuarioList: React.FC = () => {
+const Usuarios: React.FC = () => {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const [roles, setRoles] = useState<Rol[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -337,4 +337,4 @@ const UsuarioList: React.FC = () => {
   );
 };
 
-export default UsuarioList;
+export default Usuarios;

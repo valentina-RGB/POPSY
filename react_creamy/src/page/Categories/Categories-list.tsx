@@ -32,7 +32,7 @@ const tableStyles = {
 
 Modal.setAppElement('#root');
 
-const Categories: React.FC = () => {
+const Categorias: React.FC = () => {
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalConfig, setModalConfig] = useState<{ type: 'add' | 'edit' | 'entry'|'detail'|'imagen'| null; id: number | null }>({ type: null, id: null });
@@ -332,4 +332,4 @@ const Categories: React.FC = () => {
   );
 };
 
-export default Categories;
+export default Categorias;

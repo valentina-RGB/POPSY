@@ -11,7 +11,7 @@ interface HomeWelcomeProps {
   role: string;
 }
 
-const HomeWelcome: React.FC<HomeWelcomeProps> = () => {
+const Home: React.FC<HomeWelcomeProps> = () => {
   const [userName, setUserName] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
 
@@ -110,4 +110,4 @@ const HomeWelcome: React.FC<HomeWelcomeProps> = () => {
   );
 };
 
-export default HomeWelcome;
+export default Home;

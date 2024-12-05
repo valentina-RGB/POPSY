@@ -28,7 +28,7 @@ const tableStyles = {
   }
 };
 
-const EntriesList: React.FC = () => {
+const Entradas: React.FC = () => {
   const [entries, setEntries] = useState<HistorialEntrada[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<'edit' | 'delete' | null>(null);
@@ -312,4 +312,4 @@ const EntriesList: React.FC = () => {
   );
 };
 
-export default EntriesList;
+export default Entradas;

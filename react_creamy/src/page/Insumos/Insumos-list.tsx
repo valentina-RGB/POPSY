@@ -31,7 +31,7 @@ const tableStyles = {
 };
 Modal.setAppElement('#root');
 
-const InsumosList: React.FC = () => {
+const Insumos: React.FC = () => {
   const [insumos, setInsumos] = useState<Insumo[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<'add' | 'edit' | 'entry' | 'detail' | null>(null);
@@ -415,4 +415,4 @@ const InsumosList: React.FC = () => {
 
 };
 
-export default InsumosList;
+export default Insumos;
