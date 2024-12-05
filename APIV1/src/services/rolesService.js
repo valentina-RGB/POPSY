@@ -66,20 +66,23 @@ const
   
     // Si se proporcionaron permisos, actualiza la tabla intermedia Permiso_roles
       // Elimina los permisos anteriores asociados a este rol
-      await Permiso_roles.destroy({
-        where: { ID_roles: id }
-      });
-
-      console.log(ID_permiso)
-  
-      // Agrega los nuevos permisos asociados al rol
-      for (const permisoId of ID_permiso) {
-        await Permiso_roles.create({
-          ID_permisos: permisoId,
-          ID_roles: id
+     
+      if(ID_permiso){
+        await Permiso_roles.destroy({
+          where: { ID_roles: id }
         });
+  
+        console.log(ID_permiso)
+    
+        // Agrega los nuevos permisos asociados al rol
+        for (const permisoId of ID_permiso) {
+          await Permiso_roles.create({
+            ID_permisos: permisoId,
+            ID_roles: id
+          });
+        }
+  
       }
-
 
       return { status: 200, message: 'Hecho' }
     
