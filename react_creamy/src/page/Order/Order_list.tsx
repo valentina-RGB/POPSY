@@ -184,6 +184,7 @@ useEffect(() => {
                           : pedido
                       )
                     );
+                    await api.delete(`/pedidos/eliminar/${ID_pedido}`)
                     toast.success(
                       'El estado del pedido ha sido cambiado a "Cancelado".'
                     );

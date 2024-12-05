@@ -1,12 +1,8 @@
 const express = require('express');
 const {request , response} = require('express');
 const db = require('../data/db');
-const { Op, where } = require('sequelize');
-const {sequelize, Pedidos, Producto_Pedidos,Producto_insumos, Adiciones,Insumos, Adiciones_Insumos , Productos,StockInsumos } = require('../../models');
-
-
-
-
+const { Op } = require('sequelize');
+const {Pedidos, Producto_Pedidos,Producto_insumos, Adiciones,Insumos, Adiciones_Insumos , Productos,StockInsumos } = require('../../models');
 
 
     const
@@ -15,77 +11,49 @@ const {sequelize, Pedidos, Producto_Pedidos,Producto_insumos, Adiciones,Insumos,
         const pedidos = await Pedidos.findAll({
           include: [
             {
-              model: Productos,
-              as: 'ProductosLista', // Alias definido en la relación Pedidos -> Productos
-              attributes: ['ID_producto', 'nombre', 'precio_neto', 'stock_bola'],
-              through: {
+                model: Productos,
+                as: 'ProductosLista', // Alias definido en la relación Pedidos -> Productos
+                attributes: ['ID_producto', 'nombre', 'precio_neto', 'stock_bola'],
+                through: {
                 attributes: ['cantidad', 'sub_total'], // Campos de la tabla intermedia
-              },
-              // include:
-              //   [
-              //     {
-              //       model: Producto_Pedidos, // Relación Productos -> Producto_Pedidos
-              //       as: 'Producto_Pedido', // Alias definido en Productos
-                   
-              //       include:
-              //         [
-              //           {
-              //             model: Adiciones, // Relación Producto_Pedidos -> Adiciones
-              //             as: 'Adiciones', // Alias definido en Producto_Pedidos
-              //             attributes: ['cantidad', 'total'],
-              //             include:[
-              //               {
-              //                 model: Insumos,  // Relación entre Adiciones e Insumos
-              //                 as: 'Insumos',
-              //                 through: {
-              //                   model:Adiciones_Insumos,
-              //                   attributes: ['cantidad','sub_total'],
-              //                 },
-              //                 attributes: ['ID_insumo','descripcion_insumo', 'precio'],
-              //               }
-              //             ]
-              //         }
-              //         ]
-              //     }
-              //   ]
+                }
             }
-          ],
+        ],
         });
-   
+
         res.status(200).json(pedidos);
-      } catch (error) {
+        } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Error al obtener pedidos', error });
-      }
+        }
     },
-   
-       
+
+    
     getPedidosID = async (id) => {
         const pedidos = await Pedidos.findByPk(id,{
-          include: [
+        include: [
             {
-              model: Productos,
-              as: 'ProductosLista', // Alias definido en la relación Pedidos -> Productos
-              attributes: ['ID_producto', 'nombre', 'precio_neto', 'stock_bola'],
-              through: {
+                model: Productos,
+                as: 'ProductosLista', // Alias definido en la relación Pedidos -> Productos
+                attributes: ['ID_producto', 'nombre', 'precio_neto', 'stock_bola'],
+                through: {
                 attributes: ['cantidad', 'sub_total'], // Campos de la tabla intermedia
-              },
-              include:
+                },
+                include:
                 [
-                  {
+                {
                     model: Producto_Pedidos, // Relación Productos -> Producto_Pedidos
                     as: 'Producto_Pedido', // Alias definido en Productos
                     where: {
                       ID_pedido: id, // Asegúrate de filtrar por el pedido actual
                     },
                     include:
-                      [
+                    [
                         {
-                          model: Adiciones, // Relación Producto_Pedidos -> Adiciones
-                          as: 'Adiciones', // Alias definido en Producto_Pedidos
-                          attributes: ['cantidad', 'total', 'ID_adicion'],
-                         
-                          include:[
+                            model: Adiciones, // Relación Producto_Pedidos -> Adiciones
+                            as: 'Adiciones', // Alias definido en Producto_Pedidos
+                            attributes: ['cantidad', 'total', 'ID_adicion'],
+                            include:[
                             {
                               model: Insumos,  // Relación entre Adiciones e Insumos
                               as: 'Insumos',
@@ -95,128 +63,19 @@ const {sequelize, Pedidos, Producto_Pedidos,Producto_insumos, Adiciones,Insumos,
                               },
                               attributes: ['ID_insumo','descripcion_insumo', 'precio'],
                             }
-                          ]
+                        ]
                         }
-                      ]        
-                  }
+                    ]        
+                    }
                 ]
             }
-          ],
+        ],
         });
-        return pedidos;
-       
+        return pedidos; 
     } ,
 
-
-    // CrearPedidos = async (req = request, res = response) => {
-    //   const { ID_clientes, ProductosLista } = req.body;
-   
-    //   try {
-    //       let total_pedido = 0;
-   
-    //       if (!ID_clientes || !ProductosLista || !Array.isArray(ProductosLista) || ProductosLista.length === 0) {
-    //           return res.status(400).json({ message: 'Faltan datos para crear el pedido' });
-    //       }
-   
-    //       // Crear el pedido
-    //       const Nuevopedido = await Pedidos.create({
-    //           fecha: Date.now(),
-    //           ID_clientes: ID_clientes||1,
-    //           precio_total: total_pedido,
-    //           ID_estado_pedido: 1,
-    //       });
-   
-    //       for (const productos of ProductosLista) {
-    //           const producto = await Productos.findByPk(productos.ID_producto);
-    //           if (!producto) {
-    //               return res.status(404).json({ message: `Producto con ID ${productos.ID_producto} no encontrado` });
-    //           }
-   
-    //           const cantidadProducto = productos.Adiciones.length > 0 ? productos.Adiciones.length : 1;
-    //           const subTotal = producto.precio_neto * cantidadProducto;
-    //           total_pedido += subTotal;
-   
-    //           let sub_total_insumos = 0;
-   
-    //           // Validar y agregar adiciones
-    //           if (Array.isArray(productos.Adiciones)) {
-    //               for (const adiciones of productos.Adiciones) {
-    //                   let adiciones_total = 0;
-   
-    //                   // Crear adición y relaciones
-    //                   const Nueva_adicion = await Adiciones.create({
-    //                       cantidad: adiciones.cantidad || 1,
-    //                       total: 0,
-    //                   });
-                     
-    //                   await Productos_adiciones.create({
-    //                       ID_Producto_adicion: productos.ID_producto,
-    //                       ID_adiciones: Nueva_adicion.ID_adicion,
-    //                       sub_total: Nueva_adicion.total,
-    //                   });
-   
-    //                   // Procesar los insumos dentro de la adición
-    //                   if (Array.isArray(adiciones.Insumos)) {
-    //                       for (const I of adiciones.Insumos) {
-
-
-
-
-    //                         // console.table('Insumos', I)
-    //                           const Insumo = await Insumos.findByPk(I.ID_insumo);
-   
-    //                           if (!Insumo) {
-    //                               return res.status(404).json({ message: `Insumo con ID ${I.ID_insumo} no encontrado` });
-    //                           }
-   
-    //                           const subTotalInsumo = I.Adiciones_Insumos.cantidad * Insumo.precio;
-    //                           await Adiciones_Insumos.create({
-    //                               ID_adicion_p: Nueva_adicion.ID_adicion,
-    //                               ID_insumo_p: I.ID_insumo,
-    //                               cantidad: I.Adiciones_Insumos.cantidad,
-    //                               sub_total: subTotalInsumo,
-    //                           });
-   
-    //                           // Acumular subtotal de insumo en el total de la adición
-    //                           adiciones_total += subTotalInsumo;
-    //                       }
-    //                   }
-   
-    //                   // Multiplicar adiciones_total por cantidad de la adición y actualizar
-    //                   adiciones_total *= adiciones.cantidad || 1;
-    //                   await Adiciones.update({ total: adiciones_total }, { where: { ID_adicion: Nueva_adicion.ID_adicion } });
-    //                   await Productos_adiciones.update({ sub_total: adiciones_total }, { where: { ID_adiciones: Nueva_adicion.ID_adicion } });
-   
-    //                   // Sumar al total de insumos del producto
-    //                   sub_total_insumos += adiciones_total;
-    //               }
-    //           }
-   
-    //           // Crear Producto_Pedido con subtotales
-    //           await Producto_Pedidos.create({
-    //               ID_pedidos: Nuevopedido.ID_pedido,
-    //               ID_productos: producto.ID_producto,
-    //               cantidad: cantidadProducto,
-    //               precio_neto: producto.precio_neto,
-    //               sub_total: subTotal + sub_total_insumos,
-    //           });
-   
-    //           total_pedido += sub_total_insumos;
-    //       }
-   
-    //       // Actualizar el precio total del pedido
-    //       await Nuevopedido.update({ precio_total: total_pedido });
-   
-    //       return res.status(201).json({ status: 201, message: 'Se ha creado el pedido' });
-    //   } catch (err) {
-    //       console.error(err);
-    //       if (!res.headersSent) {
-    //           return res.status(500).json({ message: 'Error al crear el pedido', error: err.message });
-    //       }
-    //   }
-    // },
     CrearPedidos = async (req = request, res = response) => {
-      const { ID_clientes, ProductosLista } = req.body;
+    const { ID_clientes, ProductosLista } = req.body;
  
       try {
           if (!ID_clientes || !ProductosLista || !Array.isArray(ProductosLista) || ProductosLista.length === 0) {
@@ -629,7 +488,6 @@ const {sequelize, Pedidos, Producto_Pedidos,Producto_insumos, Adiciones,Insumos,
 
 DeletePedidos = async (id, res, req) => {
 
-
     const pedidos = await Pedidos.findOne({where:{ID_pedido: id}});
 
     if(!pedidos){
@@ -704,20 +562,20 @@ DeletePedidos = async (id, res, req) => {
         }
 
     res.status(200).json({ message: 'Pedido cancelado correctamente', pedidos });
+  
+},
 
-    //     const deleted = await Pedidos
-    //     if (deleted) {
-    //  return {status: 200 , message: 'Operacion realizada'}
-    // }else{
-    //     return {status: 404, message: 'Order not found' };
-    // }
+pedidosDelete = async (id) =>{
+
+    const deleted = await Pedidos.destroy({ where: {ID_pedido: id}, });
+
+    if (deleted) {
+        return {status: 200 , message: 'Operacion realizada'}
+    }else{
+        return {status: 404, message: 'Order not found' };
+    }
+
 }
-
-
-
-
-       
-       
 
 
 module.exports = {
@@ -725,5 +583,6 @@ module.exports = {
     getPedidosID,
     PatchPedidos,
     DeletePedidos,
-    CrearPedidos
+    CrearPedidos,
+    pedidosDelete
 }

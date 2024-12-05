@@ -72,6 +72,23 @@ const
                 const statusCode = error.status || 500;
                 res.status(statusCode).json({ error: error.message || 'Internal Server Error' });
             }      
+    },
+
+    eliminar= async (req = request, res= response) =>{
+        const { id } = req.params;
+            try{
+                const dato = await pedidosService.pedidosDelete(id);
+
+                if (dato) {
+                    res.status(200).json(dato);
+                  } else {
+                    res.status(404).json({ message: "Pedido no eliminado" });
+                  }
+                
+            }catch(error){
+                const statusCode = error.status || 500;
+                res.status(statusCode).json({ error: error.message || 'Internal Server Error' });
+            }      
     }
 
 module.exports = {
@@ -79,5 +96,6 @@ module.exports = {
     obtenerPedidosPorId,
     CrearPedidos,
     ModificarPedidos,
-    eliminarPedidos
+    eliminarPedidos,
+    eliminar
 }

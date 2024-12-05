@@ -78,7 +78,10 @@ export const convertirPedido = async (id: number) => {
           console.log('LISTA', lista );
 
           // CREAR VENTA
-           await api.post(`/ventas`, lista);
+          await api.post(`/ventas`, lista);
+
+        
+
       }catch(e){
         console.log('ERROR', e);
       }      
