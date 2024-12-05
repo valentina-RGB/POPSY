@@ -17,39 +17,39 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
 
-const tableStyles = {
-  '& .MuiPaper-root': {
-    boxShadow: 'none',
-    border: '1px solid #e0e0e0',
-    borderRadius: '8px',
-    overflow: 'hidden'
-  },
-  '& .MuiTableHead-root': {
-    backgroundColor: '#f8fafc',
-    borderBottom: '2px solid #e2e8f0',
-  },
-  '& .MuiTableRow-root': {
-    cursor: 'pointer',
-    '&:hover': {
-      backgroundColor: '#f1f5f9',
-      transition: 'background-color 0.2s ease',
-    }
-  },
-  '& .MuiTableCell-root': {
-    fontFamily: "'Inter', sans-serif",
-    padding: '16px',
-    borderBottom: '1px solid #e2e8f0',
-    '&.stock-cell': {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '8px'
-    }
-  },
-  '& .MuiTableCell-head': {
-    fontWeight: 600,
-    color: '#1e293b'
-  }
-};
+// const tableStyles = {
+//   '& .MuiPaper-root': {
+//     boxShadow: 'none',
+//     border: '1px solid #e0e0e0',
+//     borderRadius: '8px',
+//     overflow: 'hidden'
+//   },
+//   '& .MuiTableHead-root': {
+//     backgroundColor: '#f8fafc',
+//     borderBottom: '2px solid #e2e8f0',
+//   },
+//   '& .MuiTableRow-root': {
+//     cursor: 'pointer',
+//     '&:hover': {
+//       backgroundColor: '#f1f5f9',
+//       transition: 'background-color 0.2s ease',
+//     }
+//   },
+//   '& .MuiTableCell-root': {
+//     fontFamily: "'Inter', sans-serif",
+//     padding: '16px',
+//     borderBottom: '1px solid #e2e8f0',
+//     '&.stock-cell': {
+//       display: 'flex',
+//       alignItems: 'center',
+//       gap: '8px'
+//     }
+//   },
+//   '& .MuiTableCell-head': {
+//     fontWeight: 600,
+//     color: '#1e293b'
+//   }
+// };
 
 type Insumo_adicion = {
   ID_insumo: number;
@@ -69,12 +69,12 @@ type Producto = {
   cantidad: number;
   estado_productos:string;
   precio_neto: number;
+  stock_bola: number;
   Producto_Pedido: {
-
     cantidad: number;
     sub_total: number;
     Adiciones: {
-      id_adicion: number
+      ID_adicion: number
       cantidad: number,
       total: number,
       Insumos: Insumo_adicion[]
@@ -83,7 +83,6 @@ type Producto = {
   }[]
 
 };
-
 
 
 type Pedido = {
@@ -114,6 +113,7 @@ const cache = {
 
 export default function OrderAdd() {
   // const [Pedidos, setPedidos] = useState<Pedido[]>([]);
+
   const { id } = useParams();
   const [productoActual, setProductoActual] = useState<string | null>(null);
   const [IDActual, SetIDActual] = useState<number | null>(null);
@@ -141,6 +141,7 @@ export default function OrderAdd() {
   const [debouncedSearchTerm3, setDebouncedSearchTerm3] = useState(TerminosHelado);
   const [menuVisible, setMenuVisible] = useState(false);
   const [loading, setLoading] = useState(true);
+  // const [gratis, setgratis] = useState(0);
 
 
 
@@ -265,9 +266,9 @@ export default function OrderAdd() {
     const fetchInsumos = async () => {
       try {
         const response = await axios.get('http://localhost:3300/insumos'); // Endpoint de insumos
-        const helados = response.data.filter((insumo: Insumo_adicion) => insumo.ID_tipo_insumo === 1 && insumo.estado_insumo === 'A');
-        const salsas = response.data.filter((insumo: Insumo_adicion) => insumo.ID_tipo_insumo === 2 && insumo.estado_insumo === 'A');
-        const generales = response.data.filter((insumo: Insumo_adicion) => insumo.ID_tipo_insumo !== 1 && insumo.ID_tipo_insumo !== 2 && insumo.estado_insumo === 'A');
+        const helados = response.data.filter((insumo: Insumo_adicion) => insumo.ID_tipo_insumo === 2 && insumo.estado_insumo === 'A');
+        const salsas = response.data.filter((insumo: Insumo_adicion) => insumo.ID_tipo_insumo === 3 && insumo.estado_insumo === 'A');
+        const generales = response.data.filter((insumo: Insumo_adicion) => insumo.ID_tipo_insumo !== 2 && insumo.ID_tipo_insumo !== 3 && insumo.estado_insumo === 'A');
 
         console.log(helados, salsas, generales)
         
@@ -304,7 +305,8 @@ export default function OrderAdd() {
 
   useEffect(() => {
     fetchStock();
-  }),[];
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
 
 
   useEffect(() => {
@@ -346,14 +348,33 @@ export default function OrderAdd() {
 
 
 
+useEffect(() => {
+     // Calcular la suma total de la cantidad en la lista de insumos
+    const cantidadTotal = insumosAgregados.reduce((acc, input) => acc + input.Adiciones_Insumos.cantidad, 0);
+    console.log('cantidad total', cantidadTotal)
+
+    const stock_producto = products.find((p) => p.ID_producto === IDActual)?.stock_bola || 0;
+    console.log('stock producto', stock_producto)
+
+
+    if(cantidadTotal <= stock_producto){
+      const precio = insumosAgregados.reduce((acc, input) => acc + input.precio, 0);
+      console.log(precio)
+
+      // setgratis(precio)
+    }
+    
+
+// eslint-disable-next-line react-hooks/exhaustive-deps
+},[insumosAgregados])
+
   const añadirInsumo = (insumo: Insumo_adicion) => {
     const InsumosExists = insumosAgregados.some(
       (input) => input.descripcion_insumo === insumo.descripcion_insumo
     );
 
-    // Valido el stock  
-
-    if (InsumosExists) {     
+    if (InsumosExists) {
+       
       handleChangeInsumo(insumo.ID_insumo, 1, 'helado');
       // Mostramos un mensaje toast
       toast.success(
@@ -455,12 +476,12 @@ export default function OrderAdd() {
       const total = lista.reduce((acc, item) => {
         // Verifica si Adiciones_Insumos tiene un total y lo suma
         if (item.Adiciones_Insumos && typeof item.Adiciones_Insumos.total === "number") {
-          return acc + item.Adiciones_Insumos.total;
+          return (acc + item.Adiciones_Insumos.total) ;
         }
         return acc;
       }, 0); // Inicializamos el acumulador en 0
   
-      return total;
+      return total ;
     };
 
 
@@ -557,14 +578,16 @@ export default function OrderAdd() {
       // Crear una nueva adición con los insumos seleccionados, calculando el total basado en la cantidad y precio de cada insumo
       const nuevaAdicion = {
         // Usamos el timestamp como un ID único
-        id_adicion: Date.now(),
+        ID_adicion: Date.now(),
         cantidad: 1, // La cantidad depende de cuántos insumos se han agregado (ajustar según tu lógica)
         total: Lista.reduce((acc, item) => {
           if (item.Adiciones_Insumos && item.Adiciones_Insumos.total) {
             return acc + (item.Adiciones_Insumos.cantidad * item.Adiciones_Insumos.total);
           }
-          return acc;
-        }, 0), // Calculamos el total de la adición sumando los subtotales de los insumos
+
+         
+          return acc ;
+        },0), // Calculamos el total de la adición sumando los subtotales de los insumos
         Insumos: [...Lista], // Copia de la lista de insumos seleccionados
       };
 
@@ -591,6 +614,7 @@ export default function OrderAdd() {
                 ...producto,
                 cantidad: producto.cantidad + 1, // Incrementar cantidad
                 estado_productos: producto.estado_productos,
+                stock_bola: producto.stock_bola,
                 Producto_Pedido: producto.Producto_Pedido.map((productoPedido) => ({
                   ...productoPedido,
                   cantidad: productoPedido.cantidad + 1, // Incrementar cantidad en Producto_Pedido
@@ -612,11 +636,15 @@ export default function OrderAdd() {
               nombre: productoActual,
               estado_productos: 'D',
               cantidad: 1,
+              stock_bola: products.find(p => p.ID_producto === IDActual)?.stock_bola || 0,
               precio_neto: precioNeto ?? 0,
               Producto_Pedido: [{
                 cantidad: 1,
                 sub_total: precioNeto,
-                Adiciones: [nuevaAdicion]
+                Adiciones: [{
+                  ...nuevaAdicion,
+                  total : nuevaAdicion.total
+                }]
               }]
               // Establecer la primera adición con el insumo específico
             },
@@ -633,6 +661,7 @@ export default function OrderAdd() {
       setModalAbierto(false); // Cerrar el modal
       setProductoActual(null); // Restablecer el producto actual
     }
+    setProductoActual(null);
 
 
   };
@@ -708,17 +737,13 @@ export default function OrderAdd() {
   // Función para manejar los cambios en la cantidad de insumos
   const handleChangeInsumo = (ID_insumo: number, cantidad: number, tipo: string) => {
     if (tipo === 'helado') {
-      // Calcular la suma total de la cantidad en la lista de insumos
-       const cantidadTotal = insumosAgregados.reduce((acc, input) => acc + input.Adiciones_Insumos.cantidad, 0);
-
-      const stock = Stock.find((s) => s.ID_insumo === ID_insumo);
-
+      
 
       
     
       // const stock_producto = Producto.find((p) => p.ID_insumo === ID_insumo);
 
-      if(stock){  
+       
           const newInputs = insumosAgregados.map((input) => {
             let newQuantity = isNaN(input.Adiciones_Insumos.cantidad + cantidad)
               ? 1
@@ -745,9 +770,7 @@ export default function OrderAdd() {
           setInsumoAgregados(newInputs);
         
         
-      }else{
-        toast.error("No hay suficiente stock para agregar más insumos");
-      }
+      
 
      
 
@@ -810,8 +833,8 @@ export default function OrderAdd() {
           newQuantity = 1;
         }
 
-        if (input.ID_insumo === ID_insumo) {
-          if(stock && stock.stock_actual >= cantidadTotal && stock.stock_actual !=0){
+        if (input.ID_insumo === ID_insumo ) {
+          if(stock && stock.stock_actual!=0 && stock.stock_actual >= cantidadTotal){
             return {
               ...input,
               Adiciones_Insumos: {
@@ -819,8 +842,19 @@ export default function OrderAdd() {
                 cantidad: newQuantity,
                 // precio: precio
               },
-            };
-          }else{
+            }
+          }else if(input.ID_tipo_insumo === 2)
+            {
+              return{
+                ...input,
+                Adiciones_Insumos: {
+                  ...input.Adiciones_Insumos,
+                  cantidad: newQuantity,
+                  // precio: precio
+                }
+              }
+          }
+          else{
             toast.error('No hay suficiente stock para agregar más insumos')
           }
          
@@ -868,7 +902,7 @@ export default function OrderAdd() {
             const nuevoProductoPedido = producto.Producto_Pedido.map((productoPedido) => {
               // Actualizamos Adiciones
               const nuevasAdiciones = productoPedido.Adiciones.map((adicion) => {
-                if (adicion.id_adicion === id_adicion) {
+                if (adicion.ID_adicion === id_adicion) {
                   // Recalculamos el total de la adición basado en los insumos
                   const nuevoTotalAdicion = adicion.Insumos.reduce(
                     (acc, insumo) =>
@@ -941,7 +975,7 @@ export default function OrderAdd() {
                 return {
                   ...productoPedido,
                   Adiciones: productoPedido.Adiciones.map((adicion) => {
-                    if (adicion.id_adicion === id_adicion) {
+                    if (adicion.ID_adicion === id_adicion) {
                       // Actualizamos los insumos dentro de la adición
 
                       const stock = Stock.find((s) => s.ID_insumo === insumoId);
@@ -950,26 +984,42 @@ export default function OrderAdd() {
 
                       const nuevosInsumos = adicion.Insumos.map((insumo) => {
                         if (insumo.ID_insumo === insumoId) {
-                          
-                          if(stock && stock.stock_actual >= cantidadTotal && stock.stock_actual !=0){
-                            const nuevoTotalInsumo = insumo.precio * newCantidadInsumo;
+
+                          const nuevoTotalInsumo = insumo.precio * newCantidadInsumo;
+
+                          if(insumo.ID_tipo_insumo === 2){
                             return {
                               ...insumo,
                               Adiciones_Insumos: {
                                 cantidad: newCantidadInsumo,
-                                total: nuevoTotalInsumo, // Aseguramos la propiedad "total"
-                              },
-                            };
-                          }else{
-                            toast.error(`El stock de ${insumo.descripcion_insumo} es de ${stock?.stock_actual}`);
-                            return {
-                              ...insumo,
-                              Adiciones_Insumos: {
-                                cantidad: 1,
-                                total: insumo.precio // Aseguramos la propiedad "total"
+                                total: nuevoTotalInsumo // Aseguramos la propiedad "total"
                               },
                             }
-                          }                  
+                          }else{
+                            if(stock && stock.stock_actual >= cantidadTotal && stock.stock_actual !=0){
+                           
+                              return {
+                                ...insumo,
+                                Adiciones_Insumos: {
+                                  cantidad: newCantidadInsumo,
+                                  total: nuevoTotalInsumo, // Aseguramos la propiedad "total"
+                                },
+                              };
+                            }else{
+                              toast.error(`El stock de ${insumo.descripcion_insumo} es de ${stock?.stock_actual}`);
+                              return {
+                                ...insumo,
+                                Adiciones_Insumos: {
+                                  cantidad: 1,
+                                  total: insumo.precio // Aseguramos la propiedad "total"
+                                },
+                              }
+                            }          
+
+                          }
+
+                          
+                                 
                        }
                         return insumo;
                       });
@@ -1008,7 +1058,7 @@ export default function OrderAdd() {
           const Producto_Pedido_Actualizado = producto.Producto_Pedido.map((productoPedido) => {
             // Filtramos las adiciones para eliminar la que coincida con `id_adicion`
             const nuevasAdiciones = productoPedido.Adiciones.filter(
-              (adicion) => adicion.id_adicion !== id_adicion
+              (adicion) => adicion.ID_adicion !== id_adicion
             );
   
             // Recalculamos el subtotal basándonos en las adiciones restantes
@@ -1215,7 +1265,7 @@ export default function OrderAdd() {
                           {producto.Producto_Pedido.map((Producto_Pedidos) => {
                             return Producto_Pedidos.Adiciones.map((adicion, index) => (
                               <tr
-                                key={adicion.id_adicion}
+                                key={adicion.ID_adicion}
                                 className="tw-bg-white hover:tw-bg-gray-50 tw-transition-colors"
                               >
                                 <td className="tw-px-4 tw-py-4 tw-align-top">
@@ -1243,7 +1293,7 @@ export default function OrderAdd() {
                                           <input
                                             type="number"
                                             value={insumo.Adiciones_Insumos.cantidad}
-                                            onChange={(e) => handleCantidadInsumoChange(e, producto.ID_producto || 1, adicion.id_adicion, insumo.ID_insumo)}
+                                            onChange={(e) => handleCantidadInsumoChange(e, producto.ID_producto || 1, adicion.ID_adicion, insumo.ID_insumo)}
                                             className="tw-w-20 tw-bg-white tw-border tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-1 focus:tw-ring-blue-500 tw-rounded-md tw-px-2 tw-py-1 tw-text-sm tw-text-right"
                                             min="0"
                                           />
@@ -1258,7 +1308,7 @@ export default function OrderAdd() {
                                     <input
                                       type="number"
                                       value={adicion.cantidad}
-                                      onChange={(e) => handleCantidadAdicionChange(e, producto.ID_producto || 1, adicion.id_adicion)}
+                                      onChange={(e) => handleCantidadAdicionChange(e, producto.ID_producto || 1, adicion.ID_adicion)}
                                       className="tw-w-24 tw-bg-white tw-border tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-1 focus:tw-ring-blue-500 tw-rounded-md tw-px-3 tw-py-1.5 tw-text-sm"
                                       min="0"
                                     />
@@ -1274,7 +1324,7 @@ export default function OrderAdd() {
                                 </td>
                                 <td className="tw-px-4 tw-py-4 tw-align-top">
                                   <button
-                                    onClick={() => handleEliminarAdicion(producto.ID_producto || 1, adicion.id_adicion)}
+                                    onClick={() => handleEliminarAdicion(producto.ID_producto || 1, adicion.ID_adicion)}
                                     className="tw-inline-flex tw-items-center tw-justify-center tw-h-8 tw-w-8 tw-text-red-600 hover:tw-text-red-800 hover:tw-bg-red-100 tw-rounded-full tw-transition-colors"
                                     title="Eliminar adición"
                                   >
@@ -1380,15 +1430,15 @@ export default function OrderAdd() {
                                 </div>
 
                                 {/* Información del sabor */}
-                                <div className="tw-flex-1 tw-min-w-0"> {/* Nested min-w-0 for text truncation */}
+                                <div className="tw-flex-1 tw-min-w-0">
                                   <h3 className="tw-font-medium tw-text-gray-900 tw-truncate">
                                     {sabor.descripcion_insumo}
                                   </h3>
-                                  {sabor.precio && (
+                                  {/* {sabor.precio && (
                                     <p className="tw-text-sm tw-text-gray-500 tw-mt-0.5">
                                       ${sabor.precio.toLocaleString()}
                                     </p>
-                                  )}
+                                  )} */}
                                 </div>
                               </div>
                             </div>
@@ -1452,12 +1502,22 @@ export default function OrderAdd() {
                                   </h3>
                                 </div>
                                 <div className="tw-mt-1 tw-flex tw-items-center tw-gap-3">
-                                  <span className="tw-text-sm tw-text-gray-500">
+                                  {/* <span className="tw-text-sm tw-text-gray-500">
                                     Precio unitario:
-                                  </span>
+                                  </span> */}
+                                  {/* {
+                                   gratis!=0 ?
                                   <span className="tw-text-sm tw-font-medium tw-text-blue-600">
                                     ${sabor.precio.toLocaleString()}
-                                  </span>
+                                  </span>:
+                                 
+                                    <div className="tw-h-8 tw-w-8 tw-rounded-full tw-bg-gradient-to-br tw-from-orange-200 tw-to-orange-400 
+                               tw-flex tw-items-center tw-justify-center tw-shrink-0">
+                                  <IceCream className="tw-h-4 tw-w-4 tw-text-white" />
+                                  <p>Gratis</p>
+                                </div>
+
+                                  } */}
                                 </div>
                               </div>
 

@@ -46,7 +46,7 @@ const
 
     ModificarPedidos = async (req = request, res= response) =>{
         try {
-            const { id } = req.params;
+            // const { id } = req.params;
             const updatePedidos = await pedidosService.PatchPedidos(req, res);
 
             if(updatePedidos){
@@ -60,8 +60,14 @@ const
     eliminarPedidos= async (req = request, res= response) =>{
         const { id } = req.params;
             try{
-                const dato = await pedidosService.DeletePedidos(id);
-                res.status(204).json({message: 'El dato fue eliminado', dato});
+                const dato = await pedidosService.DeletePedidos(id, res, req);
+
+                // if (dato) {
+                //     res.status(200).json(dato);
+                //   } else {
+                //     res.status(404).json({ message: "Product not found" });
+                //   }
+                
             }catch(error){
                 const statusCode = error.status || 500;
                 res.status(statusCode).json({ error: error.message || 'Internal Server Error' });

@@ -7,8 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEdit,
   faTrash,
-  faPlus,
-  faBoxOpen, faEye
+  faPlus, faEye
 } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-hot-toast";
 import Modal from "react-modal";
@@ -16,6 +15,7 @@ import { Pedido } from "../../types/Pedido";
 import { Link, useNavigate } from "react-router-dom";
 import Skeleton from "@mui/material/Skeleton";
 import { motion, AnimatePresence } from 'framer-motion';
+import { convertirPedido } from "./ventas_pedidos";
 
 const tableStyles = {
   '& .MuiTableHead-root': {
@@ -38,19 +38,39 @@ export interface Estado {
   descripcion: string;
 }
 
+
 Modal.setAppElement("#root");
 
 const Pedidos: React.FC = () => {
   const navigate = useNavigate();
   const [pedidos, setPedidos] = useState<Pedido[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalConfig, setModalConfig] = useState<{
-    type: "add" | "edit" | "entry" | "detail" | null;
-    id: number | null;
-  }>({ type: null, id: null });
+  // const [modalConfig, setModalConfig] = useState<{
+  //   type: "add" | "edit" | "entry" | "detail" | null;
+  //   id: number | null;
+  // }>({ type: null, id: null });
+
 
   const [estadosPedido, setEstadosPedido] = useState<Estado[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deletedPedidos, setDeletedPedidos] = useState<number[]>(() => {
+    const storedDeleted = localStorage.getItem("deletedPedidos");
+    return storedDeleted ? JSON.parse(storedDeleted) : [];
+  });
+
+
+
+
+  // useEffect(() => {
+    
+  // })
+
+
+  // Guarda los pedidos eliminados en localStorage cuando cambie el estado
+useEffect(() => {
+  localStorage.setItem("deletedPedidos", JSON.stringify(deletedPedidos));
+}, [deletedPedidos]);
+
   const fetchPedido = async () => {
     try {
       const response = await api.get("/pedidos");
@@ -62,75 +82,105 @@ const Pedidos: React.FC = () => {
     }
   };
 
-  const handleModal = (
-    type: "add" | "edit" | "entry" | "detail",
-    id: number | null = null
-  ) => {
-    setModalConfig({ type, id });
-    setIsModalOpen(true);
-  };
+  // const handleModal = (
+  //   type: "add" | "edit" | "entry" | "detail",
+  //   id: number | null = null
+  // ) => {
+  //   setModalConfig({ type, id });
+  //   setIsModalOpen(true);
+  // };
 
   const handleViewDetails = (id: number) => {
     navigate(`/pedido/${id}`); // Redirige a la página de detalle del pedido con el ID correspondiente
   };
 
-  const handleDelete = useCallback(async (id: number) => {
-    toast
-      .promise(api.delete(`pedidos/${id}`), {
+  const handleDelete = useCallback(async (pedido: Pedido) => {
+    const {ID_estado_pedido, ID_pedido} = pedido;
+
+    //CAMBIAR ESTADO
+    await api.put(`/pedidos/${ID_pedido}`, {
+      ID_estado_pedido: 5,
+    });
+
+    console.log(ID_estado_pedido);
+    if(ID_estado_pedido === 1 ){
+      toast
+      .promise(api.delete(`pedidos/${pedido.ID_pedido}`), {
         loading: "Eliminando orden...",
         success: "¡La orden ha sido eliminada!",
         error: "Hubo un problema al eliminar el pedido.",
       })
       .then(() => {
+        setDeletedPedidos((prev) => {
+          const updated = [...prev, ID_pedido];
+          localStorage.setItem("deletedPedidos", JSON.stringify(updated)); // Persistencia local
+          return updated;       
+        });
         fetchPedido();
+
+     
+
+
       });
+
+    }else{
+      toast.error("No se puede eliminar un pedido que no esté en estado 'En lista'");
+    }
+
+    
   }, []);
 
   const handleToggleEstado = useCallback(
-    async (id: number, estadoActual: number) => {
-      // Encontrar el índice del estado actual en la lista de estados
+    async (id: Pedido, estadoActual: number) => {
+
+
+      const {ID_pedido} = id;
+
+      const isDeleted = deletedPedidos.includes(ID_pedido); // Verifica si está eliminado
+
+      console.log('bolean', isDeleted)
+    if (!isDeleted){
+      
+      console.log(id.ID_pedido, estadoActual);
       const indexActual = estadosPedido.findIndex(
         (estado) => estado.ID_estado_pedido === estadoActual
       );
-      // Si no encontramos el estado actual, no hacemos nada
       if (indexActual === -1) return;
-
-      // Obtener el siguiente estado, o volver al primero si estamos en el último
+  
       const siguienteEstado =
         estadosPedido[(indexActual + 1) % estadosPedido.length];
-
+  
       const estadoActualDescripcion = estadosPedido.find(
         (e) => e.ID_estado_pedido === estadoActual
       )?.descripcion;
-      if (estadoActualDescripcion === "Cancelado") {
+  
+      if (estadoActualDescripcion === "venta") {
         toast.error("No se puede revertir el estado de un pedido cancelado.");
-        return; // Salimos aquí para no proceder con ningún cambio
+        return;
       }
-
-      // Si el siguiente estado es "Cancelado", mostrar un mensaje de confirmación
-      if (siguienteEstado.descripcion === "Cancelado") {
+  
+      if (siguienteEstado.descripcion === "venta") {
         const toastId = toast(
           <div>
-            <p>¿Estás seguro de que quieres cancelar el pedido?</p>
+            <p>¿Deseas convertir este pedido a una venta?</p>
             <div>
               <button
-                className="tw-bg-red-500 tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-mr-2"
+                className="tw-bg-[#22a316] tw-text-white tw-rounded-full tw-px-4 tw-py-2 tw-mr-2"
                 onClick={async () => {
-                  // Confirmar el cambio
-                  toast.dismiss(toastId); // Cerrar el toast con el ID
+                  toast.dismiss(toastId);
                   try {
-                    await api.put(`/pedidos/${id}`, {
+                    // Solo enviamos el nuevo estado
+                    await api.put(`/pedidos/${ID_pedido}`, {
                       ID_estado_pedido: siguienteEstado.ID_estado_pedido,
                     });
-                    // Actualizamos el estado localmente
+                    convertirPedido(ID_pedido);
                     setPedidos(
                       pedidos.map((pedido) =>
-                        pedido.ID_pedido === id
+                        pedido.ID_pedido === ID_pedido
                           ? {
-                            ...pedido,
-                            ID_estado_pedido:
-                              siguienteEstado.ID_estado_pedido,
-                          }
+                              ...pedido,
+                              ID_estado_pedido: siguienteEstado.ID_estado_pedido,
+                            }
                           : pedido
                       )
                     );
@@ -138,10 +188,7 @@ const Pedidos: React.FC = () => {
                       'El estado del pedido ha sido cambiado a "Cancelado".'
                     );
                   } catch (error) {
-                    console.error(
-                      "Error al cambiar el estado del pedido:",
-                      error
-                    );
+                    console.error("Error al cambiar el estado del pedido:", error);
                     toast.error(
                       "Hubo un problema al cambiar el estado del pedido."
                     );
@@ -159,39 +206,45 @@ const Pedidos: React.FC = () => {
             </div>
           </div>,
           {
-            duration: 8000, // Duración del toast para dar tiempo a responder
+            duration: 8000,
           }
         );
-        return; // Salimos aquí para no proceder con el cambio automático
+        return;
       }
-
+  
       try {
-        await api.put(`/pedidos/${id}`, {
+        // Solo actualizamos el estado
+        await api.put(`/pedidos/${ID_pedido}`, {
           ID_estado_pedido: siguienteEstado.ID_estado_pedido,
         });
-        // Actualizamos el estado localmente
         setPedidos(
           pedidos.map((pedido) =>
-            pedido.ID_pedido === id
+            pedido.ID_pedido === ID_pedido
               ? {
-                ...pedido,
-                ID_estado_pedido: siguienteEstado.ID_estado_pedido,
-              }
+                  ...pedido,
+                  ID_estado_pedido: siguienteEstado.ID_estado_pedido,
+                }
               : pedido
           )
         );
-        toast.success("El estado de la categoría ha sido actualizado.");
+        toast.success("El estado del pedido ha sido actualizado.");
       } catch (error) {
-        console.error("Error al cambiar el estado de la categoría:", error);
-        toast.error("Hubo un problema al cambiar el estado de la categoría.");
+        console.error("Error al cambiar el estado del pedido:", error);
+        toast.error("Hubo un problema al cambiar el estado del pedido.");
       }
+    }else{
+      toast.error("No se puede cambiar el estado de un pedido cancelado.");
+    }
+      
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [pedidos, estadosPedido]
   );
+  
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setModalConfig({ type: null, id: null });
+    // setModalConfig({ type: null, id: null });
     fetchPedido();
   };
 
@@ -229,6 +282,7 @@ const Pedidos: React.FC = () => {
         ),
       },
       {
+        id: "fecha", // Define explícitamente el ID de la columna
         accessorFn: (row) =>
           new Date(row.fecha).toLocaleDateString("es-ES", {
             year: "numeric",
@@ -236,7 +290,6 @@ const Pedidos: React.FC = () => {
             day: "2-digit",
             hour: "2-digit",
             minute: "2-digit",
-
           }),
         header: "Fecha",
       },
@@ -252,7 +305,10 @@ const Pedidos: React.FC = () => {
             ? {
               "En lista": "tw-bg-yellow-100 tw-text-yellow-800",
               "En proceso": "tw-bg-blue-100 tw-text-blue-800",
-              Cancelado: "tw-bg-red-100 tw-text-red-800",
+              "finalizado": "tw-bg-orange-200 tw-text-orange-900", // o tw-bg-orange-300 tw-text-orange-900
+              "venta": "tw-bg-green-200 tw-text-green-900",
+              "cancelado": "tw-bg-red-100 tw-text-red-800",
+              // "Cancelado": "tw-bg-red-100 tw-text-red-800"
             }[estado.descripcion]
             : "tw-bg-gray-100 tw-text-gray-800";
 
@@ -261,7 +317,7 @@ const Pedidos: React.FC = () => {
               <button
                 onClick={() =>
                   handleToggleEstado(
-                    row.original.ID_pedido,
+                    row.original,
                     cell.getValue<number>()
                   )
                 }
@@ -291,67 +347,69 @@ const Pedidos: React.FC = () => {
       {
         id: "acciones",
         header: "Acciones",
-        Cell: ({ row }) => (
-          <div className="tw-flex tw-justify-center tw-gap-2">
-            {/*<Link to={`/Editar-pedido/${row.original.ID_pedido}`}>
-              <button className="tw-bg-blue-500 tw-text-white tw-rounded-full tw-p-2 tw-shadow-md tw-hover:bg-blue-600 tw-transition-all tw-duration-300">
-                <FontAwesomeIcon icon={faEdit} />
-              </button>
-            </Link>*/}
-            <Link to={`/Editar-pedido/${row.original.ID_pedido}`}>
+        Cell: ({ row }) => {
+          const isDeleted = deletedPedidos.includes(row.original.ID_pedido); // Verifica si está eliminado
+  
+          return isDeleted ? null : (
+            <div className="tw-flex tw-justify-center tw-gap-2">
+              <Link to={`/Editar-pedido/${row.original.ID_pedido}`}>
+                <motion.button
+                  whileHover={{
+                    scale: 1.1,
+                    rotate: 5,
+                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                  className="tw-group tw-bg-blue-500 tw-text-white tw-rounded-full tw-w-10 tw-h-10 tw-flex tw-items-center tw-justify-center tw-shadow-md tw-transition-all tw-duration-300 hover:tw-bg-blue-600 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-400 focus:tw-ring-opacity-75"
+                >
+                  <FontAwesomeIcon
+                    icon={faEdit}
+                    className="tw-transition-transform tw-group-hover:tw-rotate-12"
+                    title="Editar"
+                  />
+                </motion.button>
+              </Link>
               <motion.button
                 whileHover={{
                   scale: 1.1,
-                  rotate: 5,
-                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
+                  rotate: -5,
+                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                 }}
                 whileTap={{ scale: 0.95 }}
-                className="tw-group tw-bg-blue-500 tw-text-white tw-rounded-full tw-w-10 tw-h-10 tw-flex tw-items-center tw-justify-center tw-shadow-md tw-transition-all tw-duration-300 hover:tw-bg-blue-600 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-400 focus:tw-ring-opacity-75"
+                onClick={() => handleDelete(row.original)}
+                className="tw-group tw-bg-red-500 tw-text-white tw-rounded-full tw-w-10 tw-h-10 tw-flex tw-items-center tw-justify-center tw-shadow-md tw-transition-all tw-duration-300 hover:tw-bg-red-600 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-red-400 focus:tw-ring-opacity-75"
               >
                 <FontAwesomeIcon
-                  icon={faEdit}
-                  className="tw-transition-transform tw-group-hover:tw-rotate-12"
-                  title="Editar"
+                  icon={faTrash}
+                  className="tw-transition-transform tw-group-hover:tw-rotate-6"
+                  title="Eliminar"
                 />
               </motion.button>
-            </Link>
-            <motion.button
-              whileHover={{
-                scale: 1.1,
-                rotate: -5,
-                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
-              }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => handleDelete(row.original.ID_pedido)}
-              className="tw-group tw-bg-red-500 tw-text-white tw-rounded-full tw-w-10 tw-h-10 tw-flex tw-items-center tw-justify-center tw-shadow-md tw-transition-all tw-duration-300 hover:tw-bg-red-600 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-red-400 focus:tw-ring-opacity-75"
-            >
-              <FontAwesomeIcon
-                icon={faTrash}
-                className="tw-transition-transform tw-group-hover:tw-rotate-6"
-                title="Eliminar"
-              />
-            </motion.button>
-            {/* Botón para ver el detalle del pedido */}
-            <motion.button
-              whileHover={{
-                scale: 1.1,
-                rotate: -5,
-                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
-              }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => handleViewDetails(row.original.ID_pedido)}
-              className="tw-group tw-bg-gray-500 tw-text-white tw-rounded-full tw-w-10 tw-h-10 tw-flex tw-items-center tw-justify-center tw-shadow-md tw-transition-all tw-duration-300 hover:tw-bg-gray-600 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-gray-400 focus:tw-ring-opacity-75"
-            >
-              <FontAwesomeIcon
-                icon={faEye}
-                className="tw-transition-transform tw-group-hover:tw-scale-110"
-                title="Ver detalles"
-              />
-            </motion.button>
-          </div>
-        ),
-      },
+              <motion.button
+                whileHover={{
+                  scale: 1.1,
+                  rotate: -5,
+                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  handleViewDetails(row.original.ID_pedido);
+                 
+                }}
+                className="tw-group tw-bg-gray-500 tw-text-white tw-rounded-full tw-w-10 tw-h-10 tw-flex tw-items-center tw-justify-center tw-shadow-md tw-transition-all tw-duration-300 hover:tw-bg-gray-600 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-gray-400 focus:tw-ring-opacity-75"
+              >
+                <FontAwesomeIcon
+                  icon={faEye}
+                  className="tw-transition-transform tw-group-hover:tw-scale-110"
+                  title="Ver detalles"
+                />
+              </motion.button>
+            </div>
+          );
+        },
+      }
     ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [handleToggleEstado, estadosPedido]
   );
 

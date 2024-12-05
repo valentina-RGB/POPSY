@@ -3,5 +3,5 @@ export interface Pedido {
     fecha:Date;
     ID_clientes: number;
     precio_total: string;
-    ID_estado: number;
+    ID_estado_pedido: number;
 }

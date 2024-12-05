@@ -83,7 +83,7 @@ const {sequelize, Pedidos, Producto_Pedidos,Producto_insumos, Adiciones,Insumos,
                         {
                           model: Adiciones, // Relación Producto_Pedidos -> Adiciones
                           as: 'Adiciones', // Alias definido en Producto_Pedidos
-                          attributes: ['cantidad', 'total'],
+                          attributes: ['cantidad', 'total', 'ID_adicion'],
                          
                           include:[
                             {
@@ -280,7 +280,7 @@ const {sequelize, Pedidos, Producto_Pedidos,Producto_insumos, Adiciones,Insumos,
               });
                 for( const producto_pedidos of  productos.Producto_Pedido){
 
-                     
+                     let cantidad_insumos = 0;
                     // ADICIONES
                     for (const adiciones of producto_pedidos.Adiciones) {
                       let adiciones_total = 0;
@@ -310,7 +310,7 @@ const {sequelize, Pedidos, Producto_Pedidos,Producto_insumos, Adiciones,Insumos,
 
                         for (const insumoData of adiciones.Insumos) {
                             const insumo = await Insumos.findByPk(insumoData.ID_insumo);
-
+                            
                             if (!insumo) {
                                 return res.status(404).json({ message: `Insumo con ID ${insumoData.ID_insumo} no encontrado` });
                             }
@@ -325,6 +325,8 @@ const {sequelize, Pedidos, Producto_Pedidos,Producto_insumos, Adiciones,Insumos,
                                 cantidad: insumoData.Adiciones_Insumos.cantidad,
                                 sub_total: subTotalInsumo
                             });
+
+                            cantidad_insumos += (insumoData.Adiciones_Insumos.cantidad)
 
                             adiciones_total += subTotalInsumo; // Acumular subtotal de la adición
 
@@ -341,22 +343,36 @@ const {sequelize, Pedidos, Producto_Pedidos,Producto_insumos, Adiciones,Insumos,
                                     return res.status(400).json({ message: `El stock de insumo es de  ${stock.stock_actual}` });
                                 }
                             }
- 
-                          
+
+
+                            const stock_producto = await Productos.findOne({where:{ID_producto: productos.ID_producto}})
+                            console.log( 'STOCK',stock_producto.stock_bola)
+
+
+                            //TIPO DE INSUMO 
+                           
+                            console.log('stock', insumo.ID_tipo_insumo)
                         }
                     }
- 
+
+
+                    cantidad_insumos *=(adiciones.cantidad || 1)
                       // Actualizar el total de la adición
                      adiciones_total *= (adiciones.cantidad || 1);
                     await nuevaAdicion.update({ total: adiciones_total });
  
                       sub_total_insumos += adiciones_total; // Sumar subtotal de la adición al producto
+
+                      console.log("CANTIDAD DE INSUMOS:", cantidad_insumos)
                 }
                     // Calcular y actualizar el subtotal de ProductoPedido
                 const sub_total_producto = (producto.precio_neto * productos.cantidad) + sub_total_insumos;
                 total_pedido += sub_total_producto;
                 console.log('SUBTOTAL', sub_total_producto, 'SUBTOTAL DE INSUMOS',sub_total_insumos)
                  
+
+
+
                   await productoPedido.update({ sub_total: sub_total_producto});
                 }
               }
@@ -381,7 +397,7 @@ const {sequelize, Pedidos, Producto_Pedidos,Producto_insumos, Adiciones,Insumos,
    
   PatchPedidos = async (req = request, res = response) => {
     const { id } = req.params;
-    const { ID_clientes, ProductosLista } = req.body;
+    const { ID_clientes, ProductosLista, ID_estado_pedido } = req.body;
   
   
     try {
@@ -390,9 +406,14 @@ const {sequelize, Pedidos, Producto_Pedidos,Producto_insumos, Adiciones,Insumos,
   
   
         if (ID_clientes) await pedido.update({ ID_clientes });
+
+           // Actualizamos el estado si se proporciona
+        if (ID_estado_pedido) {
+            await pedido.update({ ID_estado_pedido });
+            return res.status(200).json({ message: `Es estado a sido cambiado` });
+        }
   
-  
-        let total_pedido = 0;
+         
         const productosRelacionados = await Producto_Pedidos.findAll({
             where: { ID_pedido: id },
             include: [
@@ -416,6 +437,8 @@ const {sequelize, Pedidos, Producto_Pedidos,Producto_insumos, Adiciones,Insumos,
   
   
         if (ProductosLista && Array.isArray(ProductosLista)) {
+
+            let total_pedido = 0;
             const idsProductosNuevos = ProductosLista.map((p) => p.ID_producto);
   
             // Eliminar productos que no están en la lista
@@ -585,10 +608,12 @@ const {sequelize, Pedidos, Producto_Pedidos,Producto_insumos, Adiciones,Insumos,
                 total_pedido += sub_total_producto;
                 await productoPedido.update({ sub_total: sub_total_producto });
             }
+        
+            await pedido.update({ precio_total: total_pedido});
         }
   
   
-        await pedido.update({ precio_total: total_pedido });
+       
         return res.status(200).json({ message: 'Pedido actualizado correctamente', pedido });
     } catch (error) {
         console.error(error);
@@ -602,7 +627,14 @@ const {sequelize, Pedidos, Producto_Pedidos,Producto_insumos, Adiciones,Insumos,
 
 
 
-DeletePedidos = async (id) => {
+DeletePedidos = async (id, res, req) => {
+
+
+    const pedidos = await Pedidos.findOne({where:{ID_pedido: id}});
+
+    if(!pedidos){
+        res.status(404).json({ message: 'Orden no encontrada' })
+    }
 
         const productosRelacionados = await Producto_Pedidos.findAll({
             where: { ID_pedido: id },
@@ -671,14 +703,14 @@ DeletePedidos = async (id) => {
             }
         }
 
+    res.status(200).json({ message: 'Pedido cancelado correctamente', pedidos });
 
-
-        const deleted = await Pedidos.destroy({ where: {ID_pedido: id}, });
-        if (deleted) {
-        return deleted;
-    }else{
-        return {status: 404, message: 'Order not found' };
-    }
+    //     const deleted = await Pedidos
+    //     if (deleted) {
+    //  return {status: 200 , message: 'Operacion realizada'}
+    // }else{
+    //     return {status: 404, message: 'Order not found' };
+    // }
 }
 
 
