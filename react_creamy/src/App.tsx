@@ -24,6 +24,7 @@ import Roles from './page/Roles/ListRol';
 import Usuarios from './page/Usuarios/ListUsuario';
 import NotFoundPage from './components/404';
 import Home from './page/Home';
+import Help from './components/help';
 
 const Loader: React.FC = () => (
   <div className="tw-flex tw-justify-center tw-items-center tw-h-screen">
@@ -69,6 +70,7 @@ const ConditionalLayout: React.FC<{ children: React.ReactNode }> = ({ children }
           </div>
         </div>
       </div>
+      <Help />
     </>
   );
 };
