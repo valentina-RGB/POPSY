@@ -13,7 +13,7 @@ export const useManuales = () => {
 
     const urlManuales= () => {
         console.log( manuales)
-        return  window.location.href = manuales
+        return  window.open(manuales,"_blank")
          
     }
 
