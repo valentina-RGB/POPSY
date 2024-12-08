@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from 'framer-motion';
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { Badge } from "../../components/ui/badge";
-import {ChevronDown, ChevronUp, Calendar,Package, DollarSign, ShoppingCart, Clock, Plus, } from "lucide-react";
+import {
+  IceCream,
+  Cone,
+  X,
+  Tag
+} from "lucide-react";
 
 
 
@@ -120,152 +123,132 @@ const Pedidos_Detalles = () => {
     return <div className="text-center mt-6 text-red-500">{error}</div>;
   }
 
-  const orderStatus: { [key: number]: { label: string; color: string; icon: React.ComponentType<{ className?: string }> } } = {
-    1: { label: "Pendiente", color: "bg-amber-500", icon: Clock },
-    2: { label: "En Proceso", color: "bg-blue-500", icon: ShoppingCart },
-    3: { label: "Completado", color: "bg-green-500", icon: ShoppingCart },
-    4: { label: "Cancelado", color: "bg-red-500", icon: ShoppingCart },
-  };
 
-  const status = orderStatus[pedido!.ID_estado_pedido];
-  const StatusIcon = status.icon;
+
 
   return (
-    <div className="tw-max-w-3xl tw-mx-auto tw-p-6 tw-space-y-8">
-      {/* Contenedor principal */}
-      <div className="tw-bg-white tw-p-6 tw-shadow-lg tw-rounded-2xl tw-border tw-border-gray-100">
-        {/* Encabezado del pedido */}
-        <div className="tw-border-b tw-border-gray-200 tw-pb-4 tw-mb-6">
-          <div className="tw-flex tw-justify-between tw-items-center tw-mb-2">
-            <h1 className="tw-text-2xl tw-font-bold tw-text-gray-900">
-              Pedido #{pedido?.ID_pedido}
+    <div className="tw-max-w-4xl tw-mx-auto tw-p-6 tw-min-h-screen tw-flex tw-flex-col">
+      <div className="tw-bg-white tw-shadow-2xl tw-rounded-3xl tw-p-8 tw-border-2 tw-border-pink-100">
+        {/* Order Header */}
+        <div className="tw-mb-6 tw-pb-4 tw-border-b-2 tw-border-pink-200">
+        <div className="tw-flex tw-justify-between tw-items-center">
+          <div className="tw-flex tw-items-center">
+            <Cone className="tw-mr-3 tw-text-amber-500 tw-w-8 tw-h-8" />
+            <h1 className="tw-text-3xl tw-font-bold tw-text-pink-700">
+              Orden #{pedido?.ID_pedido}
             </h1>
-            <Badge
-              className={`tw-px-3 tw-py-1 tw-rounded-full tw-text-sm tw-font-medium tw-transition-all tw-duration-300 tw-ease-in-out tw-transform tw-hover:scale-105 ${status.color}`}
-            >
-              <StatusIcon className="tw-h-4 tw-w-4 tw-mr-1 tw-inline-block" />
-              {status.label}
-            </Badge>
           </div>
-          <div className="tw-mt-4 tw-flex tw-justify-between tw-text-gray-600 tw-text-sm">
-            <div className="tw-flex tw-items-center tw-space-x-2">
-              <Calendar className="tw-h-4 tw-w-4 tw-text-gray-400" />
-              <span className="tw-text-gray-700">{new Date(pedido!.fecha).toLocaleString("es-ES")}</span>
-            </div>
-            <div className="tw-flex tw-items-center tw-space-x-2">
-              <DollarSign className="tw-h-4 tw-w-4 tw-text-gray-400" />
-              <span className="tw-font-semibold tw-text-gray-800">{formatPrice(pedido!.precio_total)}</span>
-            </div>
+          <div className="tw-text-right">
+            <p className="tw-text-gray-600">
+              Fecha: {new Date(pedido!.fecha).toLocaleString("es-ES")}
+            </p>
+            <p className="tw-text-2xl tw-font-bold tw-text-pink-600">
+              Total: {formatPrice(pedido!.precio_total)}
+            </p>
           </div>
         </div>
-  
-        {/* Productos */}
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <h2 className="tw-text-lg tw-font-semibold tw-text-gray-800 tw-mb-4 tw-pl-1">Productos</h2>
-          {pedido?.ProductosLista.map((producto) => (
 
-            <motion.div
-              key={producto.ID_producto}
-              variants={itemVariants}
-              className="tw-border tw-rounded-lg tw-p-4 tw-mb-4 tw-bg-gray-50 tw-hover:bg-gray-100 tw-transition-all tw-duration-300 tw-ease-in-out tw-group"
+        {/* Product Details */}
+        <div className="tw-space-y-4 tw-max-h-[60vh] tw-overflow-y-auto tw-pr-2 tw-scrollbar-thin tw-scrollbar-thumb-pink-300 tw-scrollbar-track-pink-50">
+        <h2 className="tw-text-2xl tw-font-semibold tw-text-pink-700 tw-mb-4">
+            Detalles de los Helados
+          </h2>
+          {pedido?.ProductosLista.map((producto) => (
+            <div
+            key={producto.ID_producto}
+            className="tw-bg-pink-100/50 tw-rounded-2xl tw-p-4 tw-hover:bg-pink-100/80 tw-transition-all"
+          >
+             <div
+              className="tw-flex tw-justify-between tw-items-center tw-cursor-pointer"
+              onClick={() => toggleExpand(producto.ID_producto)}
             >
-               <div
-                className="tw-flex tw-justify-between tw-items-center tw-cursor-pointer tw-select-none"
-                onClick={() => toggleExpand(producto.ID_producto)}
-              >
                 <div>
-                  <h3 className="tw-font-bold tw-text-gray-800 tw-group-hover:text-blue-600 tw-transition-colors tw-duration-300">
-                    {producto.nombre}
-                  </h3>
-                  <p className="tw-text-gray-500 tw-text-sm">
-                    Precio unitario: {formatPrice(producto.precio_neto)}
-                  </p>
-                </div>
-                {expandedProducts.includes(producto.ID_producto) ? (
-                  <ChevronUp className="tw-h-5 tw-w-5 tw-text-gray-500 tw-group-hover:text-blue-600 tw-transition-colors tw-duration-300" />
-                ) : (
-                  <ChevronDown className="tw-h-5 tw-w-5 tw-text-gray-500 tw-group-hover:text-blue-600 tw-transition-colors tw-duration-300" />
-                )}
+                <h3 className="tw-text-xl tw-font-bold tw-text-pink-800 tw-flex tw-items-center">
+                  <IceCream className="tw-mr-2 tw-text-amber-500" />
+                  {producto.nombre}
+                </h3>
+                <p className="tw-text-pink-600">
+                  Precio unitario: {formatPrice(producto.precio_neto)}
+                </p>
               </div>
-  
-              {/* Detalles del producto */}
+              <Tag
+                className={`tw-w-6 tw-h-6 ${
+                  expandedProducts.includes(producto.ID_producto)
+                    ? "tw-text-pink-600 tw-rotate-45"
+                    : "tw-text-pink-400"
+                } tw-transition-transform`}
+              />
+              </div>
+
+              {/* Expanded Product Details */}
               {expandedProducts.includes(producto.ID_producto) && (
-                <div className="tw-mt-4 tw-space-y-4 tw-animate-fade-in">
+                <div className="mt-4 space-y-3 tw-transition-all tw-duration-300">
                   {producto.Producto_Pedido.map((pedido) => (
                     <div
                       key={pedido.ID_producto_pedido}
-                      className="tw-bg-white tw-border tw-border-gray-200 tw-rounded-lg tw-p-4 tw-shadow-sm"
-                    >
-                      <div className="tw-flex tw-justify-between tw-items-center tw-mb-2">
-                        <p className="tw-text-gray-700">
-                          <strong>Cantidad:</strong> {pedido.cantidad}
-                        </p>
-                        <p className="tw-text-gray-800 tw-font-semibold">
-                          <strong>Subtotal:</strong>{" "}
-                          {formatPrice(pedido.sub_total)}
-                        </p>
+                      className="tw-bg-white tw-rounded-xl tw-p-4 tw-shadow-md tw-border tw-border-pink-200 tw-mb-4"
+                      >
+                      <div className="tw-flex tw-justify-between tw-items-center tw-mb-3">
+                        <div className="tw-flex tw-items-center tw-space-x-2">
+                          <Cone className="tw-text-amber-500" />
+                          
+                        </div>
+                        <span className="tw-text-lg tw-font-bold tw-text-pink-600">
+                          Subtotal: {formatPrice(pedido.sub_total)}
+                        </span>
                       </div>
-  
-                      {/* Adiciones */}
+
+                      {/* Additions */}
                       {pedido.Adiciones.length > 0 && (
-                        <div className="tw-mt-4 tw-border-t tw-border-gray-200 tw-pt-4">
-                          <h4 className="tw-font-semibold tw-text-gray-700 tw-mb-3">
+                        <div className="tw-mt-4 tw-pt-4 tw-border-t tw-border-pink-200">
+                          <h4 className="tw-text-lg tw-font-semibold tw-text-pink-800 tw-mb-3">
                             Adiciones
                           </h4>
                           {pedido.Adiciones.map((adicion, idx) => (
                             <div
                               key={idx}
-                              className="tw-border-b tw-border-gray-200 tw-pb-4 tw-mb-4 tw-last:border-b-0"
+                              className="tw-bg-pink-50 tw-rounded-lg tw-p-3 mb-3 tw-last:mb-0"
                             >
                               <div className="tw-flex tw-justify-between tw-items-center">
-                                <p className="tw-text-gray-700">
-                                  <strong>Cantidad:</strong> {adicion.cantidad}
-                                </p>
-                                <p className="tw-text-gray-800 tw-font-semibold">
-                                  <strong>Total:</strong>{" "}
-                                  {formatPrice(adicion.total)}
-                                </p>
+                               
+                                <span className="tw-font-bold tw-text-pink-600">
+                                  Total: {formatPrice(adicion.total)}
+                                </span>
                               </div>
-  
-                              {/* Insumos */}
+
+                              {/* Supplies/Ingredients */}
                               {adicion.Insumos.length > 0 && (
                                 <div className="tw-mt-3">
-                                  <h5 className="tw-text-gray-600 tw-text-sm tw-font-medium tw-mb-2">
-                                    Insumos:
+                                  <h5 className="tw-text-pink-600 tw-font-medium tw-mb-2">
+                                    Ingredientes Adicionales
                                   </h5>
                                   <div className="tw-overflow-x-auto">
-                                    <table className="tw-w-full tw-text-left tw-text-sm tw-border tw-border-gray-200 tw-rounded-lg tw-overflow-hidden">
-                                      <thead className="tw-bg-gray-100">
-                                        <tr className="tw-text-gray-600">
-                                          <th className="tw-py-2 tw-px-3">Insumo</th>
-                                          <th className="tw-py-2 tw-px-3">Cantidad</th>
-                                          <th className="tw-py-2 tw-px-3">Precio</th>
-                                          <th className="tw-py-2 tw-px-3">Subtotal</th>
+                                    <table className="tw-w-full tw-bg-white tw-rounded-lg tw-shadow-sm">
+                                      <thead className="tw-bg-pink-100">
+                                        <tr className="tw-text-pink-700">
+                                          <th className="tw-p-2 text-left">Ingrediente</th>
+                                          <th className="tw-p-2 text-right">Cantidad</th>
+                                          <th className="tw-p-2 text-right">Precio</th>
+                                          <th className="tw-p-2 text-right">Subtotal</th>
                                         </tr>
                                       </thead>
                                       <tbody>
                                         {adicion.Insumos.map((insumo) => (
                                           <tr
                                             key={insumo.ID_insumo}
-                                            className="tw-border-t tw-border-gray-200 tw-hover:bg-gray-50 tw-transition-colors"
+                                            className="tw-border-t tw-border-pink-200 tw-hover:bg-pink-50"
                                           >
-                                            <td className="tw-py-2 tw-px-3 tw-text-gray-800">
+                                            <td className="tw-p-2 tw-text-pink-800">
                                               {insumo.descripcion_insumo}
                                             </td>
-                                            <td className="tw-py-2 tw-px-3 tw-text-gray-700">
+                                            <td className="tw-p-2 tw-text-right tw-text-pink-700">
                                               {insumo.Adiciones_Insumos.cantidad}
                                             </td>
-                                            <td className="tw-py-2 tw-px-3 tw-text-gray-700">
+                                            <td className="tw-p-2 tw-text-right tw-text-pink-700">
                                               {formatPrice(insumo.precio)}
                                             </td>
-                                            <td className="tw-py-2 tw-px-3 tw-text-gray-800 tw-font-semibold">
-                                              {formatPrice(
-                                                insumo.Adiciones_Insumos.sub_total
-                                              )}
+                                            <td className="tw-p-2 tw-text-right font-bold tw-text-pink-600">
+                                              {formatPrice(insumo.Adiciones_Insumos.sub_total)}
                                             </td>
                                           </tr>
                                         ))}
@@ -282,9 +265,10 @@ const Pedidos_Detalles = () => {
                   ))}
                 </div>
               )}
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
+      </div>
       </div>
     </div>
   );

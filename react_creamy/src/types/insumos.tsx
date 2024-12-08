@@ -19,9 +19,9 @@ export interface Insumo {
     };
 
     tipo_insumo?: {
-
       descripcion_tipo_insumo: string;
-
     };
+    ID_tipo_insumo?: number; // Solo si necesitas el ID original para otras operaciones
+  
 
   }

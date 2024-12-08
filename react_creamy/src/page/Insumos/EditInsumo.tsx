@@ -16,6 +16,9 @@ const EditInsumo: React.FC<EditInsumoProps> = ({ id, onClose }) => {
   const [tipoInsumo, setTipoInsumo] = useState<number | string>('');
   const [tiposInsumo, setTiposInsumo] = useState<Array<{ ID_tipo_insumo: number, descripcion_tipo: string }>>([]);
   const [error, setError] = useState<string | null>(null);
+  const [stockMin, setStockMin] = useState<number | string>('0');
+const [stockMax, setStockMax] = useState<number | string>('0');
+const [isStockDisabled, setIsStockDisabled] = useState(false);
   const [isPrecioDisabled, setIsPrecioDisabled] = useState(false); // Estado para controlar si el precio está desactivado
   const navigate = useNavigate();
 
@@ -27,17 +30,27 @@ const EditInsumo: React.FC<EditInsumoProps> = ({ id, onClose }) => {
         setDescripcionInsumo(response.data.descripcion_insumo);
         setPrecio(response.data.precio);
         setTipoInsumo(response.data.ID_tipo_insumo);
-
-        // Desactivar el campo de precio si el tipo de insumo es 2
+  
+        // Verificar si stock existe antes de acceder a sus propiedades
+        if (response.data.stock) {
+          setStockMin(response.data.stock.stock_min || '0'); // Valor predeterminado en caso de null/undefined
+          setStockMax(response.data.stock.stock_max || '0');
+        } else {
+          setStockMin('0');
+          setStockMax('0');
+        }
+  
+        // Controlar la desactivación de campos según el tipo de insumo
         if (response.data.ID_tipo_insumo === 2) {
           setIsPrecioDisabled(true);
+          setIsStockDisabled(true);
         }
       } catch (error) {
         console.error('Error al obtener el insumo:', error);
         setError('Error al cargar el insumo.');
       }
     };
-
+  
     const fetchTiposInsumo = async () => {
       try {
         const response = await api.get('/tipoInsumos');
@@ -47,21 +60,22 @@ const EditInsumo: React.FC<EditInsumoProps> = ({ id, onClose }) => {
         setError('Error al cargar los tipos de insumos.');
       }
     };
-
+  
     if (id) {
       fetchInsumo();
       fetchTiposInsumo();
     }
   }, [id]);
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     if (!descripcionInsumo || !precio || !tipoInsumo) {
       setError('Por favor, completa todos los campos.');
       return;
     }
-
+  
     const confirmEdit = await toast.promise(
       new Promise((resolve, reject) => {
         toast((t) => (
@@ -98,32 +112,34 @@ const EditInsumo: React.FC<EditInsumoProps> = ({ id, onClose }) => {
         error: 'Actualización cancelada',
       }
     );
-
+  
     if (!confirmEdit) return;
-
+  
     try {
-      await api.put(
-        `/insumos/${id}`,
-        {
-          descripcion_insumo: descripcionInsumo,
-          precio: isPrecioDisabled ? 0 : Number(precio), // Si el campo está desactivado, se establece en 0
-          ID_tipo_insumo: Number(tipoInsumo),
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
+      const payload = {
+        descripcion_insumo: descripcionInsumo,
+        ID_tipo_insumo: Number(tipoInsumo),
+        precio: isPrecioDisabled ? 0 : Number(precio),
+        stock: {
+          stock_min: isStockDisabled ? 0 : Number(stockMin),
+          stock_max: isStockDisabled ? 0 : Number(stockMax),
         }
-      );
+      };
+  
+      await api.put(`/insumos/${id}`, payload, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
       toast.success('El insumo se ha actualizado correctamente.');
       onClose();
       navigate('/Insumos');
     } catch (error: any) {
       console.error('Error al editar el insumo:', error.response?.data || error.message);
-      toast.error(`No se pudo actualizar el insumo. Error: ${error.response?.data?.error || error.message}`);
+      toast.error(`No se pudo actualizar el insumo. Error: ${error.response?.data?.message || error.message}`);
     }
   };
-
   if (!insumo) return <p>Cargando...</p>;
 
   return (
@@ -186,6 +202,34 @@ const EditInsumo: React.FC<EditInsumoProps> = ({ id, onClose }) => {
               )}
             </select>
           </div>
+          <div className="tw-mb-4">
+  <label htmlFor="stockMin" className="tw-block tw-text-sm tw-font-medium tw-text-gray-600">
+    Stock Mínimo
+  </label>
+  <input
+    id="stockMin"
+    type="number"
+    value={stockMin}
+    onChange={(e) => setStockMin(e.target.value)}
+    className="tw-mt-1 tw-w-full tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-green-500 tw-transition"
+    placeholder="Stock mínimo"
+    disabled={isStockDisabled}
+  />
+</div>
+<div className="tw-mb-4">
+  <label htmlFor="stockMax" className="tw-block tw-text-sm tw-font-medium tw-text-gray-600">
+    Stock Máximo
+  </label>
+  <input
+    id="stockMax"
+    type="number"
+    value={stockMax}
+    onChange={(e) => setStockMax(e.target.value)}
+    className="tw-mt-1 tw-w-full tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500 tw-transition"
+    placeholder="Stock máximo"
+    disabled={isStockDisabled}
+  />
+</div>
           <div className="tw-flex tw-justify-end">
             <button
               type="button"

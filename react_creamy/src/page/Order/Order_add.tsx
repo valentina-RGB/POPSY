@@ -1384,8 +1384,8 @@ useEffect(() => {
 
       {/* Modal para personalizar producto */}
       {modalAbierto && (
-        <div className="tw-fixed tw-inset-0 tw-z-50 tw-flex tw-items-center tw-justify-center tw-bg-black tw-bg-opacity-50">
-          <div className="tw-p-4 tw-bg-white tw-rounded-lg tw-border tw-border-gray-200 tw-w-full tw-max-w-[95%] lg:tw-max-w-[80%] tw-mx-auto tw-h-[80vh] tw-overflow-y-auto">
+         <div className="tw-fixed tw-inset-0 tw-z-50 tw-flex tw-items-center tw-justify-center tw-bg-black tw-bg-opacity-50 tw-overflow-y-auto tw-p-4">
+          <div className="tw-p-4 tw-bg-white tw-rounded-lg tw-border tw-border-gray-200 tw-w-full tw-max-w-[100%] lg:tw-max-w-[90%] tw-mx-auto tw-h-[96vh] tw-overflow-y-auto">
             <h3 className="tw-text-lg page-heading tw-mb-6">
               Configuración de {productoActual}
             </h3>
@@ -1805,17 +1805,28 @@ useEffect(() => {
               </div>
             </div>
 
-            <div className="tw-flex tw-justify-between">
+            <div className="tw-flex tw-justify-between tw-items-center tw-mt-4 tw-space-x-4">
               <button
                 onClick={() => setModalAbierto(false)}
-                className="tw-bg-gray-500 tw-text-white tw-px-4 tw-py-2 tw-rounded-md"
+                className="tw-flex-1 tw-bg-gray-200 tw-text-gray-700 tw-px-4 tw-py-2 tw-rounded-lg tw-transition tw-duration-300 hover:tw-bg-gray-300 tw-shadow-md tw-border tw-border-gray-300"
               >
-                Cancelar
+                <span className="tw-flex tw-items-center tw-justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="tw-h-5 tw-w-5 tw-mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M18 6 6 18" />
+                    <path d="m6 6 12 12" />
+                  </svg>
+                  Cancelar
+                </span>
               </button>
               <button
                 onClick={agregarProducto}
-                className="tw-bg-[#6b46c1] hover:tw-bg-[#553c9a] tw-text-white tw-px-4 tw-py-2 tw-rounded-md"
+                className="tw-flex-1 tw-bg-[#ff6b6b] tw-text-white tw-px-4 tw-py-2 tw-rounded-lg tw-transition tw-duration-300 hover:tw-bg-[#ff4757] tw-shadow-md tw-border tw-border-transparent tw-flex tw-items-center tw-justify-center"
               >
+                <svg xmlns="http://www.w3.org/2000/svg" className="tw-h-5 tw-w-5 tw-mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="9" cy="21" r="1" />
+                  <circle cx="20" cy="21" r="1" />
+                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                </svg>
                 Agregar al pedido
               </button>
             </div>

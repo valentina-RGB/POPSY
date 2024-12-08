@@ -52,13 +52,22 @@ const Insumos: React.FC = () => {
     fetchInsumos();
   }, []);
 
+
+  const TIPO_INSUMO_MAP: Record<number, string> = {
+    1: 'Helado',
+    2: 'Salsa',
+    3: 'Agregado',
+  };
+
   const fetchInsumos = async () => {
     setLoading(true);
     try {
       const response = await api.get('/insumos');
       const data: Insumo[] = response.data.map((insumo: Insumo) => ({
         ...insumo,
-        tipo_insumo: insumo.tipo_insumo || { descripcion_tipo_insumo: 'No especificado' }, // Manejo de fallos
+      tipo_insumo: {
+        descripcion_tipo_insumo: TIPO_INSUMO_MAP[insumo.ID_tipo_insumo as number] || 'No especificado',
+      },
       }));
       setInsumos(data);
     } catch (error) {
@@ -69,6 +78,7 @@ const Insumos: React.FC = () => {
   };
 
   
+ 
   
   useEffect(() => {
     const fetchTiposInsumo = async () => {
@@ -186,23 +196,6 @@ const Insumos: React.FC = () => {
           </motion.div>
         ),
       },
-      // {
-      //   accessorKey: 'tipo_insumo',
-      //   header: 'Tipo',
-      //   Cell: ({ cell }) => {
-      //     const descripcionTipo = cell.getValue<string>();
-      //     return (
-      //       <motion.div
-      //         initial={{ opacity: 0, x: -20 }}
-      //         animate={{ opacity: 1, x: 0 }}
-      //         transition={{ duration: 0.3 }}
-      //         className="tw-font-semibold tw-text-gray-800"
-      //       >
-      //         {descripcionTipo}
-      //       </motion.div>
-      //     );
-      //   },
-      // },
       {
         accessorKey: 'precio',
         header: 'Precio',
@@ -225,6 +218,23 @@ const Insumos: React.FC = () => {
             </motion.span>
           );
         },
+      }, 
+      {
+        accessorKey: 'tipo_insumo.descripcion_tipo_insumo',
+        header: 'Tipo',
+        Cell: ({ cell }) => {
+          const tipo = cell.getValue<string>();
+          const colores: Record<string, string> = {
+            Helado: 'tw-bg-blue-100 tw-text-blue-800',
+            Salsa: 'tw-bg-green-100 tw-text-green-800',
+            Agregado: 'tw-bg-yellow-100 tw-text-yellow-800',
+          };
+          return (
+            <span className={`tw-inline-block tw-text-xs tw-font-semibold tw-rounded-full tw-px-2 tw-py-1 ${colores[tipo] || 'tw-bg-gray-100 tw-text-gray-800'}`}>
+              {tipo}
+            </span>
+          );
+        }
       },
       {
         accessorKey: 'estado_insumo',
@@ -246,14 +256,14 @@ const Insumos: React.FC = () => {
           </div>
         ),
       },
-      {
-        accessorKey: 'stock.stock_actual',
-        header: 'Cantidad',
-        Cell: ({ cell }) => {
-          const stockActual = cell.getValue<number>(); // Accede al valor de stock_actual
-          return stockActual !== undefined ? stockActual : 'N/A'; // Verifica si el valor es válido
-        },
-      },
+      // {
+      //   accessorKey: 'stock.stock_actual',
+      //   header: 'Cantidad',
+      //   Cell: ({ cell }) => {
+      //     const stockActual = cell.getValue<number>(); // Accede al valor de stock_actual
+      //     return stockActual !== undefined ? stockActual : 'N/A'; // Verifica si el valor es válido
+      //   },
+      // },
       {
         id: 'acciones',
         header: 'Acciones',
