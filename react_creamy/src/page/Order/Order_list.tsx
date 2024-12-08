@@ -155,12 +155,12 @@ useEffect(() => {
         (e) => e.ID_estado_pedido === estadoActual
       )?.descripcion;
   
-      if (estadoActualDescripcion === "venta") {
+      if (estadoActualDescripcion === "Venta") {
         toast.error("No se puede revertir el estado de un pedido cancelado.");
         return;
       }
   
-      if (siguienteEstado.descripcion === "venta") {
+      if (siguienteEstado.descripcion === "Venta") {
         const toastId = toast(
           <div>
             <p>¿Deseas convertir este pedido a una venta?</p>
@@ -309,8 +309,8 @@ useEffect(() => {
               "En lista": "tw-bg-yellow-100 tw-text-yellow-800",
               "En proceso": "tw-bg-blue-100 tw-text-blue-800",
               "finalizado": "tw-bg-orange-200 tw-text-orange-900", // o tw-bg-orange-300 tw-text-orange-900
-              "venta": "tw-bg-green-200 tw-text-green-900",
-              "cancelado": "tw-bg-red-100 tw-text-red-800",
+              "Venta": "tw-bg-green-200 tw-text-green-900",
+              "Cancelado": "tw-bg-red-100 tw-text-red-800",
               // "Cancelado": "tw-bg-red-100 tw-text-red-800"
             }[estado.descripcion]
             : "tw-bg-gray-100 tw-text-gray-800";

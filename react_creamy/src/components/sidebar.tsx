@@ -116,7 +116,7 @@ const Menu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
     {
       label: "Ventas",
       links: [
-        { path: "/Categorias", name: "Categorías", icon: CubeTransparentIcon },
+        { path: "/Categorias", name: "Categorias", icon: CubeTransparentIcon },
         { path: "/Productos", name: "Productos", icon: TagIcon },
         { path: "/Pedidos", name: "Pedidos", icon: TruckIcon },
         { path: "/Ventas", name: "Ventas", icon: BanknotesIcon },

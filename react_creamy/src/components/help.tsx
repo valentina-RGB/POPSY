@@ -1,12 +1,26 @@
 import React, { useState } from 'react';
 import { HelpCircle, X, Download, FileText } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { useManuales } from '../page/Manuales/handleManuales';
+
+
+
 
 const HelpDownloadButton = () => {
+
+
+  const { handleManuales, urlManuales } = useManuales();
+
+
+
   const [isOpen, setIsOpen] = useState(false);
+
+
+
 
   const handleMainButtonClick = () => {
     setIsOpen(!isOpen);
+    handleManuales('https://app.tango.us/app/workflow/Ver-detalles-de-la-categor-a-43d87679db234b4bb045190f6a63bfdc');
   };
 
   const handleDownload = () => {
@@ -33,6 +47,10 @@ const HelpDownloadButton = () => {
     }
   };
 
+
+
+
+
   return (
     <div className="tw-fixed tw-bottom-6 tw-right-6 tw-z-50 tw-flex tw-flex-col tw-items-center tw-space-y-4">
       <div 
@@ -45,6 +63,16 @@ const HelpDownloadButton = () => {
         <button 
           onClick={handleDownload}
           className="tw-bg-green-500 tw-text-white tw-rounded-full tw-w-12 tw-h-12 tw-flex tw-items-center tw-justify-center tw-shadow-lg tw-transition-all tw-duration-300 tw-transform tw-hover:scale-110 tw-animate-pulse"
+        >
+          <FileText className="tw-w-6 tw-h-6" />
+        </button>
+      
+        <button
+          // onClick={}
+          // href={`${urlManuales}`}
+      
+           onClick={urlManuales}
+          className="tw-bg-blue-500 tw-m-5 tw-text-white tw-rounded-full tw-w-12 tw-h-12 tw-flex tw-items-center tw-justify-center tw-shadow-lg tw-transition-all tw-duration-300 tw-transform tw-hover:scale-110 tw-animate-pulse"
         >
           <FileText className="tw-w-6 tw-h-6" />
         </button>

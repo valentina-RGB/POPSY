@@ -25,6 +25,14 @@ import Usuarios from './page/Usuarios/ListUsuario';
 import NotFoundPage from './components/404';
 import Home from './page/Home';
 import Help from './components/help';
+import { VerDetalle } from './page/Manuales/categorias/ver_detalle';
+
+
+
+
+// Manuales 
+
+
 
 const Loader: React.FC = () => (
   <div className="tw-flex tw-justify-center tw-items-center tw-h-screen">
@@ -209,6 +217,9 @@ const App: React.FC = () => {
             {/* Ruta 404 */}
             <Route path="/404" element={<NotFoundPage />} />
             <Route path="*" element={<Navigate to="/404" />} />
+
+            {/* Manuales */}
+            <Route path="/manual_categoría" element={<VerDetalle/>} />
           </Routes>
         </ConditionalLayout>
         <Toaster position="top-right" reverseOrder={false} />

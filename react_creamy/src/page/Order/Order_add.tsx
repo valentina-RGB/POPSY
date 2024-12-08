@@ -996,8 +996,8 @@ useEffect(() => {
                               },
                             }
                           }else{
-                            if(stock && stock.stock_actual >= cantidadTotal && stock.stock_actual !=0){
-                           
+                            if(stock && stock.stock_actual > 0){
+                            if(stock.stock_actual >= cantidadTotal){
                               return {
                                 ...insumo,
                                 Adiciones_Insumos: {
@@ -1007,10 +1007,12 @@ useEffect(() => {
                               };
                             }else{
                               toast.error(`El stock de ${insumo.descripcion_insumo} es de ${stock?.stock_actual}`);
+                            }     
+                            }else{
                               return {
                                 ...insumo,
                                 Adiciones_Insumos: {
-                                  cantidad: 1,
+                                  cantidad: newCantidadInsumo,
                                   total: insumo.precio // Aseguramos la propiedad "total"
                                 },
                               }
@@ -1018,9 +1020,8 @@ useEffect(() => {
 
                           }
 
-                          
-                                 
-                       }
+                                                          
+                      }
                         return insumo;
                       });
 
@@ -1376,7 +1377,7 @@ useEffect(() => {
             onClick={order}
             className="tw-w-full tw-bg-[#6b46c1] hover:tw-bg-[#553c9a] tw-text-white tw-px-4 tw-py-2 tw-mt-4 tw-rounded-md tw-flex tw-items-center tw-justify-center"
           >
-            <ShoppingCart className="tw-mr-2 tw-h-4 tw-w-4 " /> Realizar Venta
+            <ShoppingCart className="tw-mr-2 tw-h-4 tw-w-4 " /> {!id ? "Realizar pedido": "Actualizar pedido"}
           </button>
         </div>
       </div>

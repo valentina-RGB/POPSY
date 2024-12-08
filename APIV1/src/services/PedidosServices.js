@@ -269,7 +269,7 @@ const {Pedidos, Producto_Pedidos,Producto_insumos, Adiciones,Insumos, Adiciones_
            // Actualizamos el estado si se proporciona
         if (ID_estado_pedido) {
             await pedido.update({ ID_estado_pedido });
-            return res.status(200).json({ message: `Es estado a sido cambiado` });
+            // return res.status(200).json({ message: `Es estado a sido cambiado` });
         }
   
          
