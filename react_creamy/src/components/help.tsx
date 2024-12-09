@@ -20,7 +20,7 @@ const HelpDownloadButton = () => {
 
   const handleMainButtonClick = () => {
     setIsOpen(!isOpen);
-    handleManuales('https://app.tango.us/app/workflow/Ver-detalles-de-la-categor-a-43d87679db234b4bb045190f6a63bfdc');
+    handleManuales('https://app.tango.us/app/workflow/Tango--A-Comprehensive-Guide-a19efa152ed04134a6076eb975a4f5e3');
   };
 
   const handleDownload = () => {

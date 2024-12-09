@@ -87,7 +87,6 @@ type Producto = {
 
 type Venta = {
   fecha: string;
-  ID_clientes: number | string;
   precio_total: number;
   ID_estado_venta: number | string;
   ProductosLista: Producto[]

@@ -11,6 +11,7 @@ import VentaDetails from './VentaDetail';
 import Skeleton from '@mui/material/Skeleton';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { generarPDFPedido } from '../Generar_PDF/generar_pdf';
 
 const tableStyles = {
   '& .MuiTableHead-root': {
@@ -258,6 +259,23 @@ const Ventas: React.FC = () => {
                 title="Ver detalles"
               />
             </motion.button>
+            <motion.button
+  whileHover={{
+    scale: 1.1,
+    rotate: -5,
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+  }}
+  whileTap={{ scale: 0.95 }}
+  onClick={() => generarPDFPedido(row.original.ID_venta)}
+  className="tw-group tw-bg-green-500 tw-text-white tw-rounded-full tw-w-10 tw-h-10 tw-flex tw-items-center tw-justify-center tw-shadow-md tw-transition-all tw-duration-300 hover:tw-bg-green-600 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-green-400 focus:tw-ring-opacity-75"
+>
+  <FontAwesomeIcon
+    icon={faEye}
+    className="tw-transition-transform tw-group-hover:tw-scale-110"
+    title="Generar PDF"
+  />
+</motion.button>
+
         </div>
       ),
     },

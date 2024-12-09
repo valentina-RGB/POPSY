@@ -2,8 +2,7 @@ import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import { MaterialReactTable, type MRT_ColumnDef } from 'material-react-table';
 import api from '../../api/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faEdit, faTrash, faPlus, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons';
-// import { faSignInAlt } from '@fortawesome/free-solid-svg-icons';
+
 import { faEdit, faTrash, faPlus,faToggleOn, faToggleOff, faEye } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-hot-toast';  
 import Modal from 'react-modal';
@@ -13,6 +12,9 @@ import EditCategoria from './categories-edit';
 import CategoriaDetail from './categories-details';
 import Skeleton from '@mui/material/Skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useManuales } from '../Manuales/handleManuales';
+
+
 
 const tableStyles = {
   '& .MuiTableHead-root': {
@@ -36,7 +38,7 @@ const Categorias: React.FC = () => {
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalConfig, setModalConfig] = useState<{ type: 'add' | 'edit' | 'entry'|'detail'|'imagen'| null; id: number | null }>({ type: null, id: null });
-
+  const {handleManuales} = useManuales();
 
   const [loading, setLoading] = useState(true);
 
@@ -128,6 +130,7 @@ const Categorias: React.FC = () => {
 
 
   useEffect(() => {
+    handleManuales('https://app.tango.us/app/folder/ebe12470-f0b9-40ef-a72e-cd72e56296ca');
     fetchCategorias(); 
   }, []);
 
