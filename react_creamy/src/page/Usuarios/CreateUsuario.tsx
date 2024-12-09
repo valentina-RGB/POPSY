@@ -54,7 +54,7 @@ const AddUsuario: React.FC<AddUsuario> = ({onClose}) => {
         estado: 'A'
       }
 
-      console.log(usuario);
+     
 
       await api.post('/signup', usuario);
       onClose();

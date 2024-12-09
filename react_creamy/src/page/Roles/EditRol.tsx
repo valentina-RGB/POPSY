@@ -29,7 +29,7 @@ const EditRol: React.FC<CreateRolProps> = ({ onClose , id }) => {
     const fetchPermisos = async () => {
       try {
         const response = await api.get('/permiso');
-        console.log(response.data);
+     
         setPermisos(response.data); 
       } catch (error) {
         console.error('Error al obtener los permisos:', error);
@@ -39,14 +39,14 @@ const EditRol: React.FC<CreateRolProps> = ({ onClose , id }) => {
 
     fetchPermisos();
     if(id!=0){
-      console.log('Holiiii')
+     
 
       const editar = async () =>{
         const response = await api.get(`/roles/${id}`);	
         const {Permiso,descripcion} = response.data;  
         setSelectedPermisos(Permiso.map((permiso: any) => permiso.ID_permiso));
         setDescripcionRol(descripcion);
-        console.log(selectedPermisos)
+      
       }
       
       editar()
@@ -66,7 +66,7 @@ const EditRol: React.FC<CreateRolProps> = ({ onClose , id }) => {
         ID_permiso: selectedPermisos,
         
       }
-      console.log('PERMISOs',selectedPermisos, rolToCreate);
+    
 
       if(id!=0){
         await api.put(`/roles/${id}`, rolToCreate);
@@ -84,7 +84,7 @@ const EditRol: React.FC<CreateRolProps> = ({ onClose , id }) => {
     }
   };
 
-  console.log(selectedPermisos)
+ 
 
   return (
     <div className="fixed inset-0 flex items-center justify-center">

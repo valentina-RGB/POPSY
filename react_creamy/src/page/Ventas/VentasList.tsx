@@ -74,14 +74,13 @@ const Ventas: React.FC = () => {
 
   // Función para cambiar el estado de una venta
   const handleToggleEstado = useCallback(async (id: number, estadoActual: number) => {
-    console.log('ID de venta:', id);
-    console.log('Estado actual:', estadoActual);
+   
     const indexActual = estadosVenta.findIndex((estado) => estado.ID_estado_venta === estadoActual);
-    console.log('Índice actual:', indexActual);
+   
     if (indexActual === -1) return;
 
     const siguienteEstado = estadosVenta[(indexActual + 1) % estadosVenta.length];
-    console.log('Siguiente estado:', siguienteEstado);
+   
     const estadoActualDescripcion = estadosVenta.find((e) => e.ID_estado_venta === estadoActual)?.descripcion;
 
     if (estadoActualDescripcion === 'Cancelado') {
@@ -101,7 +100,7 @@ const Ventas: React.FC = () => {
                 try {
                   toast.loading('Cancelando venta...');
                   await api.put(`/ventas/${id}/estado`, { ID_estado_venta: siguienteEstado.ID_estado_venta });
-                  // console.log('Respuesta de la API:', response.data);
+             
                   setVentas((prevVentas) =>
                     prevVentas.map((venta) =>
                       venta.ID_venta === id ? { ...venta, ID_estado_venta: siguienteEstado.ID_estado_venta } : venta

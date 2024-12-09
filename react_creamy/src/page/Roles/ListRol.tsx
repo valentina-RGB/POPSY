@@ -43,7 +43,7 @@ const Roles: React.FC = () => {
   const fetchRol = async () => {
     try {
       const response = await api.get('/roles');
-      console.log(response);
+ 
       setRol(response.data);
     } catch (error) {
       console.error('Error al obtener los roles:', error);

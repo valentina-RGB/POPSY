@@ -189,19 +189,19 @@ const Categorias: React.FC = () => {
         accessorKey: 'imagen',
         header: 'Imagen',
         Cell: ({ row }) => (
-          <button 
-          onClick={() => handleModal('imagen', row.original.ID_categoria)} 
-          className="tw-bg-gray-300 tw-text-gray-80 tw-text-white tw-rounded-full tw-p-3 tw-shadow-lg tw-hover:bg-blue-600 tw-transition-all tw-duration-300 tw-flex tw-items-center tw-justify-center tw-w-12 tw-h-12"
-        >
-          <img 
-            src={`http://localhost:3300${row.original.imagen}`} 
-            alt="Imagen categoría" 
-            className="tw-w-8 tw-h-8 tw-object-cover tw-rounded-full"
-          />
-        </button>
-      
-      ),
+          <button
+            onClick={() => handleModal('imagen', row.original.ID_categoria)}
+            className="tw-bg-gray-100 tw-rounded-full tw-p-1 tw-shadow-md tw-hover:tw-shadow-lg tw-transition-shadow tw-duration-300 tw-relative tw-w-14 tw-h-14"
+          >
+            <img
+              src={`http://localhost:3300${row.original.imagen}`}
+              alt="Imagen categoría"
+              className="tw-w-full tw-h-full tw-object-cover tw-rounded-full tw-border tw-border-gray-300 tw-hover:tw-border-blue-500 tw-transition-colors tw-duration-300"
+            />
+          </button>
+        ),
       },
+      
       {
         id: 'acciones',
         header: 'Acciones',

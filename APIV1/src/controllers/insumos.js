@@ -3,6 +3,7 @@ const { sequelize } = require('../../models');
 const db = require('../../models');
 const { validateInsumos, validateUpdateInsumo } = require('../validation/validations_ISE');
 const { request, response } = require("express");
+const { Op } = require('sequelize');
 
 const Insumos = db.Insumos;
 const StockInsumos = db.StockInsumos;
@@ -29,7 +30,7 @@ const obtenerInsumos = async (req = request, res) => {
       ]
     });
 
-    console.log(JSON.stringify(insumos, null, 2));
+   
     res.json(insumos);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -116,7 +117,9 @@ const actualizarInsumo = async (req, res) => {
     estado_insumo,
     ID_tipo_insumo,
     precio,
-    stock, // Recibimos el objeto stock para actualizarlo
+    stock,
+    medida,
+    unidad
   } = req.body;
 
   const transaction = await db.sequelize.transaction();
@@ -126,21 +129,26 @@ const actualizarInsumo = async (req, res) => {
     const insumo = await Insumos.findByPk(id);
 
     if (!insumo) {
+      await transaction.rollback();
       return res.status(404).json({ message: 'Insumo no encontrado' });
     }
 
     // Actualizar los campos principales del insumo
-    if (descripcion_insumo) insumo.descripcion_insumo = descripcion_insumo;
-    if (estado_insumo) insumo.estado_insumo = estado_insumo;
-    if (ID_tipo_insumo) insumo.ID_tipo_insumo = ID_tipo_insumo;
-    if (precio) insumo.precio = precio;
+    if (descripcion_insumo !== undefined) insumo.descripcion_insumo = descripcion_insumo;
+    if (estado_insumo !== undefined) insumo.estado_insumo = estado_insumo;
+    if (ID_tipo_insumo !== undefined) insumo.ID_tipo_insumo = ID_tipo_insumo;
+    if (precio !== undefined) insumo.precio = precio;
 
     // Guardar cambios en la tabla Insumos
     await insumo.save({ transaction });
 
     // Si se proporciona el objeto stock, actualizar StockInsumos
     if (stock) {
-      const { stock_min, stock_max, stock_actual } = stock;
+      const { 
+        stock_min, 
+        stock_max, 
+        stock_actual 
+      } = stock;
 
       const stockInsumo = await StockInsumos.findOne({
         where: { ID_insumo: insumo.ID_insumo },
@@ -150,12 +158,12 @@ const actualizarInsumo = async (req, res) => {
         // Si no existe el registro de StockInsumos, se crea uno nuevo
         await StockInsumos.create(
           {
-            stock_min: stock_min || 0,
-            stock_max: stock_max || 100,
-            stock_actual: stock_actual || 0,
+            stock_min: stock_min ?? 0,
+            stock_max: stock_max ?? 100,
+            stock_actual: stock_actual ?? 0,
             ID_insumo: insumo.ID_insumo,
-            medida: medida || 'unidad', // Por defecto 'unidad'
-            unidad: unidad || 0, // Valor predeterminado de unidad
+            medida: medida ?? 'unidad', 
+            unidad: unidad ?? 0, 
           },
           { transaction }
         );

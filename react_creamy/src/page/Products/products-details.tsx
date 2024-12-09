@@ -117,14 +117,14 @@ const ProductosDetail: React.FC<Props> = ({ id, onClose }) => {
         <p className="tw-text-base tw-text-[#4b5563] tw-mb-6">
             Descripción del producto: {Productos.descripcion}
         </p>
-        <div className="accordion accordion-flush tw-max-h-60 tw-overflow-y-auto " id="accordionFlushExample">
+        <div className="accordion accordion-flush tw-max-h-60 tw-overflow-y-auto ">
           {Productos.Insumos.map((insumos) => (
-            <div key={insumos.ID_insumo} className="accordion-item">
+            <div key={insumos.ID_insumo} >
               <h2 className="accordion-header">
                 <button
                   className="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
+                  
+                  
                   data-bs-target={`#${insumos.descripcion_insumo}`}
                   aria-expanded="false"
                   aria-controls={insumos.descripcion_insumo}
