@@ -47,18 +47,16 @@ const updateEstadoVenta = async (req, res) => {
     const { id } = req.params;
     const { ID_estado_venta } = req.body;
 
-    console.log('ID de venta:', id);
-    console.log('Nuevo estado:', ID_estado_venta);
+   
 
     try {
         // Verificar primero los estados existentes
         const estadosDisponibles = await Estado_ventas.findAll();
-        console.log('Estados disponibles:', estadosDisponibles.map(e => e.toJSON()));
+       
 
         // Buscar la venta
         const venta = await Ventas.findByPk(id);
 
-        console.log('Venta encontrada:', venta ? venta.toJSON() : 'No encontrada');
 
         if (!venta) {
             return res.status(404).json({ error: 'Venta no encontrada' });
@@ -67,7 +65,6 @@ const updateEstadoVenta = async (req, res) => {
         // Verificar si el estado de venta existe
         const estadoVenta = await Estado_ventas.findByPk(ID_estado_venta);
         
-        console.log('Estado encontrado:', estadoVenta ? estadoVenta.toJSON() : 'No encontrado');
 
         if (!estadoVenta) {
             return res.status(400).json({ error: 'Estado de venta no encontrado' });

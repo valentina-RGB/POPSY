@@ -30,7 +30,7 @@ const obtenerInsumos = async (req = request, res) => {
       ]
     });
 
-    console.log(JSON.stringify(insumos, null, 2));
+   
     res.json(insumos);
   } catch (error) {
     res.status(500).json({ message: error.message });

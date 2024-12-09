@@ -40,7 +40,7 @@ const registrar = async (req, res) => {
 
   const { nombre, email, telefono, password, ID_rol, estado } = req.body;
 
-  console.log(nombre, email, telefono, password, ID_rol, estado)
+  
 
 
 
@@ -92,7 +92,7 @@ const Iniciar_sesion = async (req, res) => {
     }
 
     // Verifica la contraseña
-    console.log(password, user.password);
+  
 
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (isPasswordCorrect) {

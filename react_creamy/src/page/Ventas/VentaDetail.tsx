@@ -191,7 +191,7 @@ const Ventas_Detalles = () => {
                           {venta.Adiciones.map((adicion, idx) => (
                             <div
                               key={idx}
-                              className="tw-bg-pink-50 tw-rounded-lg tw-p-3 mb-3 tw-last:mb-0"
+                              className=" tw-rounded-lg tw-p-3 mb-3 tw-last:mb-0"
                             >
                               <div className="tw-flex tw-justify-between tw-items-center">
                                

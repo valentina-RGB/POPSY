@@ -34,7 +34,7 @@ module.exports = (sequelize) => {
     const count = await Tipo_productos.count();
     if (count === 0) {
       await Tipo_productos.bulkCreate(data);
-      console.log('Datos por defecto creados');
+      
     }
   })
   .catch((error) => console.error('Error al crear datos por defecto:', error));

@@ -54,7 +54,7 @@ class Server {
     try {
        //await db.sequelize.sync({ force: true });
       // await db.sequelize.sync({ alter: true });
-      console.log("Todas las tablas han sido sincronizadas o creadas.");
+    
     } catch (error) {
       console.error("Error al sincronizar la base de datos:", error);
     }
