@@ -613,7 +613,6 @@ export default function Ventasadd() {
 
     const venta: Venta = {
       fecha: new Date().toISOString(),
-      ID_clientes: 1,
       precio_total: totalVenta,
       ID_estado_venta: 1,
       ProductosLista: productosAgregados
