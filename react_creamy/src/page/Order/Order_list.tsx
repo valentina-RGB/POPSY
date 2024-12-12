@@ -408,7 +408,7 @@ useEffect(() => {
                   title="Ver detalles"
                 />
               </motion.button>
-              <motion.button
+              {/* <motion.button
               whileHover={{
               scale: 1.1,
               rotate: -5,
@@ -423,7 +423,7 @@ useEffect(() => {
               className="tw-transition-transform tw-group-hover:tw-scale-110"
               title="Generar PDF"
               />
-            </motion.button>
+            </motion.button> */}
 
             </div>
           );
