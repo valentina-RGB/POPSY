@@ -34,7 +34,7 @@ const Navbar: React.FC<{ toggleMenu: () => void }> = ({ toggleMenu }) => {
       setUserName(storedUserName);
 
       // Fetch para obtener el rol
-      fetch(`http://localhost:3300/roles`)
+      fetch(`https://creamy-soft.onrender.com/roles`)
         .then((response) => response.json())
         .then((roles) => {
           const role = roles.find((r: { ID_rol: number }) => r.ID_rol === Number(storedUserRole));

@@ -27,7 +27,7 @@ const Navbar: React.FC<NavbarProps> = ({ onLogout }) => {
     // Fetch de roles desde la API
     const fetchRoles = async () => {
       try {
-        const response = await fetch('http://localhost:3300/roles');
+        const response = await fetch('https://creamy-soft.onrender.com/roles');
         if (!response.ok) {
           throw new Error('Error al obtener roles');
         }

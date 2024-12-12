@@ -61,7 +61,7 @@ const Ventas_Detalles = () => {
     const fetchVenta = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get(`http://localhost:3300/ventas/${id}`);
+        const response = await axios.get(`https://creamy-soft.onrender.com/ventas/${id}`);
         setVenta(response.data);
         setIsLoading(false);
       } catch (err) {

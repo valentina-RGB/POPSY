@@ -62,7 +62,7 @@ const VentasList: React.FC = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:3300/ventas', {
+      const response = await axios.get('https://creamy-soft.onrender.com/ventas', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setVentas(response.data);

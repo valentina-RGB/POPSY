@@ -194,7 +194,7 @@ const Categorias: React.FC = () => {
             className="tw-bg-gray-100 tw-rounded-full tw-p-1 tw-shadow-md tw-hover:tw-shadow-lg tw-transition-shadow tw-duration-300 tw-relative tw-w-14 tw-h-14"
           >
             <img
-              src={`http://localhost:3300${row.original.imagen}`}
+              src={`https://creamy-soft.onrender.com${row.original.imagen}`}
               alt="Imagen categoría"
               className="tw-w-full tw-h-full tw-object-cover tw-rounded-full tw-border tw-border-gray-300 tw-hover:tw-border-blue-500 tw-transition-colors tw-duration-300"
             />

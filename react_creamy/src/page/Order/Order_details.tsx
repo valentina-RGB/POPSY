@@ -63,7 +63,7 @@ const Pedidos_Detalles = () => {
     const fetchPedido = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get(`http://localhost:3300/pedidos/${id}`);
+        const response = await axios.get(`https://creamy-soft.onrender.com/pedidos/${id}`);
         setPedido(response.data);
         setIsLoading(false);
       } catch (err) {

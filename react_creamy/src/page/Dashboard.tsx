@@ -55,13 +55,13 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const productosResponse = await axios.get("http://localhost:3300/dashboard/productos-mas-vendidos");
+        const productosResponse = await axios.get("https://creamy-soft.onrender.com/dashboard/productos-mas-vendidos");
         setProductosMasVendidos(productosResponse.data);
   
-        const ventasResponse = await axios.get(`http://localhost:3300/dashboard/ventas/?filtro=dias&fecha=15`);
+        const ventasResponse = await axios.get(`https://creamy-soft.onrender.com/dashboard/ventas/?filtro=dias&fecha=15`);
         const ventas = ventasResponse.data.datos.ventas;
 
-        const response = await axios.get('http://localhost:3300/dashboard/insumos');
+        const response = await axios.get('https://creamy-soft.onrender.com/dashboard/insumos');
         setInsumosCriticos(response.data.data); 
   
         // Agrupar las ventas por día y contar su cantidad

@@ -225,7 +225,7 @@ export default function Ventasadd() {
   useEffect(() => {
     const fetchInsumos = async () => {
       try {
-        const response = await axios.get('http://localhost:3300/insumos'); // Endpoint de insumos
+        const response = await axios.get('https://creamy-soft.onrender.com/insumos'); // Endpoint de insumos
         const helados = response.data.filter((insumo: Insumo_adicion) => insumo.ID_tipo_insumo === 1 && insumo.estado_insumo === 'A');
         const salsas = response.data.filter((insumo: Insumo_adicion) => insumo.ID_tipo_insumo === 2 && insumo.estado_insumo === 'A');
         const generales = response.data.filter((insumo: Insumo_adicion) => insumo.ID_tipo_insumo !== 1 && insumo.ID_tipo_insumo !== 2 && insumo.estado_insumo === 'A');
@@ -252,7 +252,7 @@ export default function Ventasadd() {
   useEffect(() => {
     const fetchStock = async () => {
       try {
-        const response = await axios.get('http://localhost:3300/stock_insumos'); // Endpoint de insumos
+        const response = await axios.get('https://creamy-soft.onrender.com/stock_insumos'); // Endpoint de insumos
         const stock = response.data;
         setStock(stock);
 
@@ -269,7 +269,7 @@ export default function Ventasadd() {
   useEffect(() => {
     const fecht = async () => {
       try {
-        const response = await api.get(`http://localhost:3300/productos`)
+        const response = await api.get(`https://creamy-soft.onrender.com/productos`)
         const data = response.data.filter((producto: Producto) => producto.estado_productos === 'D')
         setProducts(data);
 
@@ -286,7 +286,7 @@ export default function Ventasadd() {
     if (id) {
       const ventas = async () => {
         try {
-          const response = await api.get(`http://localhost:3300/ventas/${id}`)
+          const response = await api.get(`https://creamy-soft.onrender.com/ventas/${id}`)
           const data = response.data
           const { ProductosLista } = data
 

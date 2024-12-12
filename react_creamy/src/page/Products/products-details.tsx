@@ -87,7 +87,7 @@ const ProductosDetail: React.FC<Props> = ({ id, onClose }) => {
       <div className="tw-bg-gray-100 tw-p-4 md:tw-p-6 tw-flex tw-items-center tw-justify-center tw-w-[350px] tw-h-[400px]">
         
         <img
-          src={`http://localhost:3300${Productos.imagen}`}
+          src={`https://creamy-soft.onrender.com${Productos.imagen}`}
           alt="Product Image"
           width="350"
           height="350"

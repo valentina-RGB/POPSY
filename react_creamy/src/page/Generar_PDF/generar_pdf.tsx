@@ -48,7 +48,7 @@ export const generarPDFPedido = async (id: number) => {
   try {
     // Obtener los datos del pedido desde la API
     const { data: pedido } = await axios.get<Pedido>(
-      `http://localhost:3300/ventas/${id}`
+      `https://creamy-soft.onrender.com/ventas/${id}`
     );
 
     const doc = new jsPDF();

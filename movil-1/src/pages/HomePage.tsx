@@ -51,7 +51,7 @@ const NavigationMenu = () => {
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:3300/usuarios', {
+        const response = await axios.get('https://creamy-soft.onrender.com/usuarios', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setUserData({ name: response.data.name, role: response.data.role });

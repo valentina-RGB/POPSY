@@ -42,10 +42,10 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }: ProtectedRo
     const fetchAuthData = async () => {
       try {
 
-        const permissionsResponse = await axios.get('http://localhost:3300/permiso');
+        const permissionsResponse = await axios.get('https://creamy-soft.onrender.com/permiso');
         setPermissions(permissionsResponse.data);
 
-        const rolePermissionsResponse = await axios.get('http://localhost:3300/permiso_roles');
+        const rolePermissionsResponse = await axios.get('https://creamy-soft.onrender.com/permiso_roles');
         setRolePermissions(rolePermissionsResponse.data);
 
         setIsLoading(false);

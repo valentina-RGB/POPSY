@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://3300/categorias';
+const API_URL = 'https://creamy-soft.onrender.com/categorias';
 
 type Props = {
     id: number;

@@ -6,7 +6,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { IceCreamIcon, Lock, Mail, Eye, EyeOff } from 'lucide-react';
 
 Modal.setAppElement('#root');
-const API_URL = 'http://localhost:3300';
+const API_URL = 'https://creamy-soft.onrender.com';
 
 const AuthPage: React.FC = () => {
   const [email, setEmail] = useState('');

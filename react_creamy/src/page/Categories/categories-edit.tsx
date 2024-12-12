@@ -36,7 +36,7 @@ const EditCategoria: React.FC<Props> = ({ id, onClose }) => {
           estado_categoria: response.data.estado_categoria,
           imagen: response.data.imagen
         });
-        setPreview(`http://localhost:3300${response.data.imagen}`);
+        setPreview(`https://creamy-soft.onrender.com${response.data.imagen}`);
          
       } catch (error) {
         setError('Error al cargar el categoría.');

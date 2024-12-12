@@ -56,7 +56,7 @@ const CategoriaDetail: React.FC<Props> = ({ id, onClose }) => {
       <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2">
         <div className="tw-bg-gray-100 tw-p-4 md:tw-p-6 tw-flex tw-items-center tw-justify-center">
           <img
-            src={`http://localhost:3300${categorias.imagen}`}
+            src={`https://creamy-soft.onrender.com${categorias.imagen}`}
             alt="Product Image"
             width="300"
             height="300"

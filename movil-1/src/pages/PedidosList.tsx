@@ -62,7 +62,7 @@ const PedidosList: React.FC = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:3300/pedidos', {
+      const response = await axios.get('https://creamy-soft.onrender.com/pedidos', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setPedidos(response.data);
