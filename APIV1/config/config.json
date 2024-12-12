@@ -9,16 +9,18 @@
   },
   "test": {
     "username": "avnadmin",
-    "password": "hola",
-    "database": "database_test",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "password": "AVNS_AiwjcAzTJc0iDhFAz5k",
+    "database": "api_final",
+    "host": "creamy-soft-creamy-soft.d.aivencloud.com",
+    "dialect": "mysql",
+    "port": 16064
   },
   "production": {
     "username": "avnadmin",
-    "password": "hola",
-    "database": "database_production",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "password": "AVNS_AiwjcAzTJc0iDhFAz5k",
+    "database": "api_final",
+    "host": "creamy-soft-creamy-soft.d.aivencloud.com",
+    "dialect": "mysql",
+    "port": 16064
   }
 }
