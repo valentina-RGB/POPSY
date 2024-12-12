@@ -130,7 +130,7 @@ const Categorias: React.FC = () => {
 
 
   useEffect(() => {
-    handleManuales('https://app.tango.us/app/folder/ebe12470-f0b9-40ef-a72e-cd72e56296ca');
+    // handleManuales('https://app.tango.us/app/folder/ebe12470-f0b9-40ef-a72e-cd72e56296ca');
     fetchCategorias(); 
   }, []);
 
