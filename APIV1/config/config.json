@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "avnadmin",
-    "password": "hola",
+    "password": "AVNS_AiwjcAzTJc0iDhFAz5k",
     "database": "api_final",
     "host": "creamy-soft-creamy-soft.d.aivencloud.com",
     "dialect": "mysql",

@@ -10,7 +10,6 @@ import {
   LinearScale,
   PointElement,
   LineElement,
-  TooltipItem,
 } from "chart.js";
 import {
   DollarSign,
@@ -47,9 +46,9 @@ const Dashboard: React.FC = () => {
   const [ventasPorDia, setVentasPorDia] = useState<{ [key: string]: number }>({});
   const [totalVentas, setTotalVentas] = useState(0);
   const [insumosCriticos, setInsumosCriticos] = useState<InsumoCritico[]>([]);
-  const [filtro, setFiltro] = useState<"mes" | "dias">("mes");
+  const [filtro] = useState<"mes" | "dias">("mes");
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error] = useState<string | null>(null);
 
 
 

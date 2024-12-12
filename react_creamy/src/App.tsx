@@ -34,11 +34,7 @@ import { VerDetalle } from './page/Manuales/categorias/ver_detalle';
 
 
 
-const Loader: React.FC = () => (
-  <div className="tw-flex tw-justify-center tw-items-center tw-h-screen">
-    <div className="tw-animate-spin tw-rounded-full tw-h-12 tw-w-12 tw-border-t-4 tw-border-blue-500 tw-border-opacity-75"></div>
-  </div>
-);
+
 
 const ConditionalLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { HelpCircle, X, Download, FileText } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useManuales } from '../page/Manuales/handleManuales';
