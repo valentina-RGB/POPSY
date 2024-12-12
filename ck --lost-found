@@ -1,0 +1,200 @@
+[33mcommit 519b98d3cad709ac47de710e14558ea875d341ec[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Reflog: HEAD@{0} (Santiago Florez <santiagoflorezv23@gmail.com>)
+Reflog message: reset: moving to HEAD
+Author:     Santiago Florez <santiagoflorezv23@gmail.com>
+AuthorDate: Wed Dec 11 23:24:23 2024 -0500
+Commit:     Santiago Florez <santiagoflorezv23@gmail.com>
+CommitDate: Wed Dec 11 23:24:23 2024 -0500
+
+    base de datos desplegada
+
+[33mcommit 519b98d3cad709ac47de710e14558ea875d341ec[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Reflog: HEAD@{1} (Santiago Florez <santiagoflorezv23@gmail.com>)
+Reflog message: commit: base de datos desplegada
+Author:     Santiago Florez <santiagoflorezv23@gmail.com>
+AuthorDate: Wed Dec 11 23:24:23 2024 -0500
+Commit:     Santiago Florez <santiagoflorezv23@gmail.com>
+CommitDate: Wed Dec 11 23:24:23 2024 -0500
+
+    base de datos desplegada
+
+[33mcommit 4113524d7f85c2859c9f41dca46de976e79ddadf[m
+Reflog: HEAD@{2} (Santiago Florez <santiagoflorezv23@gmail.com>)
+Reflog message: pull --tags origin main: Fast-forward
+Merge: 7d34be6 1a0a623
+Author:     valentina-RGB <polar.loc102@gmail.com>
+AuthorDate: Mon Dec 9 06:42:26 2024 -0500
+Commit:     valentina-RGB <polar.loc102@gmail.com>
+CommitDate: Mon Dec 9 06:42:26 2024 -0500
+
+    Merge branch 'main' of https://github.com/valentina-RGB/POPSY
+
+[33mcommit 1a0a6239c60fa530d15721adf1431649cdd15fc2[m
+Reflog: HEAD@{3} (Santiago Florez <santiagoflorezv23@gmail.com>)
+Reflog message: pull --tags origin main: Merge made by the 'ort' strategy.
+Merge: a8e76a3 673e628
+Author:     Santiago Florez <santiagoflorezv23@gmail.com>
+AuthorDate: Sun Dec 8 23:56:58 2024 -0500
+Commit:     Santiago Florez <santiagoflorezv23@gmail.com>
+CommitDate: Sun Dec 8 23:56:58 2024 -0500
+
+    Merge branch 'main' of https://github.com/valentina-RGB/POPSY
+
+[33mcommit a8e76a385cdcf31125d69d75af69dc2ba3d10915[m
+Reflog: HEAD@{4} (Santiago Florez <santiagoflorezv23@gmail.com>)
+Reflog message: commit: a
+Author:     Santiago Florez <santiagoflorezv23@gmail.com>
+AuthorDate: Sun Dec 8 23:56:54 2024 -0500
+Commit:     Santiago Florez <santiagoflorezv23@gmail.com>
+CommitDate: Sun Dec 8 23:56:54 2024 -0500
+
+    a
+
+[33mcommit 9df68d5929db049adf3e35c4ca3a91a2881d08a7[m
+Reflog: HEAD@{5} (Santiago Florez <santiagoflorezv23@gmail.com>)
+Reflog message: commit: movil
+Author:     Santiago Florez <santiagoflorezv23@gmail.com>
+AuthorDate: Sun Dec 8 21:54:48 2024 -0500
+Commit:     Santiago Florez <santiagoflorezv23@gmail.com>
+CommitDate: Sun Dec 8 21:54:48 2024 -0500
+
+    movil
+
+[33mcommit 8fa0a19fc9fe764349bc1bf064be7264ecc9348c[m
+Reflog: HEAD@{6} (Santiago Florez <santiagoflorezv23@gmail.com>)
+Reflog message: commit: cambios
+Author:     Santiago Florez <santiagoflorezv23@gmail.com>
+AuthorDate: Sun Dec 8 18:51:43 2024 -0500
+Commit:     Santiago Florez <santiagoflorezv23@gmail.com>
+CommitDate: Sun Dec 8 18:51:43 2024 -0500
+
+    cambios
+
+[33mcommit 7f8b58a946e1f62a41572d1480cb892725357116[m
+Reflog: HEAD@{7} (Santiago Florez <santiagoflorezv23@gmail.com>)
+Reflog message: pull --tags origin main: Merge made by the 'ort' strategy.
+Merge: 8978afe c6c4e1f
+Author:     Santiago Florez <santiagoflorezv23@gmail.com>
+AuthorDate: Sat Dec 7 19:35:37 2024 -0500
+Commit:     Santiago Florez <santiagoflorezv23@gmail.com>
+CommitDate: Sat Dec 7 19:35:37 2024 -0500
+
+    Merge branch 'main' of https://github.com/valentina-RGB/POPSY
+
+[33mcommit 8978afe362bdf9e7ecb087d92a6af7516a99ac0d[m
+Reflog: HEAD@{8} (Santiago Florez <santiagoflorezv23@gmail.com>)
+Reflog message: commit: aa
+Author:     Santiago Florez <santiagoflorezv23@gmail.com>
+AuthorDate: Sat Dec 7 19:35:34 2024 -0500
+Commit:     Santiago Florez <santiagoflorezv23@gmail.com>
+CommitDate: Sat Dec 7 19:35:34 2024 -0500
+
+    aa
+
+[33mcommit dfad3741108ba2f58b0b049a7e03dd5df698556d[m
+Reflog: HEAD@{9} (Santiago Florez <santiagoflorezv23@gmail.com>)
+Reflog message: commit: implementacion manual
+Author:     Santiago Florez <santiagoflorezv23@gmail.com>
+AuthorDate: Sat Dec 7 00:38:44 2024 -0500
+Commit:     Santiago Florez <santiagoflorezv23@gmail.com>
+CommitDate: Sat Dec 7 00:38:44 2024 -0500
+
+    implementacion manual
+
+[33mcommit 47673ad702d19747ec3d97c3dddc679f1dd7b6ea[m
+Reflog: HEAD@{10} (Santiago Florez <santiagoflorezv23@gmail.com>)
+Reflog message: pull --tags origin main: Fast-forward
+Merge: c716063 d887092
+Author:     valentina-RGB <polar.loc102@gmail.com>
+AuthorDate: Thu Dec 5 01:45:41 2024 -0500
+Commit:     valentina-RGB <polar.loc102@gmail.com>
+CommitDate: Thu Dec 5 01:45:41 2024 -0500
+
+    Merge branch 'main' of https://github.com/valentina-RGB/POPSY
+
+[33mcommit d887092b4f1587f905adc171655618ccedea0482[m
+Reflog: HEAD@{11} (Santiago Florez <santiagoflorezv23@gmail.com>)
+Reflog message: pull --tags origin main: Merge made by the 'ort' strategy.
+Merge: 0d1692e b6477ed
+Author:     Santiago Florez <santiagoflorezv23@gmail.com>
+AuthorDate: Thu Dec 5 01:00:48 2024 -0500
+Commit:     Santiago Florez <santiagoflorezv23@gmail.com>
+CommitDate: Thu Dec 5 01:00:48 2024 -0500
+
+    Merge branch 'main' of https://github.com/valentina-RGB/POPSY
+
+[33mcommit 0d1692e5c3ff06abe2cc981aed74ee2fe4a21106[m
+Reflog: HEAD@{12} (Santiago Florez <santiagoflorezv23@gmail.com>)
+Reflog message: commit: editar insumo
+Author:     Santiago Florez <santiagoflorezv23@gmail.com>
+AuthorDate: Thu Dec 5 01:00:44 2024 -0500
+Commit:     Santiago Florez <santiagoflorezv23@gmail.com>
+CommitDate: Thu Dec 5 01:00:44 2024 -0500
+
+    editar insumo
+
+[33mcommit 02bd6e74eadee084b357c71b6f90ad6655f45bd5[m
+Reflog: HEAD@{13} (Santiago Florez <santiagoflorezv23@gmail.com>)
+Reflog message: pull --tags origin main: Fast-forward
+Author:     valentina-RGB <polar.loc102@gmail.com>
+AuthorDate: Wed Dec 4 23:17:51 2024 -0500
+Commit:     valentina-RGB <polar.loc102@gmail.com>
+CommitDate: Wed Dec 4 23:17:51 2024 -0500
+
+    avances
+
+[33mcommit f4c1ab351df1c57e23ec3af0092d24e8ba4855bf[m
+Reflog: HEAD@{14} (Santiago Florez <santiagoflorezv23@gmail.com>)
+Reflog message: pull --tags origin main: Fast-forward
+Merge: ab783e6 2ce4d60
+Author:     Alejogamer113 <luisvinasco113@gmail.com>
+AuthorDate: Wed Dec 4 23:05:34 2024 -0500
+Commit:     Alejogamer113 <luisvinasco113@gmail.com>
+CommitDate: Wed Dec 4 23:05:34 2024 -0500
+
+    Estado desactivado en el login
+
+[33mcommit 2ce4d605ea761fa8dfd8d1a4079e85af2001d5fb[m
+Reflog: HEAD@{15} (Santiago Florez <santiagoflorezv23@gmail.com>)
+Reflog message: pull --tags origin main: Merge made by the 'ort' strategy.
+Merge: f11c880 881c31e
+Author:     Santiago Florez <santiagoflorezv23@gmail.com>
+AuthorDate: Wed Dec 4 22:44:44 2024 -0500
+Commit:     Santiago Florez <santiagoflorezv23@gmail.com>
+CommitDate: Wed Dec 4 22:44:44 2024 -0500
+
+    Merge branch 'main' of https://github.com/valentina-RGB/POPSY
+
+[33mcommit f11c880c5980ed20e288e3ce1f8f6ae17bfd5627[m
+Reflog: HEAD@{16} (Santiago Florez <santiagoflorezv23@gmail.com>)
+Reflog message: commit: movil
+Author:     Santiago Florez <santiagoflorezv23@gmail.com>
+AuthorDate: Wed Dec 4 22:34:37 2024 -0500
+Commit:     Santiago Florez <santiagoflorezv23@gmail.com>
+CommitDate: Wed Dec 4 22:34:37 2024 -0500
+
+    movil
+
+[33mcommit 9260d4c504d4a8af5cb22cdee6f89681197ee484[m
+Reflog: HEAD@{17} (Santiago Florez <santiagoflorezv23@gmail.com>)
+Reflog message: commit: rutas protegidas
+Author:     Santiago Florez <santiagoflorezv23@gmail.com>
+AuthorDate: Wed Dec 4 19:51:41 2024 -0500
+Commit:     Santiago Florez <santiagoflorezv23@gmail.com>
+CommitDate: Wed Dec 4 19:51:41 2024 -0500
+
+    rutas protegidas
+
+[33mcommit 41bc69c3724f168b9cd874195d8f7d3018bf1b73[m
+Reflog: HEAD@{18} (Santiago Florez <santiagoflorezv23@gmail.com>)
+Reflog message: pull --tags origin main: Fast-forward
+Author:     Alejogamer113 <luisvinasco113@gmail.com>
+AuthorDate: Wed Dec 4 16:15:53 2024 -0500
+Commit:     Alejogamer113 <luisvinasco113@gmail.com>
+CommitDate: Wed Dec 4 16:15:53 2024 -0500
+
+    recuperar contraseña
+
+[33mcommit 3116c0bd8e889dc25817f355a2ddeab4a230b64c[m
+Reflog: HEAD@{19} (Santiago Florez <santiagoflorezv23@gmail.com>)
+Ref

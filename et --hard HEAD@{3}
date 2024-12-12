@@ -1,0 +1,50 @@
+[33m519b98d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{0}: reset: moving to HEAD
+[33m519b98d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{1}: commit: base de datos desplegada
+[33m4113524[m HEAD@{2}: pull --tags origin main: Fast-forward
+[33m1a0a623[m HEAD@{3}: pull --tags origin main: Merge made by the 'ort' strategy.
+[33ma8e76a3[m HEAD@{4}: commit: a
+[33m9df68d5[m HEAD@{5}: commit: movil
+[33m8fa0a19[m HEAD@{6}: commit: cambios
+[33m7f8b58a[m HEAD@{7}: pull --tags origin main: Merge made by the 'ort' strategy.
+[33m8978afe[m HEAD@{8}: commit: aa
+[33mdfad374[m HEAD@{9}: commit: implementacion manual
+[33m47673ad[m HEAD@{10}: pull --tags origin main: Fast-forward
+[33md887092[m HEAD@{11}: pull --tags origin main: Merge made by the 'ort' strategy.
+[33m0d1692e[m HEAD@{12}: commit: editar insumo
+[33m02bd6e7[m HEAD@{13}: pull --tags origin main: Fast-forward
+[33mf4c1ab3[m HEAD@{14}: pull --tags origin main: Fast-forward
+[33m2ce4d60[m HEAD@{15}: pull --tags origin main: Merge made by the 'ort' strategy.
+[33mf11c880[m HEAD@{16}: commit: movil
+[33m9260d4c[m HEAD@{17}: commit: rutas protegidas
+[33m41bc69c[m HEAD@{18}: pull --tags origin main: Fast-forward
+[33m3116c0b[m HEAD@{19}: commit: FINAL
+[33m75f35ac[m HEAD@{20}: commit (merge): Merge branch 'main' of https://github.com/valentina-RGB/POPSY
+[33m4019147[m HEAD@{21}: commit: hola
+[33m039ef92[m HEAD@{22}: commit: Alejo 02-12-24
+[33m3c812d4[m HEAD@{23}: commit: insumos criticos
+[33m5d83b71[m HEAD@{24}: commit: estado ventas arreglado
+[33md007c7a[m HEAD@{25}: pull --tags origin main: Fast-forward
+[33m998ff95[m HEAD@{26}: commit: cambiios ricos v2
+[33mc92f222[m HEAD@{27}: commit: cambios ricos
+[33m9a19ec6[m HEAD@{28}: commit: Validaciones ventas
+[33ma11409d[m HEAD@{29}: commit (merge): Merge branch 'main' of https://github.com/valentina-RGB/POPSY
+[33meef546c[m HEAD@{30}: commit: Revert "rutas protegidas"
+[33mb4e27d9[m HEAD@{31}: pull --tags origin main: Fast-forward
+[33m2c67e22[m HEAD@{32}: pull --tags origin main: Fast-forward
+[33m65e1365[m HEAD@{33}: commit: CAMBIO TABLAS
+[33m6968255[m HEAD@{34}: commit: pruebas de diseño
+[33m963c2d7[m HEAD@{35}: commit: ventas medio funcional
+[33mfc7bc25[m HEAD@{36}: commit: prueba
+[33m06aeb1f[m HEAD@{37}: commit: empezo esta vuelta
+[33m8853f99[m HEAD@{38}: commit: cambios chanti
+[33m2826426[m HEAD@{39}: commit: api funcional
+[33m4b57cd6[m HEAD@{40}: commit (merge): api funcional nuevamente
+[33me2eac24[m HEAD@{41}: commit: aa
+[33m834fbd4[m HEAD@{42}: commit: push para valentina.
+[33m6e4d2b6[m HEAD@{43}: commit: push de reportados a comite
+[33ma51e1dd[m HEAD@{44}: pull --tags origin main: Fast-forward
+[33m8bed32a[m HEAD@{45}: commit: hola
+[33m3d0d6a7[m HEAD@{46}: commit (merge): Merge branch 'main' of https://github.com/valentina-RGB/POPSY
+[33mc5c0fbd[m HEAD@{47}: commit: cambios santi
+[33m3a2e600[m HEAD@{48}: commit: avances del movil
+[33m64ac3d9[m HEAD@{49}: clone: from https://github.com/valentina-RGB/POPSY.git
