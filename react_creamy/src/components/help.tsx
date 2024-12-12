@@ -24,7 +24,7 @@ const HelpDownloadButton = () => {
 
   const handleDownload = () => {
     try {
-      const pdfPath = '../../public/docs/Manual de usuario creamy soft.docx.pdf';
+      const pdfPath = '/docs/Manual de usuario creamy soft.docx.pdf';
       
       const link = document.createElement('a');
       link.href = pdfPath;
