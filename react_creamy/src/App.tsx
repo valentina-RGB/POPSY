@@ -1,6 +1,6 @@
 import { Toaster} from 'react-hot-toast';
 import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Navbar from "./components/navbar_prueba";
 import Menu from "./components/sidebar";
 import Dashboard from "./page/Dashboard";
@@ -25,7 +25,8 @@ import Usuarios from './page/Usuarios/ListUsuario';
 import NotFoundPage from './components/404';
 import Home from './page/Home';
 import Help from './components/help';
-import { VerDetalle } from './page/Manuales/categorias/ver_detalle';
+import ManualesViewer from './page/Manuales/handleManuales';
+
 
 
 
@@ -79,6 +80,14 @@ const ConditionalLayout: React.FC<{ children: React.ReactNode }> = ({ children }
   );
 };
 
+const RedirectToManual: React.FC = () => {
+  useEffect(() => {
+    window.location.href = "/docs/Manualv1soft.docx.html";
+  }, []);
+
+  return null;
+};
+
 const App: React.FC = () => {
   return (
     <AuthProvider>
@@ -91,6 +100,7 @@ const App: React.FC = () => {
             <Route path="/" element={<Navigate to="/Home" />} />
 
             {/* Rutas principales */}
+            <Route path="/manuales" element={<ManualesViewer />} />
             <Route
               path="/Dashboard"
               element={
@@ -215,7 +225,7 @@ const App: React.FC = () => {
             <Route path="*" element={<Navigate to="/404" />} />
 
             {/* Manuales */}
-            <Route path="/manual_categoría" element={<VerDetalle/>} />
+            
           </Routes>
         </ConditionalLayout>
         <Toaster position="top-right" reverseOrder={false} />

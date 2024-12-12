@@ -1,16 +1,26 @@
 import  { useState } from 'react';
-import { HelpCircle, X, Download, FileText } from 'lucide-react';
+import { HelpCircle, X, Download} from 'lucide-react';
 import toast from 'react-hot-toast';
-import { useManuales } from '../page/Manuales/handleManuales';
+// import { useManuales } from '../page/Manuales/handleManuales';
+import { useNavigate } from 'react-router-dom';
+import { FileText } from 'react-feather';
 
 const HelpDownloadButton = () => {
-  const { handleManuales, urlManuales } = useManuales();
+  // const { urlManuales } = useManuales();
   const [isOpen, setIsOpen] = useState(false);
-
+  const navigate = useNavigate();
+  
   const handleMainButtonClick = () => {
     setIsOpen(!isOpen);
-    handleManuales('https://app.tango.us/app/workflow/Tango--A-Comprehensive-Guide-a19efa152ed04134a6076eb975a4f5e3');
+    // handleManuales('/manuales');
+    // urlManuales();
   };
+
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault(); // Evita que el enlace actúe como un enlace normal
+    navigate('/manuales'); // Redirige a la ruta donde se renderiza el manual
+};
 
   const handleDownload = () => {
     try {
@@ -47,12 +57,13 @@ const HelpDownloadButton = () => {
           <Download className="tw-w-6 tw-h-6" />
         </button>
       
-        <button
-          onClick={urlManuales}
+        <a
+          onClick={handleClick}
+          href="#"
           className="tw-bg-blue-500 tw-text-white tw-rounded-full tw-w-12 tw-h-12 tw-flex tw-items-center tw-justify-center tw-shadow-lg tw-transition-all tw-duration-300 tw-transform tw-hover:scale-110 tw-animate-pulse"
         >
           <FileText className="tw-w-6 tw-h-6" />
-        </button>
+        </a>
       </div>
       
       <button 

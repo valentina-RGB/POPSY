@@ -12,7 +12,7 @@ import EditCategoria from './categories-edit';
 import CategoriaDetail from './categories-details';
 import Skeleton from '@mui/material/Skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useManuales } from '../Manuales/handleManuales';
+
 
 
 
@@ -38,7 +38,7 @@ const Categorias: React.FC = () => {
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalConfig, setModalConfig] = useState<{ type: 'add' | 'edit' | 'entry'|'detail'|'imagen'| null; id: number | null }>({ type: null, id: null });
-  const {handleManuales} = useManuales();
+
 
   const [loading, setLoading] = useState(true);
 
